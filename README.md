@@ -1,6 +1,8 @@
-# vue_project
+#vue_project 
 
-## Project setup
+厂商管理平台
+
+##项目设置
 ```
 npm install
 ```
