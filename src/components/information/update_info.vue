@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:38 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-01-27 11:54:09
+ * @Last Modified time: 2019-02-05 17:59:48
  */
 
 <template>
@@ -45,10 +45,20 @@
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="12" :offset="5">
+                    <el-col :span="10" :offset="5">
                         <el-form-item label="电子邮箱">
-                            <el-input type="emali" v-model="form.emali"></el-input>
+                            <el-input type="emali" v-model="form.emali" @focus="show_emali = true"></el-input>
                         </el-form-item>
+                    </el-col>
+                    <el-col :span="6" v-show="show_emali">
+                        <span style="vertical-align:middle;line-height:40px;font-size:14px;color:#6FD23F">
+                            <span v-if="emali_status" style="color:#6FD23F">
+                                此邮箱可以绑定
+                            </span>
+                            <span style="color:#F56C6C;" v-else>
+                                此邮箱已被绑定
+                            </span>
+                        </span>
                     </el-col>
                 </el-row>
                 <el-row>
@@ -99,6 +109,8 @@
 export default {
   data() {
     return {
+        show_emali:false,
+      emali_status: false,
       form: {
         id: "123", //厂商id
         name: "养鸡场", //厂商名称
