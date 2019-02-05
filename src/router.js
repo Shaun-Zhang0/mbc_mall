@@ -1,7 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-
 import Orderlist from "./components/order/orderlist.vue";
 import Index from "./components/structure/home.vue";
 import Release_product from "./components/product/release_product.vue";
@@ -23,43 +22,43 @@ export default new Router({
     },
     {
       path: "/update_info",
-      name: Update_info,
+      name: 'Update_info',
       component: Update_info,
       meta: { keepAlive: true }
     },
     {
       path: "/orderlist",
-      name: Orderlist,
+      name: 'Orderlist',
       component: Orderlist,
       meta: { keepAlive: true }
     },
     {
       path: "/release_product",
-      name: Release_product,
+      name: 'Release_product',
       component: Release_product,
       meta: { keepAlive: true }
     },
     {
       path: "/Productlist",
-      name: Productlist,
+      name: 'Productlist',
       component: Productlist,
       meta: { keepAlive: true }
     },
     {
       path: "/Chargerback",
-      name: Chargerback,
+      name: 'Chargerback',
       component: Chargerback,
       meta: { keepAlive: true }
     },
     {
       path: "/Login",
-      name: Login,
+      name: 'Login',
       component: Login,
       meta: { keepAlive: false }
     },
     {
       path: "/register",
-      name: register,
+      name: 'register',
       component: register,
       meta: { keepAlive: false }
     }
