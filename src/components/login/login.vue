@@ -26,8 +26,10 @@
               </el-col>
             </el-row>
             <el-row style="text-align:right;font-size:12px;">
-              <el-col :span="20" :offset="2" style="cursor: pointer">
-                忘记密码?
+              <el-col :span="20" :offset="2">
+                <span style="color:rgb(153, 153, 153);cursor: pointer">
+                  忘记密码?
+                </span>
               </el-col>
             </el-row>
             <el-row style="padding-top:10px;">
@@ -39,11 +41,13 @@
             </el-row>
 
             <el-row style="text-align:right;font-size:12px;">
-               <router-link to="/register" tag="span">
-              <el-col :span="20" :offset="2" style="cursor: pointer;padding-bottom:50px;">
-                还没有账号？赶紧申请一个吧
+
+              <el-col :span="20" :offset="2" style="padding-bottom:50px;">
+                <router-link to="/register" tag="span">
+                  <span style="cursor: pointer;color:rgb(153, 153, 153)">还没有账号？赶紧申请一个吧 </span>
+                </router-link>
               </el-col>
-               </router-link>
+
             </el-row>
           </el-col>
         </el-row>
