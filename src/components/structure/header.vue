@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-01-27 11:34:50
+ * @Last Modified time: 2019-02-03 21:01:17
  */
 
 <template>
@@ -31,7 +31,7 @@
                                 </div>
                                 <div style="display: inline-block;color:rgb(240, 238, 238);padding-left: 20px;">
                                     <span>{{name}}</span>
-                                    <span class="el-icon-caret-bottom" style="color: black"></span>
+                                    <span class="el-icon-caret-bottom" style="color: white"></span>
                                 </div>
                             </span>
                             <el-dropdown-menu slot="dropdown">
@@ -46,7 +46,7 @@
                     <span class="el-icon-bell top-menu">
                         <el-badge is-dot class="item" style="margin-left: -5px;margin-top: -10px;"></el-badge>
                     </span>
-                    <span class="el-icon-rank top-menu"></span>
+                    <span class="el-icon-rank top-menu" @click="full_screen"></span>
                 </div>
 
             </div>
@@ -80,6 +80,39 @@ export default {
       name: "厂商名称",
       imgurl: require("../../../public/img/2.jpg")
     };
+  },
+  methods: {
+    full_screen() {
+      console.log(123);
+      var isFullscreen =
+        document.fullScreenElement || //W3C
+        document.msFullscreenElement || //IE11
+        document.mozFullScreenElement || //火狐
+        document.webkitFullscreenElement || //谷歌
+        false;
+      if (!isFullscreen) {
+        var el = document.documentElement;
+        if (el.requestFullscreen) {
+          el.requestFullscreen();
+        } else if (el.mozRequestFullScreen) {
+          el.mozRequestFullScreen();
+        } else if (el.webkitRequestFullscreen) {
+          el.webkitRequestFullscreen();
+        } else if (el.msRequestFullscreen) {
+          el.msRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        }
+      }
+    }
   }
 };
 </script>
