@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:27 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-01-27 11:08:41
+ * @Last Modified time: 2019-02-12 17:54:38
  */
 
 <template>
@@ -16,7 +16,7 @@
                             </template>
                             <el-menu-item-group>
                                
-                                    <router-link to="/update_info" tag="li"><el-menu-item index="1-1">更改账号信息</el-menu-item></router-link>
+                                    <router-link to="/brand/update_info" tag="li"><el-menu-item index="1-1">更改账号信息</el-menu-item></router-link>
                        
                             </el-menu-item-group>
                         </el-submenu>
@@ -26,8 +26,8 @@
                                     <span>商品管理</span>
                                 </template>
                                 <el-menu-item-group>
-                                        <router-link to="/release_product" tag="li"> <el-menu-item index="2-1">商品发布</el-menu-item></router-link>
-                                        <router-link to="/productlist" tag="li"> <el-menu-item index="2-2">商品列表</el-menu-item></router-link>
+                                        <router-link to="/brand/release_product" tag="li"> <el-menu-item index="2-1">商品发布</el-menu-item></router-link>
+                                        <router-link to="/brand/productlist" tag="li"> <el-menu-item index="2-2">商品列表</el-menu-item></router-link>
                                   
                                 </el-menu-item-group>
                             </el-submenu>
@@ -39,8 +39,8 @@
                           
                             <el-menu-item-group>
                               
-                                <router-link to="/orderlist" tag="li"><el-menu-item index="3-1">用户订单列表</el-menu-item></router-link>
-                                <router-link to="/Chargerback" tag="li"><el-menu-item index="3-2">用户退单列表</el-menu-item></router-link>
+                                <router-link to="/brand/orderlist" tag="li"><el-menu-item index="3-1">用户订单列表</el-menu-item></router-link>
+                                <router-link to="/brand/Chargerback" tag="li"><el-menu-item index="3-2">用户退单列表</el-menu-item></router-link>
                                 
                             </el-menu-item-group>
                         
@@ -53,7 +53,7 @@
                           
                             <el-menu-item-group>
                               
-                                <router-link to="/edit_order" tag="li"><el-menu-item index="4-1">用户订单列表</el-menu-item></router-link>
+                                <router-link to="/brand/edit_order" tag="li"><el-menu-item index="4-1">用户订单列表</el-menu-item></router-link>
                                 
                             </el-menu-item-group>
                         
