@@ -1,13 +1,13 @@
 /*
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:16 
- * @Last Modified by:   Shaun.Zhang 
- * @Last Modified time: 2019-01-25 16:41:16 
+ * @Last Modified by: Shaun.Zhang
+ * @Last Modified time: 2019-02-12 18:31:19
  */
 
 <template>
     <div id="abc" style="width: 100%;height:100%;">
-        <div style="height: 50px;background-color: hsla(0, 0%, 70%, 0.1);padding-left: 10px;">
+        <div class="breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
                 <el-breadcrumb-item>商品管理</el-breadcrumb-item>
@@ -15,10 +15,9 @@
             </el-breadcrumb>
         </div>
 
-        <div class="border">
-            <el-row style="font-size: 28px;text-align: center;  margin-bottom: 100px;margin-top: 20px;">发布商品信息</el-row>
+        <div class="order_border">
+            <el-row class="form_title">发布商品信息</el-row>
             <el-form ref="form" :model="form" label-width="80px" class="demo-ruleForm">
-
                 <el-row>
                     <el-col :span="6" :offset="5">
                         <el-form-item label="商品名称" prop="name" :rules="[{ required: true, message: '商品名称不能为空'}]">
@@ -147,6 +146,24 @@
         </div>
     </div>
 </template>
+<style scoped>
+.order_border {
+  border: 2px solid #ccc;
+  padding-left: 10px;
+  padding-right:10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 10px 10px 5px #888888;
+}
+.form_title{
+  font-size: 28px;
+  text-align: center;   
+  margin-bottom: 100px;
+  margin-top: 20px;
+}
+</style>
 
 <script>
 export default {
