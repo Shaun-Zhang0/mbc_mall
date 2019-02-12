@@ -2,12 +2,12 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:38 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-05 17:59:48
+ * @Last Modified time: 2019-02-12 18:15:38
  */
 
 <template>
-    <div id="abc" style="width: 100%;height:100%;">
-        <div style="height: 50px;background-color: hsla(0, 0%, 50%, 0.1);padding-left: 10px;">
+    <div id="container" style="width: 100%;height:100%;">
+        <div class="breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
                 <el-breadcrumb-item>账号管理</el-breadcrumb-item>
@@ -15,9 +15,8 @@
             </el-breadcrumb>
         </div>
 
-        <div class="border" style="
-        ">
-            <el-row style="font-size: 28px;text-align: center;  margin-bottom: 100px;margin-top: 20px;">用户个人信息</el-row>
+        <div class="border">
+            <el-row class="info_title">用户个人信息</el-row>
             <el-form ref="form" :model="form" label-width="80px">
                 <el-row>
                     <el-col :span="6" :offset="5">
@@ -94,7 +93,7 @@
         </div>
     </div>
 </template>
-<style >
+<style scoped>
 .border {
   border: 2px solid #ccc;
   margin-left: 20px;
@@ -103,6 +102,12 @@
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
   height: 100%;
+}   
+.info_title{
+  font-size: 28px;
+  text-align: center;  
+  margin-bottom: 100px;
+  margin-top: 20px;
 }
 </style>
 <script>
