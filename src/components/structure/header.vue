@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-03 21:01:17
+ * @Last Modified time: 2019-02-12 17:53:38
  */
 
 <template>
@@ -10,7 +10,7 @@
         <el-header style="height: 80px;">
             <div style="width: 100%">
                 <div style="float: left;list-style: none">
-                    <router-link to="/" tag="li">
+                    <router-link to="/brand" tag="li">
                         <span style="color: rgb(240, 238, 238);font-size: 14px;cursor: pointer">厂商管理后台</span>
                     </router-link>
                 </div>
