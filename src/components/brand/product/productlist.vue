@@ -2,12 +2,12 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-11 23:18:50
+ * @Last Modified time: 2019-02-12 18:24:30
  */
 
 <template>
     <div id="abc" style="width: 100%;height:700px;">
-        <div style="height: 50px;background-color: hsla(0, 0%, 70%, 0.1);padding-left: 10px;">
+        <div class="breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
                 <el-breadcrumb-item>商品管理</el-breadcrumb-item>
@@ -15,10 +15,9 @@
             </el-breadcrumb>
         </div>
 
-        <div class="order_border" style="padding-left: 10px;padding-right:10px;">
-            <el-row style="font-size: 28px;text-align: center;  margin-bottom: 70px;margin-top: 20px;margin-left: 20px;"></el-row>
+        <div class="order_border">
             <!-- 搜索区 -->
-            <el-form ref="product" :model="product" label-width="80px">
+            <el-form ref="product" :model="product" label-width="80px" style="margin-top: 90px;">
                 <el-row>
                     <el-col :span="5" :offset="5">
                         <el-form-item label="商品id">
@@ -89,7 +88,7 @@
                     </el-table>
                 </template>
             </el-row>
-            <el-row style="background-color:white;height:60px;line-height:60px;">
+            <el-row class="pagination">
                 <el-pagination style="top:50%;text-align: center;" layout="prev, pager, next" :total="1000"></el-pagination>
             </el-row>
         </div>
@@ -277,6 +276,18 @@
     </div>
 
 </template>
+<style scoped>
+.order_border {
+  border: 2px solid #ccc;
+  padding-left: 10px;
+  padding-right:10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 10px 10px 5px #888888;
+}
+</style>
 
 <script>
 export default {
