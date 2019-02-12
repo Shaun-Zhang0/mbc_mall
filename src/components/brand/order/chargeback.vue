@@ -2,12 +2,12 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:26 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-01-26 17:29:38
+ * @Last Modified time: 2019-02-12 18:25:59
  */
 
 <template>
-    <div id="abc" style="width: 100%;height:100%;">
-        <div style="height: 50px;background-color: hsla(0, 0%, 70%, 0.1);padding-left: 10px;">
+    <div id="container">
+        <div class="breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
                 <el-breadcrumb-item>订单管理</el-breadcrumb-item>
@@ -15,9 +15,8 @@
             </el-breadcrumb>
         </div>
 
-        <div class="order_border" style="padding-left: 10px;padding-right:10px;">
-            <el-row style="font-size: 28px;text-align: center;  margin-bottom: 70px;margin-top: 20px;margin-left: 20px;"></el-row>
-            <el-form ref="search_info" v-model="search_info" label-width="80px">
+        <div class="order_border">
+            <el-form ref="search_info" v-model="search_info" label-width="80px" style="margin-top:90px;">
                 <el-row>
                     <el-col :span="5" :offset="5">
                         <el-form-item label="订单号">
@@ -42,15 +41,11 @@
                             </el-select>
                         </el-form-item>
                     </el-col>
-
                 </el-row>
                 <el-row>
-
                     <el-col :span="5" :offset="5">
-
                         <el-form-item label="销售商">
                             <el-input v-model="search_info.product_store" placeholder="请输入销售商名称"></el-input>
-
                         </el-form-item>
                     </el-col>
                     <el-col :span="9">
@@ -76,9 +71,9 @@
                         <el-table-column label="用户账号" prop="order_user"></el-table-column>
                         <el-table-column label="销售商名称" prop="order_store"></el-table-column>
                         <el-table-column label="商品信息" width="180" prop="product_details"></el-table-column>
-                            <template>
-                                <el-button></el-button>
-                            </template>
+                        <template>
+                            <el-button></el-button>
+                        </template>
                         <el-table-column label="订单金额(元)" prop="order_price"></el-table-column>
                         <el-table-column label="审核状态" prop="apply_status"></el-table-column>
                         <el-table-column label="申请时间" width="150" prop="apply_time"></el-table-column>
@@ -96,15 +91,30 @@
                     </el-table>
                 </template>
             </el-row>
-
-            <el-row style="background-color:white;height:60px;line-height:60px;">
+            <el-row class="pagination">
                 <el-pagination style="top:50%;text-align: center;" layout="prev, pager, next" :total="1000"></el-pagination>
             </el-row>
         </div>
     </div>
 </template>
-<style>
+<style scoped>
+#container {
+  width: 100%;
+  height: 100%;
+}
+.order_border {
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 2px solid #ccc;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 5px;
+  -moz-box-shadow: 5px 5px 5px #888888;
+  box-shadow: 10px 10px 5px #888888;
+}
+
 </style>
+
 <script>
 export default {
   data() {
@@ -115,8 +125,7 @@ export default {
         product_name: "", //商品名称
         product_store: "", //销售商名称
         order_status: "", //是否处理退货
-        create_time: "", //创建时间区间
-        
+        create_time: "" //创建时间区间
       },
       /**展示订单列表的数据 */
       order_list: [
