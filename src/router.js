@@ -16,48 +16,48 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: "/",
+      path: "/brand",
       component: Index,
       meta: { keepAlive: true }
     },
     {
-      path: "/update_info",
+      path: "/brand/update_info",
       name: 'Update_info',
       component: Update_info,
       meta: { keepAlive: true }
     },
     {
-      path: "/orderlist",
+      path: "/brand/orderlist",
       name: 'Orderlist',
       component: Orderlist,
       meta: { keepAlive: true }
     },
     {
-      path: "/release_product",
+      path: "/brand/release_product",
       name: 'Release_product',
       component: Release_product,
       meta: { keepAlive: true }
     },
     {
-      path: "/Productlist",
+      path: "/brand/Productlist",
       name: 'Productlist',
       component: Productlist,
       meta: { keepAlive: true }
     },
     {
-      path: "/Chargerback",
+      path: "/brand/Chargerback",
       name: 'Chargerback',
       component: Chargerback,
       meta: { keepAlive: true }
     },
     {
-      path: "/Login",
+      path: "/brand/Login",
       name: 'Login',
       component: Login,
       meta: { keepAlive: false }
     },
     {
-      path: "/register",
+      path: "/brand/register",
       name: 'register',
       component: register,
       meta: { keepAlive: false }
