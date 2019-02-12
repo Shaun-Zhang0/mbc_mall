@@ -10,7 +10,7 @@
 
       </div>
     </div>
-     <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 
 </template>
@@ -19,13 +19,13 @@ import Header from "./components/structure/header";
 import Aside from "./components/structure/aside";
 import Footer from "./components/structure/footer";
 import Main from "./components/structure/home";
-import Update_info from "./components/information/update_info";
-import Release_product from "./components/product/release_product";
-import Productlist from "./components/product/productlist";
-import Orderlist from "./components/order/orderlist";
-import Chargeback from "./components/order/chargeback";
-import login from "./components/login/login";
-import register from "./components/register/register"
+import Update_info from "./components/brand/information/update_info";
+import Release_product from "./components/brand/product/release_product";
+import Productlist from "./components/brand/product/productlist";
+import Orderlist from "./components/brand/order/orderlist";
+import Chargeback from "./components/brand/order/chargeback";
+import login from "./components/brand/login/login";
+import register from "./components/brand/register/register";
 export default {
   components: {
     appHeader: Header, //header组件
