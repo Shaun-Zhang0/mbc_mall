@@ -2,12 +2,12 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:39:53 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-01-26 18:26:18
+ * @Last Modified time: 2019-02-12 18:26:20
  */
 
 <template>
-    <div id="abc" style="width: 100%;height:100%;">
-        <div style="height: 50px;background-color: hsla(0, 0%, 70%, 0.1);padding-left: 10px;">
+    <div id="container" style="width: 100%;height:100%;">
+        <div class="breadcrumb">
             <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
                 <el-breadcrumb-item>订单管理</el-breadcrumb-item>
@@ -96,7 +96,7 @@
                 </template>
             </el-row>
             <!-- 分页区 -->
-            <el-row style="background-color:white;height:60px;line-height:60px;">
+            <el-row class="pagination">
                 <el-pagination style="top:50%;text-align: center;" layout="prev, pager, next" :total="1000"></el-pagination>
             </el-row>
         </div>
@@ -140,14 +140,13 @@
                 <el-form-item label="订单金额：">
                     <el-col :span="24">
                         <span>{{order_info.product_price}}</span>
-                        <span style="color: rgb(165, 165, 165);float: right">商品单价</span>
-
+                        <span class="amounttips">商品单价</span>
                         <br>
                         <span>+ {{order_info.order_post_fee}}</span>
-                        <span style="color: rgb(165, 165, 165);float: right">运费</span>
+                        <span class="amounttips">运费</span>
                         <br>
                         <span>{{sum_orderpay}}</span>
-                        <span style="color: rgb(165, 165, 165);float: right">实付金额</span>
+                        <span class="amounttips">实付金额</span>
 
                     </el-col>
                 </el-form-item>
@@ -289,7 +288,7 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 .order_border {
   border: 2px solid #ccc;
   margin-left: 10px;
@@ -297,6 +296,11 @@
   margin-top: 5px;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
+}
+
+.amounttips{
+  color: rgb(165, 165, 165);
+  float: right;
 }
 </style>
 
