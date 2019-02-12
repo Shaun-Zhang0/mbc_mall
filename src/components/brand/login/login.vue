@@ -1,8 +1,8 @@
 /*
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
- * @Last Modified by:   Shaun.Zhang 
- * @Last Modified time: 2019-02-12 17:38:19 
+ * @Last Modified by: Shaun.Zhang
+ * @Last Modified time: 2019-02-12 18:03:32
  */
 
 <template>
@@ -34,7 +34,7 @@
             </el-row>
             <el-row style="text-align:right;font-size:12px;">
               <el-col :span="20" :offset="2">
-                <span style="color:rgb(153, 153, 153);cursor: pointer">
+                <span class="click_tips">
                   忘记密码?
                 </span>
               </el-col>
@@ -51,7 +51,7 @@
 
               <el-col :span="20" :offset="2" style="padding-bottom:50px;">
                 <router-link to="/register" tag="span">
-                  <span style="cursor: pointer;color:rgb(153, 153, 153)">还没有账号？赶紧申请一个吧 </span>
+                  <span class="click_tips">还没有账号？赶紧申请一个吧 </span>
                 </router-link>
               </el-col>
 
@@ -127,6 +127,10 @@ html {
   -webkit-box-shadow: 4px 4px 10px #333333;
   box-shadow: 4px 4px 10px #333333;
   padding-top: 30px;
+}
+.click_tips {
+  cursor: pointer;
+  color: rgb(153, 153, 153);
 }
 </style>
 <script>
