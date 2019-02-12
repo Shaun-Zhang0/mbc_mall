@@ -71,4 +71,14 @@ body {
 .aside {
   width: 100%;
 }
+.breadcrumb {
+  height: 50px;
+  background-color: hsla(0, 0%, 70%, 0.1);
+  padding-left: 10px;
+}
+.pagination {
+  background-color: white;
+  height: 60px;
+  line-height: 60px;
+}
 </style>
