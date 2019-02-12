@@ -1,14 +1,14 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import Orderlist from "./components/order/orderlist.vue";
+import Orderlist from "./components/brand/order/orderlist.vue";
 import Index from "./components/structure/home.vue";
-import Release_product from "./components/product/release_product.vue";
-import Productlist from "./components/product/productlist.vue";
-import Update_info from "./components/information/update_info.vue";
-import Chargerback from "./components/order/chargeback.vue";
-import Login from "./components/login/login.vue";
-import register from "./components/register/register.vue";
+import Release_product from "./components/brand/product/release_product.vue";
+import Productlist from "./components/brand/product/productlist.vue";
+import Update_info from "./components/brand/information/update_info.vue";
+import Chargerback from "./components/brand/order/chargeback.vue";
+import Login from "./components/brand/login/login.vue";
+import register from "./components/brand/register/register.vue";
 Vue.use(Router);
 
 export default new Router({
