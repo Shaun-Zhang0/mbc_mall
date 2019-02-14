@@ -15,10 +15,11 @@
 
 </template>
 <script>
-import Header from "./components/structure/header";
-import Aside from "./components/structure/aside";
-import Footer from "./components/structure/footer";
-import Main from "./components/structure/home";
+/**厂商管理平台 */
+import Header from "./components/brand/structure/header";
+import Aside from "./components/brand/structure/aside";
+import Footer from "./components/brand/structure/footer";
+import Main from "./components/brand/structure/home";
 import Update_info from "./components/brand/information/update_info";
 import Release_product from "./components/brand/product/release_product";
 import Productlist from "./components/brand/product/productlist";
@@ -26,6 +27,8 @@ import Orderlist from "./components/brand/order/orderlist";
 import Chargeback from "./components/brand/order/chargeback";
 import login from "./components/brand/login/login";
 import register from "./components/brand/register/register";
+
+
 export default {
   components: {
     appHeader: Header, //header组件
