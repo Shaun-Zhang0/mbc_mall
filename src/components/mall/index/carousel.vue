@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 14:31:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 22:04:03
+ * @Last Modified time: 2019-02-14 22:42:57
  */
 <template>
     <div>
@@ -33,7 +33,7 @@ body {
   padding: 0;
 }
 .swiper-container {
-  border-top: 5px solid #999;
+  border-top: 3px solid rgb(253, 40, 40);
   width: 100%;
   margin-top: 50px;
 }
@@ -78,7 +78,6 @@ export default {
       },
       pagination: {
         el: ".swiper-pagination",
-        hideOnClick: true,
         dynamicBullets: false,
         clickable: true,
         renderBullet: function(index, className) {
