@@ -15,6 +15,7 @@ import mall_index from "./components/mall/index/index.vue";
 import index_header from "./components/mall/index/header.vue";
 import carousel from "./components/mall/index/carousel.vue";
 import search from "./components/mall/index/search.vue";
+import menu from "./components/mall/index/menu.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -83,9 +84,9 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//轮播图
-      path: "/mall/carousel",
-      name: 'carousel',
-      component: carousel,
+      path: "/mall/menu",
+      name: 'menu',
+      component: menu,
       meta: { keepAlive: false }
     }
   ]
