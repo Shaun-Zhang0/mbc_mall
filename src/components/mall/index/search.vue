@@ -9,7 +9,7 @@
         <el-row class="row">
             <el-col :xs="8" :sm="10" :md="10" :lg="1" :xl="1">&nbsp;</el-col>
             <el-col :xs="16" :sm="14" :md="14" :lg="4" style="height:100%">
-                <span style="font-size: 30px;color: rgb(253, 40, 40);">跨境平台</span>
+                <span style="font-size: 30px;color: rgb(253, 40, 40);">跨境商城</span>
             </el-col>
             <el-col :xs="2" :sm="7" :md="7" :lg="3" :xl="3">&nbsp;</el-col>
             <el-col :xs="20" :sm="10" :md="10" :lg="8" :xl="9" class="form">
@@ -18,7 +18,7 @@
                         <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white" slot="append">搜索</el-button>
                     </el-input>
                 </el-row>
-                <el-row style="line-height:30px;">
+                <el-row style="margin-top:-20px;">
                     <el-col :xs="5" :sm="4" :md="4" :lg="3" :xl="3" class="suggest" v-for="words in suggest_word">
                         <span class="suggest_item" style="">{{words.word}}</span>
                     </el-col>
