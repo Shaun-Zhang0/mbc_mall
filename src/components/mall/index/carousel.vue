@@ -2,14 +2,14 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 14:31:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 22:42:57
+ * @Last Modified time: 2019-02-14 22:47:48
  */
 <template>
     <div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <div class="swiper-slide" v-for="slide in slides">
-                    <img style="width: 100%;max-height:100%" :src="slide.img_url" />
+                    <img class="swiper_img" :src="slide.img_url" />
                 </div>
 
             </div>
@@ -36,6 +36,11 @@ body {
   border-top: 3px solid rgb(253, 40, 40);
   width: 100%;
   margin-top: 50px;
+}
+.swiper_img {
+  cursor: pointer;
+  width: 100%;
+  max-height: 100%;
 }
 .swiper-slide {
   background: gold;
