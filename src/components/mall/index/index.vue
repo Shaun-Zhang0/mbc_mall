@@ -2,14 +2,15 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 16:30:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 21:58:13
+ * @Last Modified time: 2019-02-16 16:32:16
  */
 <template>
     <div>
         <indexHeader></indexHeader>
          <indexSearch></indexSearch>
+         <div>
         <indexCarousel></indexCarousel>
-       
+       </div>
     </div>
 </template>
 <style scoped>
@@ -19,11 +20,13 @@
 import indexHeader from "./../index/header";
 import indexCarousel from "./../index/carousel";
 import indexSearch from "./../index/search";
+import indexMenu from "./../index/menu";
 export default {
   components: {
     indexHeader: indexHeader,
     indexCarousel: indexCarousel,
-    indexSearch: indexSearch
+    indexSearch: indexSearch,
+    indexMenu: indexMenu,
 
   }
 };
