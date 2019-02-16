@@ -2,49 +2,42 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 14:31:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 22:47:48
+ * @Last Modified time: 2019-02-16 22:01:20
  */
 <template>
-    <div>
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide" v-for="slide in slides">
-                    <img class="swiper_img" :src="slide.img_url" />
-                </div>
-
-            </div>
-            <!-- Add Pagination -->
-            <div class="swiper-pagination"></div>
+  <div>
+   
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" v-for="slide in slides">
+          <img class="swiper_img" :src="slide.img_url" />
         </div>
+
+      </div>
+      <!-- Add Pagination -->
+      <div class="swiper-pagination"></div>
     </div>
+     <index-menu></index-menu>
+  </div>
 </template>
 <style scoped>
-html,
-body {
-  position: relative;
-  height: 100%;
-}
-body {
-  background: #eee;
-  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-  font-size: 14px;
-  color: #000;
-  margin: 0;
-  padding: 0;
-}
+
 .swiper-container {
   border-top: 3px solid rgb(253, 40, 40);
   width: 100%;
   margin-top: 50px;
+  position: absolute;
+  z-index:1
 }
 .swiper_img {
   cursor: pointer;
   width: 100%;
-  max-height: 100%;
+  height: 500PX;;
 }
 .swiper-slide {
   background: gold;
-  height: 500px;
+  min-height: 200px;
+  max-height: 500px;
   /* Center slide text vertically */
   display: -webkit-box;
   display: -ms-flexbox;
@@ -63,7 +56,12 @@ body {
 <script>
 import Swiper from "swiper";
 import "swiper/dist/css/swiper.min.css";
+import indexMenu from "./../index/menu";
+
 export default {
+  components: {
+    indexMenu: indexMenu
+  },
   data() {
     return {
       slides: [
