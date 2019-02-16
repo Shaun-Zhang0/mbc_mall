@@ -78,9 +78,9 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//header
-      path: "/mall/search",
-      name: 'search',
-      component: search,
+      path: "/mall/carousel",
+      name: 'carousel',
+      component: carousel,
       meta: { keepAlive: false }
     },
     {//轮播图
