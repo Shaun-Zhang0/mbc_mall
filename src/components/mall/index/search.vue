@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 17:01:58 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 22:40:14
+ * @Last Modified time: 2019-02-16 17:45:32
  */
 <template>
     <div>
@@ -33,6 +33,7 @@
   max-height: 150px;
   line-height: 100px;
   width: 100%;
+  margin-bottom: 60px;
 }
 .form {
   height: 100%;
