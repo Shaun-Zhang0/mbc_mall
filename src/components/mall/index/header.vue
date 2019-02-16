@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-14 16:46:54
+ * @Last Modified time: 2019-02-16 22:02:29
  */
 <template>
     <div>
@@ -255,7 +255,7 @@
   color: #999;
 }
 .menu_expand{
-    z-index: 111111;
+    z-index: 99999;
     position: absolute;
     width: 100%;
 }
