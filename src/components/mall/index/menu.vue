@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-15 21:42:49 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-16 22:02:50
+ * @Last Modified time: 2019-02-16 22:45:03
  */
 <template>
   <div style="width:100%">
@@ -14,8 +14,9 @@
             <el-col  :xs="0" :sm="1" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
             <span class="iconfont icon-daohang"></span>
             商品类目
-            </el-col>
+          </el-col>
         </el-row>
+        
         <el-row @mouseenter.native="expand = true"  v-show="show" class="menu_item" v-for="item in menu_items">
           <el-col :xs="0" :sm="1" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
           <el-col :xs="23" :sm="23" :lg="23" :xl="10" :span="23" >
@@ -35,14 +36,11 @@
                 <el-col v-for="name in kind.subkind" style="padding-top:5px;padding-bottom:5px;" :xs="7" :lg="4" :span="4">
                   <span class="subkind_item">{{name.name}}</span>
                 </el-col>
-                <!-- <el-col :span="2">12</el-col> -->
               </el-row>
             </el-col>
-
           </el-row>
         </div>
       </el-col>
-
     </el-row>
   </div>
 </template>
