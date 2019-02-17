@@ -14,7 +14,7 @@
             <el-col :xs="2" :sm="7" :md="7" :lg="3" :xl="3">&nbsp;</el-col>
             <el-col :xs="20" :sm="10" :md="10" :lg="8" :xl="9" class="form">
                 <el-row>
-                    <el-input class="input" placeholder="搜索 商品/厂商">
+                    <el-input class="input search_input" placeholder="搜索 商品/厂商">
                         <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white" slot="append">搜索</el-button>
                     </el-input>
                 </el-row>
@@ -24,11 +24,10 @@
                     </el-col>
                 </el-row>
             </el-col>
-
         </el-row>
     </div>
 </template>
-<style>
+<style >
 .row {
   max-height: 150px;
   line-height: 100px;
@@ -51,7 +50,7 @@
   font-size: 12px;
 }
 .el-input-group__append {
-  background-color: rgb(253, 40, 40) !important;
+  background-color: rgb(253, 40, 40) ;
   border: none !important;
   border-radius: 0px;
 }
@@ -59,7 +58,7 @@
   border: 1px solid rgb(253, 40, 40);
   border-radius: 4px;
 }
-.el-input__inner {
+.search_input .el-input__inner {
   border: none !important;
 }
 .suggest_item {
