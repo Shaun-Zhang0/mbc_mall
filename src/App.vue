@@ -47,6 +47,7 @@ export default {
 </script>
 
 <style>
+
 html,
 body {
   margin: 0;
@@ -84,4 +85,5 @@ body {
   height: 60px;
   line-height: 60px;
 }
+
 </style>
