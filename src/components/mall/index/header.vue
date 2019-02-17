@@ -195,7 +195,7 @@
                     <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
                     <el-col :xs="23" :sm="23" :md="23" :lg="3" style="margin-bottom:30px;margin-top: 30px;height: 100%;">
                         <el-row style="font-size: 20px;text-align:left;color: #999">
-                            帮助中心
+                            帮助中心 Help
                         </el-row>
                         <el-row style="padding-top: 20px; font-size: 14px;">
                             <el-col :xs="6" :sm="4" :md="5" :lg="8">
