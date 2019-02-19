@@ -5,8 +5,8 @@
  * @Last Modified time: 2019-02-16 22:01:20
  */
 <template>
-  <div>
-   
+  <div >
+
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide" v-for="slide in slides">
@@ -17,7 +17,7 @@
       <!-- Add Pagination -->
       <div class="swiper-pagination"></div>
     </div>
-     <index-menu></index-menu>
+    <index-menu></index-menu>
   </div>
 </template>
 <style scoped>
@@ -27,12 +27,12 @@
   width: 100%;
   margin-top: 50px;
   position: absolute;
-  z-index:1
+  z-index: 1;
 }
 .swiper_img {
   cursor: pointer;
   width: 100%;
-  height: 500PX;;
+  height: 500px;
 }
 .swiper-slide {
   background: gold;
