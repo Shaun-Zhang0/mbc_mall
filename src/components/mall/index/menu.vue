@@ -48,7 +48,7 @@
 .show {
   z-index: 55555;
   position: absolute;
-  padding-top: 18px;
+  padding-top: 3px;
   width: 100%;
   pointer-events: none;
 }
