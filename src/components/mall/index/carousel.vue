@@ -25,19 +25,19 @@
 .swiper-container {
   border-top: 3px solid rgb(253, 40, 40);
   width: 100%;
-  margin-top: 50px;
+  margin-top: 35px;
   position: absolute;
   z-index: 1;
 }
 .swiper_img {
   cursor: pointer;
   width: 100%;
-  height: 500px;
+  height: 550px;
 }
 .swiper-slide {
   background: gold;
   min-height: 200px;
-  max-height: 500px;
+  max-height: 550px;
   /* Center slide text vertically */
   display: -webkit-box;
   display: -ms-flexbox;
