@@ -58,7 +58,7 @@
   height: auto;
   padding-top: 5px;
   padding-bottom: 5px;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 .line_title_more {
   cursor: pointer;
