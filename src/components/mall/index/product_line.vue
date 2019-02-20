@@ -31,7 +31,7 @@
               </el-col>
 
               <el-col class="show">
-                <el-row style="top:50%;">
+                <el-row style="top:80%;">
                   <el-col :span="2" :offset="6">
                     <el-button class="buttonline iconfont icon-gouwuche" type="primary" title="添加购物车" circle></el-button>
                   </el-col>
@@ -58,7 +58,7 @@
   height: auto;
   padding-top: 5px;
   padding-bottom: 5px;
-  margin-top: 100px;
+  /* margin-top: 100px; */
 }
 .line_title_more {
   cursor: pointer;
@@ -162,6 +162,66 @@ export default {
               price: "1500",
               brand: "华为荣耀",
               img: require("../../../../public/img/product8.jpg")
+            }
+          ]
+        },
+        {
+          title: "居家生活 HOME",
+          list: [
+            {
+              product_name:
+                "荣事达磨粉机家用小型打粉机五谷杂粮研磨机电动干磨机药材粉碎机 ",
+              price: "159",
+              brand: "荣事达厂商",
+              img: require("../../../../public/img/product2-1.jpg")
+            },
+            {
+              product_name: "苏泊尔电热水壶 SW-17D618 双层不锈钢防烫保温1.7L升",
+              price: "109",
+              brand: "苏泊尔厂商",
+              img: require("../../../../public/img/product2-2.jpg")
+            },
+            {
+              product_name:
+                "小熊煎蛋器JDQ-C3011 电煎锅迷你自动断电煮蒸蛋羹宿舍煎蛋机",
+              price: "78",
+              brand: "小熊厂商",
+              img: require("../../../../public/img/product2-3.jpg")
+            },
+
+            {
+              product_name:
+                "净水器家用直饮厨房自来水过滤器前置五级除垢超滤净水机",
+              price: "200",
+              brand: "志高厂商",
+              img: require("../../../../public/img/product2-4.jpg")
+            },
+            {
+              product_name:
+                "美的饮水机设备MT-3 865CB MC-3 865CB净水桶过滤芯耗材配件滤网",
+              price: "61",
+              brand: "美的厂商",
+              img: require("../../../../public/img/product2-5.jpg")
+            },
+            {
+              product_name:
+                "奥克斯绞肉机家用电动小型绞馅机切菜打肉机蒜泥蒜蓉碎菜碎肉机",
+              price: "119",
+              brand: "奥克斯厂商",
+              img: require("../../../../public/img/product2-6.jpg")
+            },
+            {
+              product_name:
+                "海尔商用净水机HZR400-2W智能反渗透饮水机加热型商务净饮机办公",
+              price: "17200",
+              brand: "海尔厂商",
+              img: require("../../../../public/img/product2-7.jpg")
+            },
+            {
+              product_name: "美的净水器家用直饮自来水过滤器反渗透RO净水机",
+              price: "1898",
+              brand: "华为荣耀",
+              img: require("../../../../public/img/product2-8.jpg")
             }
           ]
         }
