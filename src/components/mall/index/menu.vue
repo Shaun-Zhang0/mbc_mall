@@ -2,13 +2,13 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-15 21:42:49 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-16 22:45:03
+ * @Last Modified time: 2019-02-20 23:04:48
  */
 <template>
   <div style="width:100%">
     <el-row class="show" @mouseleave.native="expand = false">
       <el-col :xs="0" :sm="1" :md="1" :lg="3" :xl="4">&nbsp;</el-col>
-      <el-col class="menu_main" :xs="9" :sm="5" :md="8" :lg="3" :xl="3" >
+      <el-col class="menu_main" :xs="9" :sm="5" :md="8" :lg="3" :xl="3">
         <el-row class="menu_title">
           <el-col :span="24">
             <el-col :xs="0" :sm="1" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
@@ -51,6 +51,7 @@
   padding-top: 3px;
   width: 100%;
   pointer-events: none;
+  padding-bottom: 100px;
 }
 .menu_title {
   background-color: #ff0036;
@@ -80,10 +81,10 @@
   pointer-events: auto;
 }
 .menu_show {
-    background-color: white;
+  background-color: white;
   /* opacity: 1; */
   height: 100%;
-/* z-index: 1111; */
+  /* z-index: 1111; */
   pointer-events: auto;
   margin-top: 35px;
 }
