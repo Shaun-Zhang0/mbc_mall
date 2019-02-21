@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-15 21:42:49 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-20 23:04:48
+ * @Last Modified time: 2019-02-21 22:40:30
  */
 <template>
   <div style="width:100%">
@@ -26,14 +26,14 @@
         </el-row>
       </el-col>
 
-      <el-col v-show="expand" class="menu_show" :xs="17" :sm="18" :md="18" :lg="12" :xl="12">
+      <el-col v-show="expand" class="menu_show" :xs="24" :sm="18" :md="18" :lg="12" :xl="12">
         <div v-for="kind in menu_show">
           <el-row class="subkind">
             <el-col :xs="0" :sm="0" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
             <el-col :xs="24" :sm="4" :lg="4" :span="3" style="margin-top:5px;">{{kind.total}} ></el-col>
             <el-col :xs="24" :sm="18" :md="20" :lg="19">
               <el-row style="font-size:13px;">
-                <el-col v-for="name in kind.subkind" style="padding-top:5px;padding-bottom:5px;" :xs="7" :lg="4" :span="4">
+                <el-col v-for="name in kind.subkind" style="padding-top:5px;padding-bottom:5px;" :xs="6" :lg="4"  :span="4">
                   <span class="subkind_item">{{name.name}}</span>
                 </el-col>
               </el-row>
@@ -84,6 +84,7 @@
   background-color: white;
   /* opacity: 1; */
   height: 100%;
+  width: auto;
   /* z-index: 1111; */
   pointer-events: auto;
   margin-top: 35px;
