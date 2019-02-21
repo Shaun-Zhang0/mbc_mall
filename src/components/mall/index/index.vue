@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 16:30:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-20 22:30:21
+ * @Last Modified time: 2019-02-21 22:52:33
  */
 <template>
   <div>
@@ -17,9 +17,11 @@
     <div>
       <indexFooter></indexFooter>
     </div>
+  <indexTotop></indexTotop>
   </div>
 </template>
 <style scoped>
+
 </style>
 <script>
 import indexHeader from "./../index/header";
@@ -28,6 +30,7 @@ import indexSearch from "./../index/search";
 import indexMenu from "./../index/menu";
 import indexProductline from "./../index/product_line";
 import indexFooter from "./../index/footer.vue";
+import indexTotop from "./../index/to_top.vue";
 export default {
   components: {
     indexHeader: indexHeader,
@@ -35,7 +38,8 @@ export default {
     indexSearch: indexSearch,
     indexMenu: indexMenu,
     indexProductline: indexProductline,
-    indexFooter: indexFooter
+    indexFooter: indexFooter,
+    indexTotop:indexTotop
   }
 };
 </script>
