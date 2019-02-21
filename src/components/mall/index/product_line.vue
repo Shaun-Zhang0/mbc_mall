@@ -2,7 +2,7 @@
   <div>
     <el-row style="z-index:1;" v-for="products in product_list">
       <el-row class="product_title">
-        <el-col :xs="24" :sm="8" :md="6" :lg="5" :offset="1" style="font-size:20px;">{{products.title}}</el-col>
+        <el-col :xs="15" :sm="8" :md="6" :lg="5" :offset="1" style="font-size:20px;">{{products.title}}</el-col>
         <el-col :xs="1" :sm="0" :md="0" :lg="3" :xl="4">&nbsp;</el-col>
         <el-col :xs="6" :sm="3" :md="6" :lg="3">
           <span class="line_title_more" style="font-size:12px;">更多>></span>
