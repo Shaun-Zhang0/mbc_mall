@@ -10,7 +10,6 @@
       </el-row>
 
       <el-row style="height:100%;margin-top:15px;margin-bottom:15px">
-
         <object v-for="lists in products.list">
           <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6" style="height:100%;">
 
@@ -39,7 +38,7 @@
                     <el-button class="buttonline iconfont icon-xihuan" type="danger" title="标记为喜欢" circle></el-button>
                   </el-col>
                   <el-col :span="2" :offset="3">
-                    <el-button class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
+                    <el-button  class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
                   </el-col>
                 </el-row>
               </el-col>
@@ -130,7 +129,8 @@ export default {
               product_name: "Apple/苹果 iPhone X",
               price: "6300",
               brand: "苹果厂商",
-              img: require("../../../../public/img/product3.jpg")
+              img: require("../../../../public/img/product3.jpg"),
+              url: ""
             },
 
             {
