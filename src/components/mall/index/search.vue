@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 17:01:58 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-16 17:45:32
+ * @Last Modified time: 2019-02-22 23:06:12
  */
 <template>
     <div>
@@ -15,7 +15,7 @@
             <el-col :xs="20" :sm="10" :md="10" :lg="8" :xl="9" class="form">
                 <el-row>
                     <el-input class="input search_input" placeholder="搜索 商品/厂商">
-                        <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white" slot="append">搜索</el-button>
+                        <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white;" slot="append">搜索</el-button>
                     </el-input>
                 </el-row>
                 <el-row style="margin-top:-20px;">
@@ -32,9 +32,9 @@
   max-height: 150px;
   line-height: 100px;
   width: 100%;
-  margin-bottom: 60px;
+  margin-bottom: 5px;
 }
-.form {
+.form { 
   height: 100%;
   line-height: 90px;
 }
@@ -50,7 +50,7 @@
   font-size: 12px;
 }
 .el-input-group__append {
-  background-color: rgb(253, 40, 40) ;
+  background-color: rgb(253, 40, 40)!important ;
   border: none !important;
   border-radius: 0px;
 }
