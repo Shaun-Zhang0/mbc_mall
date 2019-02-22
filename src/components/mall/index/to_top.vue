@@ -1,6 +1,6 @@
 <template>
   <el-tooltip  effect="dark" content="返回顶部" placement="bottom-start">
-    <el-button class="top" icon="el-icon-arrow-up" :style="{display : display}" @click="action_top" circle></el-button>
+    <el-button class="top" icon="el-icon-arrow-up" :style="{visibility : display}" @click="action_top" circle></el-button>
   </el-tooltip>
 </template>
 <style>
@@ -9,6 +9,7 @@
   bottom: 20%;
   right: 10px;
   z-index: 20000;
+  visibility: hidden;
 }
 
 </style>
@@ -30,10 +31,10 @@ export default {
     // 获取滚动条高度
     handleScroll() {
       this.top_height = window.scrollY;
-      if (this.top_height < 400) {
-        this.display = "none";
+      if (this.top_height <= 400) {
+        this.display = "hidden";
       } else {
-        this.display = "block";
+        this.display = "visible";
       }
     },
     action_top() {
