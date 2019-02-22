@@ -17,6 +17,8 @@ import carousel from "./components/mall/index/carousel.vue";
 import search from "./components/mall/index/search.vue";
 import footer from "./components/mall/index/footer.vue";
 import product_line from "./components/mall/index/product_line.vue";
+/**商品页面 */
+import product from "./components/mall/product/product.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -85,9 +87,9 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//轮播图
-      path: "/mall/product_line",
-      name: 'product_line',
-      component: product_line,
+      path: "/mall/product",
+      name: 'product',
+      component: product,
       meta: { keepAlive: false }
     }
   ]
