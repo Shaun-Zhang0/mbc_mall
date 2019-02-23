@@ -38,7 +38,9 @@
                     <el-button class="buttonline iconfont icon-xihuan" type="danger" title="标记为喜欢" circle></el-button>
                   </el-col>
                   <el-col :span="2" :offset="3">
-                    <el-button  class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
+                    <router-link to="/mall/product" tag="span">
+                      <el-button class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
+                    </router-link>
                   </el-col>
                 </el-row>
               </el-col>
