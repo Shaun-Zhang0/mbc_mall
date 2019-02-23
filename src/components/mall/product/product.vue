@@ -21,7 +21,7 @@
                 </el-row>
                 <el-row class="product_price">
                     <el-col :md="24" :lg="20">
-                        <span>￥200</span>
+                        <span>￥6300</span>
                     </el-col>
                 </el-row>
 
