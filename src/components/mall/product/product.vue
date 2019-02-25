@@ -100,6 +100,9 @@
         <div class="footer">
             <IndexFooter></IndexFooter>
         </div>
+        <div>
+            <MallLogin></MallLogin>
+        </div>
     </div>
 </template>
 <style scoped>
@@ -187,11 +190,13 @@
 import IndexHeader from "./../index/header.vue";
 import IndexSearch from "./../index/search";
 import IndexFooter from "./../index/footer";
+import MallLogin from "./../login/login";
 export default {
   components: {
     IndexHeader: IndexHeader,
     IndexSearch: IndexSearch,
-    IndexFooter: IndexFooter
+    IndexFooter: IndexFooter,
+    MallLogin: MallLogin
   },
   created() {
     window.scrollTo(0, 0);
@@ -212,8 +217,9 @@ export default {
         product_name: "IPHONE X 64G 全网通4G智能手机",
         product_brand: "APPLE/苹果",
         product_sell: 11,
-        product_description:"iPhone 上最大的超视网膜显示屏，性能出类拔萃的 A12 仿生，安全性更进一步的面容 ID，以及支持景深控制的突破性双镜头系统。",
-        buy_limit:5
+        product_description:
+          "iPhone 上最大的超视网膜显示屏，性能出类拔萃的 A12 仿生，安全性更进一步的面容 ID，以及支持景深控制的突破性双镜头系统。",
+        buy_limit: 5
       }
     };
   },
