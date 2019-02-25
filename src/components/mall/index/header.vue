@@ -2,14 +2,16 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-16 22:02:29
+ * @Last Modified time: 2019-02-23 15:00:59
  */
 <template>
     <div>
         <el-row class="header">
             <el-col :xs="0" :sm="2" :md="1" :lg="2" :xl="2">&nbsp;</el-col>
             <el-col :xs="8" :sm="4" :md="4" :lg="2" :xl="2">
-                <span class="header_items">欢迎光临跨境商城</span>
+                <router-link to="/mall/index" tag="span">
+                    <span class="header_items">欢迎光临跨境商城</span>
+                </router-link>
             </el-col>
             <el-col :xs="0" :sm="11" :md="12" :lg="15" :xl="13">&nbsp;</el-col>
             <el-col :xs="4" :sm="2" :md="2" :lg="1" :xl="2">
@@ -28,7 +30,7 @@
             </el-col>
         </el-row>
         <!-- menu -->
-        <el-row class="menu_expand"  v-show="expand">
+        <el-row class="menu_expand" v-show="expand">
             <el-col>
 
                 <el-col @mouseleave.native="expand = false" class="header_menu" :offset="1" :span="22">
@@ -254,10 +256,10 @@
 .header_menu_help:hover {
   color: #999;
 }
-.menu_expand{
-    z-index: 99999;
-    position: absolute;
-    width: 100%;
+.menu_expand {
+  z-index: 99999;
+  position: absolute;
+  width: 100%;
 }
 </style>
 <script>
