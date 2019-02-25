@@ -87,10 +87,11 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//轮播图
-      path: "/mall/product",
+      path: "/mall/product/:id",
       name: 'product',
       component: product,
       meta: { keepAlive: false }
     }
   ]
 });
+    
