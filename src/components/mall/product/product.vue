@@ -16,7 +16,7 @@
                     <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="20">
                         <el-col :xs="2" :sm="8" :md="8" :lg="0" :xl="0">&nbsp;</el-col>
-                        <span> IPHONE X 64G 全网通4G智能手机</span>
+                        <span> {{product.product_name}}</span>
                     </el-col>
                 </el-row>
                 <el-row class="product_price">
@@ -29,7 +29,7 @@
                     <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="20">
                         所属厂商
-                        <span class="">APPLE/苹果</span>
+                        <span>{{product.product_brand}}</span>
                     </el-col>
                 </el-row>
 
@@ -37,7 +37,7 @@
                     <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="18">
                         累计售出
-                        <span>11</span>
+                        <span>{{product.product_sell}}</span>
                     </el-col>
                 </el-row>
 
@@ -49,7 +49,7 @@
                     <el-row class="color_button">
                         <el-col :xs="0" :sm="7" :md="7" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :xs="24" :sm="12" :md="20" :lg="20">
-                            <el-col v-for="color in product_color" :md="6" :span="6">
+                            <el-col v-for="color in product.product_color" :md="6" :span="6">
                                 <el-radio @change="select_color" v-model="buy_color" :label="color.color" border>{{color.color}}</el-radio>
                             </el-col>
 
@@ -61,14 +61,14 @@
                     <el-row>
                         <el-col :xs="0" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :xs="10 " :md="4" :lg="4">选择数量</el-col>
-                        <el-col :xs="10" :md="8" :lg="9" class="stock" :style="{display : stock}">{{buy_color}}剩余库存:
+                        <!-- <el-col :xs="10" :md="8" :lg="9" class="stock" :style="{display : stock}">{{buy_color}}剩余库存:
                             <span>11</span>
-                        </el-col>
+                        </el-col> -->
                     </el-row>
                     <el-row>
                         <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col class="select_num" :sm="4" :md="4" :lg="20">
-                            <el-input-number v-model="select_num" :min="1" :max="10" label="描述文字"></el-input-number>
+                            <el-input-number v-model="select_num" :min="1" :max="product.buy_limit" label="描述文字"></el-input-number>
                         </el-col>
                     </el-row>
                 </el-row>
@@ -90,7 +90,7 @@
                     <el-row>
                         <el-col :xs="8" :sm="10" :md="5" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :md="14" :lg="18">
-                            iPhone 上最大的超视网膜显示屏，性能出类拔萃的 A12 仿生，安全性更进一步的面容 ID，以及支持景深控制的突破性双镜头系统。
+                            <span>{{product.product_description}}</span>
                         </el-col>
                     </el-row>
                 </el-row>
@@ -193,18 +193,28 @@ export default {
     IndexSearch: IndexSearch,
     IndexFooter: IndexFooter
   },
+  created() {
+    window.scrollTo(0, 0);
+  },
   data() {
     return {
       img_src: require("./../../../../public/img/product3.jpg"),
       select_num: 1,
       buy_color: "",
       stock: "none",
-      product_color: [
-        { color: "红色" },
-        { color: "黑色" },
-        { color: "黄色" },
-        { color: "蓝色" }
-      ]
+      product: {
+        product_color: [
+          { color: "红色" },
+          { color: "黑色" },
+          { color: "黄色" },
+          { color: "蓝色" }
+        ],
+        product_name: "IPHONE X 64G 全网通4G智能手机",
+        product_brand: "APPLE/苹果",
+        product_sell: 11,
+        product_description:"iPhone 上最大的超视网膜显示屏，性能出类拔萃的 A12 仿生，安全性更进一步的面容 ID，以及支持景深控制的突破性双镜头系统。",
+        buy_limit:5
+      }
     };
   },
   methods: {
