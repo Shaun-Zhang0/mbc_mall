@@ -12,6 +12,7 @@ import Login from "./components/brand/login/login.vue";
 import register from "./components/brand/register/register.vue";
 /**进货平台 */
 import mall_index from "./components/mall/index/index.vue";
+import mall_login from "./components/mall/login/login.vue";
 import index_header from "./components/mall/index/header.vue";
 import carousel from "./components/mall/index/carousel.vue";
 import search from "./components/mall/index/search.vue";
@@ -81,9 +82,9 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//header
-      path: "/mall/footer",
-      name: 'footer',
-      component: footer,
+      path: "/mall/mall_login",
+      name: 'mall_login',
+      component: mall_login,
       meta: { keepAlive: false }
     },
     {//轮播图
