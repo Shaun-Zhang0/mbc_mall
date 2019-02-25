@@ -1,7 +1,9 @@
 <template>
   <el-tooltip  effect="dark" content="返回顶部" placement="bottom-start">
     <el-button class="top" icon="el-icon-arrow-up" :style="{visibility : display}" @click="action_top" circle></el-button>
+    
   </el-tooltip>
+  
 </template>
 <style>
 .top {
@@ -10,6 +12,7 @@
   right: 10px;
   z-index: 20000;
   visibility: hidden;
+  
 }
 
 </style>
