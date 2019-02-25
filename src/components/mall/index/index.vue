@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 16:30:00 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-21 22:52:33
+ * @Last Modified time: 2019-02-25 15:23:25
  */
 <template>
   <div>
@@ -17,11 +17,10 @@
     <div>
       <indexFooter></indexFooter>
     </div>
-  <indexTotop></indexTotop>
+    <indexTotop></indexTotop>
   </div>
 </template>
 <style scoped>
-
 </style>
 <script>
 import indexHeader from "./../index/header";
@@ -39,7 +38,10 @@ export default {
     indexMenu: indexMenu,
     indexProductline: indexProductline,
     indexFooter: indexFooter,
-    indexTotop:indexTotop
+    indexTotop: indexTotop
+  },
+  created() {
+    window.scrollTo(0, 0);
   }
 };
 </script>
