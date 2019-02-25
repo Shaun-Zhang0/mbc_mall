@@ -38,7 +38,8 @@
                     <el-button class="buttonline iconfont icon-xihuan" type="danger" title="标记为喜欢" circle></el-button>
                   </el-col>
                   <el-col :span="2" :offset="3">
-                    <router-link to="/mall/product" tag="span">
+                    <router-link :to="'/mall/product/'+lists.id" tag="span">
+                    <!-- <router-link :to="'/mall/product/'+lists.id" tag="span"> -->
                       <el-button class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
                     </router-link>
                   </el-col>
@@ -132,7 +133,7 @@ export default {
               price: "6300",
               brand: "苹果厂商",
               img: require("../../../../public/img/product3.jpg"),
-              url: ""
+              id: "123456"
             },
 
             {
