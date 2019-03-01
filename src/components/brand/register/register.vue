@@ -1,8 +1,8 @@
 /*
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
- * @Last Modified by:   Shaun.Zhang 
- * @Last Modified time: 2019-02-12 17:38:08 
+ * @Last Modified by: Shaun.Zhang
+ * @Last Modified time: 2019-02-28 18:05:14
  */
 
 <template>
@@ -105,7 +105,7 @@
                     <el-row style="color:#999999;padding-top:30px;font-size:12px;">已有厂商账号，请直接登录</el-row>
                     <el-row style="padding-top: 30px;">
                         <el-col :span="20" :offset="2">
-                            <router-link to="/login" tag="span">
+                            <router-link to="/brand/login" tag="span">
                                 <el-button type="success" style="width: 100%;">登录</el-button>
                             </router-link>
                         </el-col>
