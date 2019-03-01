@@ -20,6 +20,8 @@ import footer from "./components/mall/index/footer.vue";
 import product_line from "./components/mall/index/product_line.vue";
 /**商品页面 */
 import product from "./components/mall/product/product.vue";
+/**确认订单 */
+import order from "./components/mall/buy/order.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -82,9 +84,9 @@ export default new Router({
       meta: { keepAlive: false }
     },
     {//header
-      path: "/mall/mall_login",
-      name: 'mall_login',
-      component: mall_login,
+      path: "/mall/order",
+      name: 'order',
+      component: order,
       meta: { keepAlive: false }
     },
     {//轮播图
