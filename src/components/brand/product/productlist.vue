@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-12 18:24:30
+ * @Last Modified time: 2019-02-28 17:58:43
  */
 
 <template>
@@ -61,11 +61,11 @@
             <el-row>
                 <template>
                     <el-table :data="tableData7" style="width: 100%" size="mini">
-                        <el-table-column type="selection" width="55">
+                        <el-table-column type="selection" width="40">
                         </el-table-column>
-                        <el-table-column label="商品id" prop="id"></el-table-column>
+                        <el-table-column label="商品id" prop="id" width="80"></el-table-column>
                         <el-table-column label="商品名称" prop="name"></el-table-column>
-                        <el-table-column prop="imgPath" label="商品图片">
+                        <el-table-column prop="imgPath" label="商品图片" width="100">
                             <template slot-scope="scope">
                                 <img :src="scope.row.imgPath" alt="" title="查看大图" style="width: 50px;height: 50px;cursor: pointer;" @click="show_img(scope.$index, scope.row)">
                             </template>
@@ -73,7 +73,7 @@
                         <el-table-column label="建议售价(元)" prop="suggested_price"></el-table-column>
                         <el-table-column label="商品价格(元)" prop="price"></el-table-column>
                         <el-table-column label="商品状态" prop="status"></el-table-column>
-                        <el-table-column label="剩余库存" prop="quantity"></el-table-column>
+                        <el-table-column label="剩余库存" prop="quantity"  width="80"></el-table-column>
                         <el-table-column width="150" label="发布时间" prop="create_time"></el-table-column>
                         <el-table-column align="right">
                             <template slot-scope="scope">
