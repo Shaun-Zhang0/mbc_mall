@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-12 18:03:32
+ * @Last Modified time: 2019-02-28 18:04:46
  */
 
 <template>
@@ -50,7 +50,7 @@
             <el-row style="text-align:right;font-size:12px;">
 
               <el-col :span="20" :offset="2" style="padding-bottom:50px;">
-                <router-link to="/register" tag="span">
+                <router-link to="/brand/register" tag="span">
                   <span class="click_tips">还没有账号？赶紧申请一个吧 </span>
                 </router-link>
               </el-col>
@@ -187,7 +187,7 @@ export default {
           this.verify_show = false;
           this.check_num = 0;
           setTimeout(() => {
-            this.$router.push({ path: "/" }); /**路由跳转到系统首页 */
+            this.$router.push({ path: "/brand" }); /**路由跳转到系统首页 */
           }, 1200);
         }, 1000);
         return;
