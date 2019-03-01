@@ -83,7 +83,9 @@
                 <el-row class="confirm">
                     <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="20">
-                        <el-button type="info" class="confirm_button">确认购买</el-button>
+                        <router-link to="/mall/order" tag="span">
+                            <el-button type="info" class="confirm_button">确认购买</el-button>
+                        </router-link>
                     </el-col>
                 </el-row>
 
