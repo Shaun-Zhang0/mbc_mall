@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-15 21:42:49 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-21 22:40:30
+ * @Last Modified time: 2019-02-26 16:31:22
  */
 <template>
   <div style="width:100%">
@@ -30,10 +30,10 @@
         <div v-for="kind in menu_show">
           <el-row class="subkind">
             <el-col :xs="0" :sm="0" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
-            <el-col :xs="24" :sm="4" :lg="4" :span="3" style="margin-top:5px;">{{kind.total}} ></el-col>
+            <el-col :xs="24" :sm="4" :lg="4" :span="3" style="margin-top:5px;">{{kind.second_menu}} ></el-col>
             <el-col :xs="24" :sm="18" :md="20" :lg="19">
               <el-row style="font-size:13px;">
-                <el-col v-for="name in kind.subkind" style="padding-top:5px;padding-bottom:5px;" :xs="6" :lg="4"  :span="4">
+                <el-col v-for="name in kind.third_menu" style="padding-top:5px;padding-bottom:5px;" :xs="6" :lg="4"  :span="4">
                   <span class="subkind_item">{{name.name}}</span>
                 </el-col>
               </el-row>
@@ -132,8 +132,8 @@ export default {
       ],
       menu_show: [
         {
-          total: "大型电器",
-          subkind: [
+          second_menu: "大型电器",
+          third_menu : [
             { name: "平板电视" },
             { name: "空调" },
             { name: "家庭影院" },
@@ -152,8 +152,8 @@ export default {
           ]
         },
         {
-          total: "生活电器",
-          subkind: [
+          second_menu: "生活电器",
+          third_menu: [
             { name: "电风扇" },
             { name: "冷风扇" },
             { name: "净化器" },
@@ -173,8 +173,8 @@ export default {
           ]
         },
         {
-          total: "厨房电器",
-          subkind: [
+          second_menu: "厨房电器",
+          third_menu: [
             { name: "料理/榨汁机" },
             { name: "豆浆机" },
             { name: "电饭煲" },
@@ -195,8 +195,8 @@ export default {
           ]
         },
         {
-          total: "个护健康",
-          subkind: [
+          second_menu: "个护健康",
+          third_menu: [
             { name: "剃须刀" },
             { name: "剃毛/脱毛器" },
             { name: "口腔护理" },
@@ -213,8 +213,8 @@ export default {
           ]
         },
         {
-          total: "五金家装",
-          subkind: [
+          second_menu: "五金家装",
+          third_menu: [
             { name: "电动工具" },
             { name: "手动工具" },
             { name: "仪器仪表" },
