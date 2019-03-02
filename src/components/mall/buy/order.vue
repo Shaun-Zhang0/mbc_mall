@@ -2,15 +2,22 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:20 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-28 18:00:06
+ * @Last Modified time: 2019-03-02 17:14:10
  */
 
 <template>
     <div>
         <index-header></index-header>
         <index-search></index-search>
-        <div>
+        <div style="border:2px solid #ccc;border-radius:10px;margin: 1.5%">
             <el-row class="orderall">
+                <el-row style="border-radius:10px;border-bottom: 2px solid #ccc;height:50px;
+                               line-height:50px;background-color:#f3f3f3;
+                                box-shadow:0 1px 7px rgba(0,0,0,.06)">
+                    <el-col style="font-size:2.5vh;color:#626262" :span="12" :offset="2">
+                        订单状态
+                    </el-col>
+                </el-row>
                 <el-row class="title">
                     <el-col :xs="8" :sm="10" :md="6" :lg="6" :xl="0">&nbsp;</el-col>
                     <el-col :xl="24" :md="12" :lg="12">
@@ -23,19 +30,21 @@
                 </el-row>
                 <el-row v-show="active == 0 || active == 1">
                     <el-row style="height:300px;margin-top:10px;">
-                        <el-row style="font-size:2.5vh;height:50px;line-height:50px;margin: 0% 3% 0%;border-bottom:2px solid #ccc;">
-                            <el-col :span="12" :offset="2">
-                                <span>确认订单信息 </span>
+                        <el-row style="border-radius:10px;border-top: 2px solid #ccc;border-bottom: 2px solid #ccc;height:50px;
+                                       line-height:50px;background-color:#f3f3f3;
+                                box-shadow:0 1px 7px rgba(0,0,0,.06)">
+                            <el-col style="font-size:2.5vh;color:#626262" :span="12" :offset="2">
+                                确认订单信息
                             </el-col>
                         </el-row>
                         <el-row>
-                            <el-row class="order_info" style="height:150px;margin:0% 3% 0%;border-bottom: 2px solid #ccc;">
+                            <el-row class="order_info" style="height:150px;margin:0% 3% 0%;">
                                 <el-table :data="order_data" style="width: 100%;">
 
-                                    <el-table-column prop="order_num" label="订单号" width="180">
+                                    <el-table-column prop="order_num" label="订单号" width="130">
                                     </el-table-column>
 
-                                    <el-table-column prop="img_url" label="商品图片" width="180">
+                                    <el-table-column prop="img_url" label="商品图片" width="120">
                                         <template slot-scope="scope">
                                             <img :src="scope.row.img_url" style="width: 50px;height: 50px;">
                                         </template>
@@ -74,9 +83,11 @@
                 </el-row>
                 <el-row v-show="active == 2">
                     <el-row style="height:300px;margin-top:10px;">
-                        <el-row style="font-size:2.5vh;height:50px;line-height:50px;margin: 0% 3% 0%;border-bottom:2px solid #ccc;">
-                            <el-col :span="12" :offset="2">
-                                <span>确认支付 </span>
+                        <el-row style="border-radius:10px;border-top: 2px solid #ccc;border-bottom: 2px solid #ccc;height:50px;
+                                       line-height:50px;background-color:#f3f3f3;
+                                box-shadow:0 1px 7px rgba(0,0,0,.06)">
+                            <el-col style="font-size:2.5vh;color:#626262" :span="12" :offset="2">
+                                支付
                             </el-col>
                         </el-row>
                         <el-row>
@@ -90,23 +101,8 @@
                     </el-row>
 
                 </el-row>
-                <el-row v-show="active == 3">
-                    <el-row style="height:300px;margin-top:10px;">
-                        <el-row style="font-size:2.5vh;height:50px;line-height:50px;margin: 0% 3% 0%;border-bottom:2px solid #ccc;">
-                            <el-col :span="12" :offset="2">
-                                <span>购买成功 </span>
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="24" style="text-align:center;height:300px;line-height:300px;">
-                                <span><el-button>{{totalTime}} 秒后返回主页</el-button></span>
-                            </el-col>
-                            <el-col :span="12"></el-col>
-                        </el-row>
 
-                    </el-row>
-
-                </el-row>
+                <Success v-if="active == 3"></Success>
             </el-row>
             <el-dialog title="订单支付" :visible.sync="dialogpayment" width="350px">
                 <el-row>
@@ -163,11 +159,16 @@
 import IndexHeader from "./../index/header";
 import IndexSearch from "./../index/search";
 import IndexFooter from "./../index/footer";
+import Success from "./../buy/success";
 export default {
   components: {
     IndexHeader: IndexHeader,
     IndexSearch: IndexSearch,
-    IndexFooter: IndexFooter
+    IndexFooter: IndexFooter,
+    Success: Success
+  },
+  created() {
+    window.scrollTo(0, 0);
   },
   computed: {
     order_sumprice() {
@@ -179,8 +180,7 @@ export default {
   },
   data() {
     return {
-      active: 3,
-      totalTime: 5,
+      active: 0,
       paystatus: "正在支付中",
       payment_icon: "el-icon-loading",
       dialogpayment: false,
@@ -214,14 +214,7 @@ export default {
         this.status = "#67c23a";
         this.active = 3;
       }, 3000);
-    },
-    countDown() {
-    let clock = window.setInterval(() => {
-      this.total--
-      this.content = this.total + 's后重新发送'
-    },1000)
-  }
-    
+    }
   }
 };
 </script>
