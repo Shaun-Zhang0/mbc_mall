@@ -19,7 +19,9 @@
                         <el-col :span="2" style="color:#838383">订单总额(元)</el-col>
                         <el-col :span="2" style="color:#838383">订单状态</el-col>
                         <el-col :span="3" style="color:#838383; ">
-                            <span class="checkorder" style="margin-left:10px;cursor:pointer;">查看详情</span>
+                            <router-link to="/mall/myorderlist/order" tag="span">
+                                <span class="checkorder" style="margin-left:10px;cursor:pointer;">查看详情</span>
+                            </router-link>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -51,11 +53,11 @@
                     </el-col>
                 </el-row>
                 <el-row style="background-color:#eee;font-size:12px;border-radius:0px 0px 5px 5px;">
-                    <el-col style="height:20px;line-height:20px;text-align:left;margin-left:10px;color:rgb(131, 131, 131)" :span="24">
-                        <span>订单号：{{orderlist.orderid}}</span>
-                        <span style="margin-left:10px;">创建时间：{{orderlist.createdtime}}</span>
-                        <span style="margin-left:10px;">支付时间：{{orderlist.paymenttime}}</span>
-                        <span style="margin-left:10px;">交易完成时间：{{orderlist.endtime}}</span>
+                    <el-col style="height:20px;line-height:20px;text-align:left;color:rgb(131, 131, 131)" :span="24">
+                        <span class="order_tip">订单号：{{orderlist.orderid}}</span>
+                        <span class="order_tip">创建时间：{{orderlist.createdtime}}</span>
+                        <span class="order_tip">支付时间：{{orderlist.paymenttime}}</span>
+                        <span class="order_tip">交易完成时间：{{orderlist.endtime}}</span>
 
                     </el-col>
                 </el-row>
@@ -63,7 +65,7 @@
             </el-row>
             <el-row style="text-align:center;margin-bottom:20px;">
                 <el-col :span="24">
-                    <el-pagination class="pager" :page-size="20" :pager-count="11" layout="prev, pager, next" :total="1000">
+                    <el-pagination class="pager" :page-size="100" layout="total, prev, pager, next" :total="1000">
                     </el-pagination>
                 </el-col>
             </el-row>
@@ -98,11 +100,17 @@
   max-height: 80px;
   vertical-align: middle;
 }
+.checkorder {
+  color: #f78989;
+}
 .checkorder:hover {
   color: rgba(52, 157, 255, 0.74);
 }
 .pager {
   color: rgb(209, 209, 209) !important;
+}
+.order_tip {
+  margin-left: 10px;
 }
 </style>
 <script>
