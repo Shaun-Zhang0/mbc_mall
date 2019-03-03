@@ -24,6 +24,7 @@ import product from "./components/mall/product/product.vue";
 import order from "./components/mall/buy/order.vue";
 /**订单列表 */
 import orderlist from "./components/mall/order/orderlist.vue";
+import orderinfo from "./components/mall/order/orderinfo.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -95,6 +96,12 @@ export default new Router({
       path: "/mall/order",
       name: 'order',
       component: order,
+      meta: { keepAlive: false }
+    },
+    {//header
+      path: "/mall/myorderlist/orderinfo",
+      name: 'orderinfo',
+      component: orderinfo,
       meta: { keepAlive: false }
     },
     {//轮播图
