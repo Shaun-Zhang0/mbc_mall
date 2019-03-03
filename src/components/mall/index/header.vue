@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-02 19:43:42
+ * @Last Modified time: 2019-03-03 20:57:18
  */
 <template>
     <div>
@@ -16,11 +16,27 @@
             <el-col :xs="0" :sm="11" :md="12" :lg="14" :xl="13">&nbsp;</el-col>
             <el-col :xs="4" :sm="2" :md="3" :lg="2" :xl="2">
                 <span v-show="login_status == false" class="header_items" @click="login">亲爱的游客,请登录</span>
-                <span v-show="login_status == true" class="header_items">您好，{{login_name}}</span>
+                <span v-show="login_status == true" class="header_items">您好，{{login_name}} </span>
+
             </el-col>
+
+            <el-col v-show="login_status == true" :span="1">
+                <el-popover placement="bottom" width="80" v-model="logout_visible">
+                    <p>您是否确定要注销当前账号</p>
+                    <div style="text-align: right; margin: 0">
+                        <el-button type="button" size="mini" @click="logout">确定</el-button>
+                        <el-button type="primary" size="mini" @click="logout_visible = false">取消</el-button>
+                    </div>
+                    <span class="header_items" slot="reference" style="margin-right:20px;cursor: pointer;">退出</span>
+                </el-popover>
+
+            </el-col>
+
             <el-col :xs="4" :sm="2" :md="2" :lg="1" :xl="2">
                 <span class="header_items" v-show="login_status == false">免费注册</span>
-                <span class="header_items" v-show="login_status == true">我的订单</span>
+                <router-link to="/mall/myorderlist" tag="span">
+                    <span class="header_items" v-show="login_status == true">我的订单</span>
+                </router-link>
             </el-col>
             <el-col :xs="8" :sm="3" :md="3" :lg="2" :xl="2">
                 &nbsp;
@@ -236,7 +252,7 @@
   text-align: center;
 }
 .header_items:hover {
-  color: rgb(247, 34, 34);
+  /* color: rgb(247, 34, 34); */
 }
 .header_menu {
   background-color: white;
@@ -274,9 +290,13 @@ export default {
   data() {
     return {
       expand: false,
-      login_status: false,
-      login_name: "超级大帅哥"
+      login_status: true,
+      login_name: "超级大帅哥",
+      logout_visible: false
     };
+  },
+  created () {
+    this.login_status = true;  
   },
   methods: {
     menu_expand() {
@@ -284,6 +304,10 @@ export default {
     },
     login() {
       this.$refs.login_show.dialogForLogin = true;
+    },
+    logout() {
+      this.login_status = false;
+      this.$router.push("/mall/index");
     }
   }
 };
