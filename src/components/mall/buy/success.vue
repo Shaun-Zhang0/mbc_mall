@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-03-01 19:02:25 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-02 18:44:21
+ * @Last Modified time: 2019-03-02 19:04:40
  */
 <template>
     <el-row>
@@ -48,7 +48,7 @@
 export default {
   data() {
     return {
-      totalTime: 5
+      totalTime: 10
     };
   },
   created() {
