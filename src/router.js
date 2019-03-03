@@ -22,6 +22,8 @@ import product_line from "./components/mall/index/product_line.vue";
 import product from "./components/mall/product/product.vue";
 /**确认订单 */
 import order from "./components/mall/buy/order.vue";
+/**订单列表 */
+import orderlist from "./components/mall/order/orderlist.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -81,6 +83,12 @@ export default new Router({
       path: "/mall/index",
       name: 'mall_index',
       component: mall_index,
+      meta: { keepAlive: false }
+    },
+    {//header
+      path: "/mall/myorderlist",
+      name: 'orderlist',
+      component: orderlist,
       meta: { keepAlive: false }
     },
     {//header
