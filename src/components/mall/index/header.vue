@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-23 15:00:59
+ * @Last Modified time: 2019-03-02 19:43:42
  */
 <template>
     <div>
@@ -13,12 +13,14 @@
                     <span class="header_items">欢迎光临跨境商城</span>
                 </router-link>
             </el-col>
-            <el-col :xs="0" :sm="11" :md="12" :lg="15" :xl="13">&nbsp;</el-col>
-            <el-col :xs="4" :sm="2" :md="2" :lg="1" :xl="2">
-                <span class="header_items">请登录</span>
+            <el-col :xs="0" :sm="11" :md="12" :lg="14" :xl="13">&nbsp;</el-col>
+            <el-col :xs="4" :sm="2" :md="3" :lg="2" :xl="2">
+                <span v-show="login_status == false" class="header_items" @click="login">亲爱的游客,请登录</span>
+                <span v-show="login_status == true" class="header_items">您好，{{login_name}}</span>
             </el-col>
             <el-col :xs="4" :sm="2" :md="2" :lg="1" :xl="2">
-                <span class="header_items">免费注册</span>
+                <span class="header_items" v-show="login_status == false">免费注册</span>
+                <span class="header_items" v-show="login_status == true">我的订单</span>
             </el-col>
             <el-col :xs="8" :sm="3" :md="3" :lg="2" :xl="2">
                 &nbsp;
@@ -216,6 +218,7 @@
                 </el-col>
             </el-col>
         </el-row>
+        <MallLogin ref='login_show'></MallLogin>
     </div>
 </template>
 <style scoped>
@@ -263,15 +266,24 @@
 }
 </style>
 <script>
+import MallLogin from "./../login/login";
 export default {
+  components: {
+    MallLogin: MallLogin
+  },
   data() {
     return {
-      expand: false
+      expand: false,
+      login_status: false,
+      login_name: "超级大帅哥"
     };
   },
   methods: {
     menu_expand() {
       this.expand = !this.expand;
+    },
+    login() {
+      this.$refs.login_show.dialogForLogin = true;
     }
   }
 };
