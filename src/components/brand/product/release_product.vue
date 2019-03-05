@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:16 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-12 18:31:19
+ * @Last Modified time: 2019-03-04 22:39:19
  */
 
 <template>
@@ -150,16 +150,16 @@
 .order_border {
   border: 2px solid #ccc;
   padding-left: 10px;
-  padding-right:10px;
+  padding-right: 10px;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 5px;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
 }
-.form_title{
+.form_title {
   font-size: 28px;
-  text-align: center;   
+  text-align: center;
   margin-bottom: 100px;
   margin-top: 20px;
 }
@@ -214,32 +214,30 @@ export default {
               type: "warning"
             });
           } else {
-            // $.ajax({
-            //   type: "post",
-            //   url: "http://localhost:8082/product/save",
-            //   data: {
-            //     productName: this.form.name, //商品名称
-            //     productSku: this.form.quantity, //商品库存
-            //     productPrice: this.form.price, //商品单价
-            //     productRecommendprice: this.form.suggested_price, //商品建议零售价
-            //     productDefails: this.form.details, //商品描述
-            //     warehouseId: this.form.warehouseid, //商品仓库
-            //     productColors: this.form.color, //商品颜色
-            //     scategoryId: this.form.cagegoryid, //商品类别id
-            //     brandId: this.form.brandId, // 厂商ID
-            //     productWeight: this.form.weight, //商品重量
-            //     productSizes: this.form.size, // 商品尺寸
-            //     productStatue: this.form.product_status //商品状态
-            //   },
-            //   dataType: "application/json",
-            //   success: function(response) {
-            //     console.log("成功");
-            //   }
-            // });
-            // this.$message({
-            //     message: '新的商品发布成功，请耐心等待管理员审核~',
-            //     type: 'success'
-            //   });
+            this.$axios({
+              method: "post",
+              url: "http://localhost:9000/api/product/save",
+              data: {
+                productName: this.form.name,
+                productSku: this.form.quantity,
+                productPrice: this.form.price,
+                productRecommendprice: suggested_price,
+                productDefails: this.form.details,
+                warehouseId: this.form.warehouseid,
+                productColors: this.form.color,
+                scategoryId: this.form.cagegoryid,
+                productWeight: this.form.weight,
+                productSizes: this.form.size,
+                productStatue: this.form.productStatue
+              },
+
+              headers: {
+                token: token
+              }
+            }).then(res => {
+              console.log(res.data);
+  
+            });
           }
           this.dialog_send_order = false;
         })
