@@ -1,9 +1,14 @@
 import Vue from "vue";
+import "./plugins/axios";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import "./plugins/element.js";
+
+Object.defineProperty(Vue.prototype, "$http", {
+  value: axios
+});
 
 /**厂商管理平台 */
 import header from "./components/brand/structure/header.vue"; //导入顶部导航栏的组件
