@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-28 18:04:46
+ * @Last Modified time: 2019-03-04 22:23:58
  */
 
 <template>
@@ -184,6 +184,33 @@ export default {
             message: "验证成功,登陆ing",
             type: "success"
           });
+          this.$axios({
+            method: "post",
+            url: "http://localhost:9000/api/adminLogin/login",
+            data: {
+              email: this.login.login_email,
+              password: this.login.login_pwd
+            },
+            transformRequest: [
+              function(data) {
+                let ret = "";
+                for (let it in data) {
+                  ret +=
+                    encodeURIComponent(it) +
+                    "=" +
+                    encodeURIComponent(data[it]) +
+                    "&";
+                }
+                return ret;
+              }
+            ],
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            }
+          }).then(res => {
+            console.log(res.data.data.token);
+            document.cookie="token="+res.data.data.token;  
+          });
           this.verify_show = false;
           this.check_num = 0;
           setTimeout(() => {
@@ -207,6 +234,7 @@ export default {
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.verify_show = true;
+          // console.log(this.login.login_email + " " + this.login.login_pwd);
         } else {
           console.log("error submit!!");
           return false;
