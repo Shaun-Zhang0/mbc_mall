@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-28 18:05:14
+ * @Last Modified time: 2019-03-06 15:56:23
  */
 
 <template>
@@ -193,7 +193,11 @@ export default {
         return callback(new Error("登录邮箱不得为空"));
       }
       setTimeout(() => {
+        //   验证注册邮箱是否已被注册
         if (mailReg.test(value)) {
+            if(value == "brand@qq.com"){
+                callback(new Error("邮箱已被注册"));
+            }
           callback();
         } else {
           callback(new Error("请输入正确的邮箱格式"));
