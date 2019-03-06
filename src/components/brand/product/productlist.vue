@@ -1,8 +1,9 @@
 /*
+import { delay } from 'q';
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-28 17:58:43
+ * @Last Modified time: 2019-03-06 23:04:14
  */
 
 <template>
@@ -21,19 +22,19 @@
                 <el-row>
                     <el-col :span="5" :offset="5">
                         <el-form-item label="商品id">
-                            <el-input v-model.number="product.id" placeholder="请输入商品id"></el-input>
+                            <el-input v-model.number="product.id" placeholder="请输入商品id" @keydown.enter.native="searchProduct"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="商品名称">
-                            <el-input v-model="product.name" placeholder="请输入商品名称"></el-input>
+                            <el-input v-model="product.name" placeholder="请输入商品名称" @keydown.enter.native="searchProduct"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="商品状态">
                             <el-select v-model="product.status" placeholder="请选择商品状态">
-                                <el-option label="正常" value="1"></el-option>
-                                <el-option label="下架" value="0"></el-option>
+                                <el-option label="正常" value="0"></el-option>
+                                <el-option label="下架" value="1"></el-option>
 
                             </el-select>
                         </el-form-item>
@@ -54,14 +55,14 @@
                     <el-button type="success">批量上架</el-button>
                     <el-button type="info">批量下架</el-button>
                     <el-button type="danger">批量删除</el-button>
-                    <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="searchProduct">搜索</el-button>
                 </el-col>
             </el-row>
             <!-- 数据区 -->
             <el-row>
                 <template>
-                    <el-table :data="tableData7" style="width: 100%" size="mini">
-                        <el-table-column type="selection" width="40">
+                    <el-table :data="productlist" style="width: 100%" size="mini">
+                        <el-table-column type="selection" width="50">
                         </el-table-column>
                         <el-table-column label="商品id" prop="id" width="80"></el-table-column>
                         <el-table-column label="商品名称" prop="name"></el-table-column>
@@ -70,11 +71,11 @@
                                 <img :src="scope.row.imgPath" alt="" title="查看大图" style="width: 50px;height: 50px;cursor: pointer;" @click="show_img(scope.$index, scope.row)">
                             </template>
                         </el-table-column>
-                        <el-table-column label="建议售价(元)" prop="suggested_price"></el-table-column>
+                        <el-table-column label="建议售价(元)" prop="recommendPrice"></el-table-column>
                         <el-table-column label="商品价格(元)" prop="price"></el-table-column>
                         <el-table-column label="商品状态" prop="status"></el-table-column>
-                        <el-table-column label="剩余库存" prop="quantity"  width="80"></el-table-column>
-                        <el-table-column width="150" label="发布时间" prop="create_time"></el-table-column>
+                        <el-table-column label="剩余库存" prop="quantity" width="80"></el-table-column>
+                        <el-table-column width="150" label="发布时间" prop="createTime"></el-table-column>
                         <el-table-column align="right">
                             <template slot-scope="scope">
 
@@ -88,8 +89,11 @@
                     </el-table>
                 </template>
             </el-row>
-            <el-row class="pagination">
-                <el-pagination style="top:50%;text-align: center;" layout="prev, pager, next" :total="1000"></el-pagination>
+            <el-row style="text-align:center;margin-bottom:20px;">
+
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 15]" :page-size="50" layout="total, sizes, prev, pager, next" :total="400">
+                </el-pagination>
+
             </el-row>
         </div>
         <!-- 编辑商品 -->
@@ -280,7 +284,7 @@
 .order_border {
   border: 2px solid #ccc;
   padding-left: 10px;
-  padding-right:10px;
+  padding-right: 10px;
   margin-left: 10px;
   margin-right: 10px;
   margin-top: 5px;
@@ -291,8 +295,35 @@
 
 <script>
 export default {
+  mounted() {
+    this.$axios({
+      method: "post",
+      url: "http://localhost:9000/api/product/product/findByCondition",
+      data: {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      }
+    }).then(res => {
+      //   console.log(res.data.data);
+      this.productlist = res.data.data;
+      for (var i in this.productlist) {
+        var time = this.productlist[i].createTime;
+
+        var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+          .toISOString()
+          .replace(/T/g, " ")
+          .replace(/\.[\d]{3}Z/, "");
+
+        this.productlist[i].createTime = times;
+      }
+      console.log(this.productlist);
+    });
+  },
   data() {
     return {
+      currentPage: 1,
+      pageNum: 1,
+      pageSize: 5,
       dialog_showimg: false, //是否显示展示图片的对话框
       dialog_showproduct: false, //是否显示商品详情的对话框
       dialog_editproduct: false, //是否显示编辑商品的对话框
@@ -305,7 +336,9 @@ export default {
         name: "", //要查询的商品名称
         id: "", //要查询商品的id
         status: "", //要查询商品的状态
-        create_time: "" //要查询商品的发布时间
+        create_time: "",
+        startTime: "", //要查询商品的发布时间 开始时间点
+        endTime: "" //要查询商品的发布时间  结束时间点
       },
       /**展示商品详情的信息 */
       product_show: {
@@ -328,7 +361,7 @@ export default {
         warehousename: null //仓库名称
       },
       /**商品列表信息 */
-      tableData7: [
+      productlist: [
         {
           id: "1",
           name: "iphoneX",
@@ -336,8 +369,8 @@ export default {
           suggested_price: 10800,
           status: "已上架",
           quantity: "100",
-          create_time: "2019-03-10 12:30:55",
-          imgPath:  require("../../../../public/img/1.jpg")
+          createTime: "2019-03-10 12:30:55",
+          imgPath: require("../../../../public/img/1.jpg")
         },
         {
           id: "2",
@@ -346,8 +379,38 @@ export default {
           suggested_price: 11800,
           status: "已下架",
           quantity: "100",
-          create_time: "2019-03-10 12:30:55",
-          imgPath:  require("../../../../public/img/2.jpg")
+          createtime: "2019-03-10 12:30:55",
+          imgPath: require("../../../../public/img/2.jpg")
+        },
+        {
+          id: "2",
+          name: "iphoneX RS",
+          price: 10800,
+          suggested_price: 11800,
+          status: "已下架",
+          quantity: "100",
+          createtime: "2019-03-10 12:30:55",
+          imgPath: require("../../../../public/img/2.jpg")
+        },
+        {
+          id: "2",
+          name: "iphoneX RS",
+          price: 10800,
+          suggested_price: 11800,
+          status: "已下架",
+          quantity: "100",
+          createtime: "2019-03-10 12:30:55",
+          imgPath: require("../../../../public/img/2.jpg")
+        },
+        {
+          id: "2",
+          name: "iphoneX RS",
+          price: 10800,
+          suggested_price: 11800,
+          status: "已下架",
+          quantity: "100",
+          createtime: "2019-03-10 12:30:55",
+          imgPath: require("../../../../public/img/2.jpg")
         }
       ]
     };
@@ -476,6 +539,83 @@ export default {
             message: "已取消删除"
           });
         });
+    },
+    //每页展示的商品条数
+    handleSizeChange(value) {
+      console.log(value);
+      this.$axios({
+        method: "post",
+        url: "http://localhost:9000/api/product/product/findByCondition",
+        data: {
+          pageNum: this.pageNum,
+          pageSize: value
+        }
+      }).then(res => {
+        //   console.log(res.data.data);
+        this.productlist = res.data.data;
+        console.log(this.productlist);
+      });
+    },
+    //    跳转第几页的商品列表
+    handleCurrentChange(value) {
+      this.$axios({
+        method: "post",
+        url: "http://localhost:9000/api/product/product/findByCondition",
+        data: {
+          pageNum: value,
+          pageSize: this.pageSize
+        }
+      }).then(res => {
+        //   console.log(res.data.data);
+        this.productlist = res.data.data;
+        console.log(this.productlist);
+      });
+    },
+    //搜索商品
+    searchProduct() {
+      //   console.log(this.product.create_time);
+      this.product.startTime = this.product.create_time[0];
+      this.product.endTime = this.product.create_time[1];
+      //   console.log(this.product.startTime+ " " + this.product.endTime);
+      if (this.product.id == "") {
+        delete this.product.id;
+      } else if (this.product.name == "") {
+        delete this.product.name;
+      } else if (this.product.status == "") {
+        delete this.product.status;
+      } else if (this.product.create_time == "") {
+        delete this.product.startTime;
+        delete this.product.endTime;
+      }
+      this.$axios({
+        method: "post",
+        url: "http://localhost:9000/api/product/product/findByCondition",
+        data: {
+          id: this.product.id,
+          productName: this.product.name,
+          productStatus: this.product.status,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
+          pageNum: 1,
+          pageSize: 3
+        }
+      }).then(res => {
+        //   console.log(res.data.data);
+        this.productlist = res.data.data;
+        for (var i in this.productlist) {
+          var time = this.productlist[i].createTime;
+
+          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "");
+
+          this.productlist[i].createTime = times;
+        }
+        console.log(this.productlist);
+      }).catch(res=>{
+          
+      });
     }
   }
 };
