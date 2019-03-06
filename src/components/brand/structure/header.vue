@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-04 22:29:18
+ * @Last Modified time: 2019-03-06 15:05:30
  */
 
 <template>
@@ -35,8 +35,10 @@
                 </div>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>切换用户</el-dropdown-item>
-                <el-dropdown-item divided >注销</el-dropdown-item>
+                <!-- <el-dropdown-item>切换用户</el-dropdown-item> -->
+                <span @click="quit">
+                  <el-dropdown-item>注销账号</el-dropdown-item>
+                </span>
               </el-dropdown-menu>
             </el-dropdown>
           </span>
@@ -77,20 +79,22 @@ input::-webkit-input-placeholder {
 export default {
   data() {
     return {
-      name: "厂商名称",
+      name: "",
       imgurl: require("../../../../public/img/2.jpg")
     };
   },
   mounted() {
-    var strcookie = document.cookie; //获取cookie字符串
-    var arrcookie = strcookie.split("; "); //分割 //遍历匹配
-    for (var i = 0; i < arrcookie.length; i++) {
-      var arr = arrcookie[i].split("=");
-      if (arr[0] == "token") {
-        var token = arr[1];
-        console.log(token);
-      }
+    {
+      //判断是否为登录状态，否则跳转到登陆界面
+      // let login_token = document.cookie.indexOf("token=");
+      // if ((login_token = -1)) {
+      //   this.$router.push("/brand/login");
+      // }
     }
+
+    var token = this.Cookie.getCookie("token");
+    // console.log(token);
+
     this.$axios({
       method: "post",
       url: "http://localhost:9000/api/adminLogin/getAdminTo",
@@ -134,17 +138,24 @@ export default {
         }
       }
     },
-    // quit() {
-    //   this.$alert("这是一段内容", "标题名称", {
-    //     confirmButtonText: "确定",
-    //     callback: action => {
-    //       this.$message({
-    //         type: "info",
-    //         message: `action: ${action}`
-    //       });
-    //     }
-    //   });
-    // }
+    quit() {
+      this.$confirm("是否确认直销该账号?", "注销", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        this.Cookie.delCookie('token');
+
+        if (this.Cookie.getCookie("token") == null) {
+          this.$router.push("/brand/login");
+          this.$message({
+            type: "success",
+            message: "注销成功!"
+          });
+        }
+      });
+      // this.Cookie.delCookie('token');
+    }
   }
 };
 </script>
