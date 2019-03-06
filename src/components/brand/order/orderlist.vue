@@ -321,7 +321,7 @@ export default {
         rece_phone: "15915945621", //编辑后的收件人的联系方式
         rece_address: "广东省广州市虐塘路 09号 谎小区 70号楼 7单元 616室", //编辑后的收货地址
         order_details: "麻烦尽快发货，因为最近比较忙", //编辑后的订单备注
-        product_num: 1,
+        product_num: 1, //修改后的商品数量
         order_store: "我的销售商",
         sum_product: null
       },
