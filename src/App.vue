@@ -15,6 +15,7 @@
 
 </template>
 <script>
+
 /**厂商管理平台 */
 import Header from "./components/brand/structure/header";
 import Aside from "./components/brand/structure/aside";
