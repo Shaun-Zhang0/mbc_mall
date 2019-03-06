@@ -17,15 +17,33 @@
 
         <div class="border">
             <el-row class="info_title">用户个人信息</el-row>
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form :rules="rules" ref="form" :model="form" label-width="80px">
                 <el-row>
                     <el-col :span="6" :offset="5">
                         <el-form-item label="厂商id">
                             {{form.id}}
                         </el-form-item>
                     </el-col>
+
                     <el-col :span="6">
-                        <el-form-item label="厂商名称">
+                        <el-form-item label="厂商状态">
+                            <span>{{form.status}}</span>
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+                <el-row>
+                    <el-col :span="12" :offset="5">
+                        <el-form-item label="绑定邮箱">
+                            <!-- <el-input class="input-with-select" v-model="form.email" placeholder="请输入绑定邮箱，用于登录的凭证" @keydown.enter.native="submitForm('register')">
+                            </el-input> -->
+                            {{form.email}}
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12" :offset="5">
+                        <el-form-item label="厂商名称" prop="name">
                             <el-input v-model="form.name"></el-input>
                         </el-form-item>
                     </el-col>
@@ -33,58 +51,36 @@
 
                 <el-row>
                     <el-col :span="6" :offset="5">
-                        <el-form-item label="法人">
+                        <el-form-item label="法人" prop="legal_person">
                             <el-input v-model="form.legal_person"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
-                        <el-form-item label="联系方式">
+                        <el-form-item label="联系方式" prop="lperson_phone">
                             <el-input v-model="form.lperson_phone"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
-                    <el-col :span="10" :offset="5">
-                        <el-form-item label="电子邮箱">
-                            <el-input type="emali" v-model="form.emali" @focus="show_emali = true"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="6" v-show="show_emali">
-                        <span style="vertical-align:middle;line-height:40px;font-size:14px;color:#6FD23F">
-                            <span v-if="emali_status" style="color:#6FD23F">
-                                此邮箱可以绑定
-                            </span>
-                            <span style="color:#F56C6C;" v-else>
-                                此邮箱已被绑定
-                            </span>
-                        </span>
-                    </el-col>
-                </el-row>
+
                 <el-row>
                     <el-col :span="12" :offset="5">
-                        <el-form-item label="主营范围">
+                        <el-form-item label="主营范围" prop="business_range">
                             <el-input v-model="form.business_range"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="12" :offset="5">
-                        <el-form-item label="厂商地址">
+                        <el-form-item label="厂商地址" prop="address">
                             <el-input v-model="form.address"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
-                    <el-col :span="6" :offset="5">
-                        <el-form-item label="厂商状态">
-                            <span>{{form.status}}</span>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
+
                 <el-row style="margin-top: 50px;">
                     <el-col :span="6" :offset="9">
                         <el-form-item>
-                            <el-button type="primary">修改</el-button>
+                            <el-button type="primary" @click="edit('form')">确认修改</el-button>
                             <el-button>取消</el-button>
                         </el-form-item>
                     </el-col>
@@ -102,10 +98,10 @@
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
   height: 100%;
-}   
-.info_title{
+}
+.info_title {
   font-size: 28px;
-  text-align: center;  
+  text-align: center;
   margin-bottom: 100px;
   margin-top: 20px;
 }
@@ -114,7 +110,7 @@
 export default {
   data() {
     return {
-        show_emali:false,
+      show_emali: false,
       emali_status: false,
       form: {
         id: "123", //厂商id
@@ -123,10 +119,70 @@ export default {
         address: "广东省广州市虐塘路 09号 谎小区 111号楼 7单元 616室", //厂商地址
         legal_person: "郑扬志", //法人或者联系人
         lperson_phone: "1234579845", //联系方式
-        emali: "472184137@qq.com",
+        email: "472184137@qq.com",
         status: "正常"
+      },
+      rules: {
+        name: [
+          { message: "厂商名称不能为空", required: true, trigger: "blur" } //厂商名称的验证规则
+        ],
+        legal_person: [
+          { message: "法人不能为空", required: true, trigger: "blur" } //法人的验证规则
+        ],
+        lperson_phone: [
+          { message: "联系方式不能为空", required: true, trigger: "blur" } //联系方式的验证规则
+        ],
+        business_range: [
+          { message: "经营范围不能为空", required: true, trigger: "blur" } //经营范围的验证规则
+        ],
+        address: [
+          { message: "厂商地址不能为空", required: true, trigger: "blur" } //厂商的验证规则
+        ]
       }
     };
+  },
+  methods: {
+    edit(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.$confirm("此操作将会修改您的个人信息, 是否继续?", "提示", {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          })
+            .then(() => {
+              this.$axios({
+                method: "post",
+                url: "",
+                data: {
+                  id: this.form.id,
+                  name: this.form.name,
+                  phone: this.form.lperson_phone,
+                  address: this.form.address
+                  //   business_range: this.form.business_range //   厂商经营范围
+                }
+              }).then(res => {
+                {
+                  this.$message({
+                    type: "success",
+                    message: "个人信息修改成功!"
+                  });
+                  this.$router.push({ path: "/brand" });
+                } /**路由跳转到系统首页 */
+              });
+            })
+            .catch(() => {
+              this.$message({
+                type: "info",
+                message: "已取消修改"
+              });
+            });
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    }
   }
 };
 </script>
