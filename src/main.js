@@ -5,10 +5,14 @@ import router from "./router";
 import store from "./store";
 import "./registerServiceWorker";
 import "./plugins/element.js";
-
+import Cookie from "./assets/js/cookie"; //设置cookie
+// import { getCookie } from "./assets/js/cookie"; //读取cookie
+// import { delCookie } from "./assets/js/cookie"; //删除cookie
 Object.defineProperty(Vue.prototype, "$http", {
   value: axios
 });
+Vue.prototype.Cookie = Cookie;
+
 
 /**厂商管理平台 */
 import header from "./components/brand/structure/header.vue"; //导入顶部导航栏的组件
