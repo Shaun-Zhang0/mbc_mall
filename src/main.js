@@ -6,8 +6,8 @@ import store from "./store";
 import "./registerServiceWorker";
 import "./plugins/element.js";
 import Cookie from "./assets/js/cookie"; //设置cookie
-// import { getCookie } from "./assets/js/cookie"; //读取cookie
-// import { delCookie } from "./assets/js/cookie"; //删除cookie
+
+
 Object.defineProperty(Vue.prototype, "$http", {
   value: axios
 });
