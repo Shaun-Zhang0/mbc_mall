@@ -35,6 +35,19 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+    switch(error.response.status)
+    {
+    case 401:
+      console.log("登录验证已过期，请重新登录");
+      break;
+    case 404:
+      console.log("服务器找不到相关的资源");
+      break;
+    case 500:
+      console.log("服务器出错，请稍后再试");
+      break;
+    
+    }
     return Promise.reject(error);
   }
 );
