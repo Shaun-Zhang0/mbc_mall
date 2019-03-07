@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-06 15:05:30
+ * @Last Modified time: 2019-03-07 21:49:53
  */
 
 <template>
@@ -102,13 +102,12 @@ export default {
         token: token
       }
     }).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       this.name = res.data.data.name;
     });
   },
   methods: {
     full_screen() {
-      console.log(123);
       var isFullscreen =
         document.fullScreenElement || //W3C
         document.msFullscreenElement || //IE11
@@ -143,17 +142,22 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
-      }).then(() => {
-        this.Cookie.delCookie('token');
+      })
+        // .then(() => {
+        //   this.Cookie.delCookie("token");
 
-        if (this.Cookie.getCookie("token") == null) {
-          this.$router.push("/brand/login");
-          this.$message({
-            type: "success",
-            message: "注销成功!"
-          });
-        }
-      });
+        //   if (this.Cookie.getCookie("token") == null) {
+        //     this.$router.push("/brand/login");
+        //     this.$message({
+        //       type: "success",
+        //       message: "注销成功!"
+        //     });
+        //   }
+        // })
+        .catch(function(ERROR) {
+          console.error(ERROR.Request);
+    
+        });
       // this.Cookie.delCookie('token');
     }
   }
