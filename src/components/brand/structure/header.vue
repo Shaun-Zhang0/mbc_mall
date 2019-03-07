@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-07 21:49:53
+ * @Last Modified time: 2019-03-07 23:15:22
  */
 
 <template>
@@ -101,10 +101,15 @@ export default {
       headers: {
         token: token
       }
-    }).then(res => {
-      // console.log(res.data);
-      this.name = res.data.data.name;
-    });
+    })
+      .then(res => {
+        // console.log(res.data);
+        this.name = res.data.data.name;
+      })
+      .catch(error => {
+        console.info(error.request.status);
+       
+     });
   },
   methods: {
     full_screen() {
@@ -143,21 +148,18 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       })
-        // .then(() => {
-        //   this.Cookie.delCookie("token");
+        .then(() => {
+          this.Cookie.delCookie("token");
 
-        //   if (this.Cookie.getCookie("token") == null) {
-        //     this.$router.push("/brand/login");
-        //     this.$message({
-        //       type: "success",
-        //       message: "注销成功!"
-        //     });
-        //   }
-        // })
-        .catch(function(ERROR) {
-          console.error(ERROR.Request);
-    
-        });
+          if (this.Cookie.getCookie("token") == null) {
+            this.$router.push("/brand/login");
+            this.$message({
+              type: "success",
+              message: "注销成功!"
+            });
+          }
+        })
+        .catch(error => {});
       // this.Cookie.delCookie('token');
     }
   }
