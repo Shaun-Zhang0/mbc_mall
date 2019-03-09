@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:16 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-06 20:55:28
+ * @Last Modified time: 2019-03-10 00:44:44
  */
 
 <template>
@@ -178,17 +178,17 @@ input[type="number"] {
 </style>
 
 <script>
+import { apiReleaseProduct } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     var checkSize = (rule, value, callback) => {
       //   const mailReg = /^[0-9/]+$/;
-    //   const mailReg = /^[0-9]+\/?[0-9]+$/;
+      //   const mailReg = /^[0-9]+\/?[0-9]+$/;
       const mailReg = /^([1-9]\d*\.?\d*\/?)+([1-9]\d*\.?\d*)+$/;
       if (!value) {
         return callback(new Error("商品尺寸不得为空"));
       }
       setTimeout(() => {
-      
         if (mailReg.test(value)) {
           callback();
         } else {
@@ -272,12 +272,8 @@ export default {
             type: "warning"
           })
             .then(() => {
-              var token = this.Cookie.getCookie("token");
-              this.form.arraySize = this.form.size.split("/");
-              this.$axios({
-                method: "post",
-                url: "http://localhost:9000/api/product/product/save",
-                data: {
+              apiReleaseProduct(
+                {
                   productName: this.form.name,
                   productSku: this.form.quantity,
                   productPrice: this.form.price,
@@ -289,11 +285,9 @@ export default {
                   productWeight: this.form.weight,
                   productSizes: this.form.arraySize,
                   productStatue: this.form.productStatue
-                },
-                headers: {
-                  token: token
+                  
                 }
-              }).then(res => {
+              ).then(res => {
                 this.$message({
                   type: "success",
                   message: "新的商品发布成功!"
@@ -301,7 +295,8 @@ export default {
                 this.$refs.form.resetFields(); //清空表单数据
               });
             })
-            .catch(() => {
+            .catch(error => {
+              console.log(error);
               this.$message({
                 type: "info",
                 message: "已取消发布"
@@ -312,6 +307,47 @@ export default {
           return false;
         }
       });
+
+      //           var token = this.Cookie.getCookie("token");
+      //           this.form.arraySize = this.form.size.split("/");
+      //           this.$axios({
+      //             method: "post",
+      //             url: "api/product/product/save",
+      //             data: {
+      //               productName: this.form.name,
+      //               productSku: this.form.quantity,
+      //               productPrice: this.form.price,
+      //               productRecommendprice: this.form.suggested_price,
+      //               productDefails: this.form.details,
+      //               warehouseId: this.form.warehouseid,
+      //               productColors: this.form.color,
+      //               scategoryId: this.form.cagegoryid,
+      //               productWeight: this.form.weight,
+      //               productSizes: this.form.arraySize,
+      //               productStatue: this.form.productStatue
+      //             },
+      //             headers: {
+      //               token: token
+      //             }
+      //           }).then(res => {
+      //             this.$message({
+      //               type: "success",
+      //               message: "新的商品发布成功!"
+      //             });
+      //             this.$refs.form.resetFields(); //清空表单数据
+      //           });
+      //         })
+      //         .catch(() => {
+      //           this.$message({
+      //             type: "info",
+      //             message: "已取消发布"
+      //           });
+      //         });
+      //     } else {
+      //       //   console.log("error submit!!");
+      //       return false;
+      //     }
+      //   });
     },
 
     clear_info() {},
