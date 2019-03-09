@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-08 14:43:59
+ * @Last Modified time: 2019-03-10 00:00:07
  */
 
 <template>
@@ -134,6 +134,7 @@ html {
 }
 </style>
 <script>
+import { apiLogin } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     // 邮箱格式验证
@@ -180,28 +181,9 @@ export default {
         this.disabled = true;
 
         setTimeout(() => {
-          this.$axios({
-            method: "post",
-            url: "http://localhost:9000/api/adminLogin/login",
-            data: {
-              email: this.login.login_email,
-              password: this.login.login_pwd
-            },
-            transformRequest: [
-              function(data) {
-                // Do whatever you want to transform the data
-                let ret = "";
-                for (let it in data) {
-                  ret +=
-                    encodeURIComponent(it) +
-                    "=" +
-                    encodeURIComponent(data[it]) +
-                    "&";
-                }
-                return ret;
-              }
-            ],
-
+          apiLogin({
+            email: this.login.login_email,
+            password: this.login.login_pwd,
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
             }
@@ -224,6 +206,51 @@ export default {
               this.$refs.login.resetFields(); //清空表单数据
             }
           });
+
+          // this.$axios({
+          //   method: "post",
+          //   url: "api/adminLogin/login",
+          //   data: {
+          //     email: this.login.login_email,
+          //     password: this.login.login_pwd
+          //   },
+          //   transformRequest: [
+          //     function(data) {
+          //       // Do whatever you want to transform the data
+          //       let ret = "";
+          //       for (let it in data) {
+          //         ret +=
+          //           encodeURIComponent(it) +
+          //           "=" +
+          //           encodeURIComponent(data[it]) +
+          //           "&";
+          //       }
+          //       return ret;
+          //     }
+          //   ],
+
+          //   headers: {
+          //     "Content-Type": "application/x-www-form-urlencoded"
+          //   }
+          // }).then(res => {
+          //   console.log(res.data);
+          //   if (res.data.code == 200) {
+          //     this.Cookie.setCookie("token", res.data.data.token);
+          //     this.$message({
+          //       message: "验证成功,登陆中",
+          //       type: "success"
+          //     });
+          //     setTimeout(() => {
+          //       this.$router.push({ path: "/brand" }); /**路由跳转到系统首页 */
+          //     }, 1200);
+          //   } else if (res.data.code == 400) {
+          //     this.$message({
+          //       message: "密码或用户名错误，请重新输入",
+          //       type: "warning"
+          //     });
+          //     this.$refs.login.resetFields(); //清空表单数据
+          //   }
+          // });
           this.verify_show = false;
           this.check_num = 0;
         }, 1000);
@@ -250,7 +277,6 @@ export default {
           // return false;
         }
       });
-      
     }
   },
   mounted() {
