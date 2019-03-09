@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-08 14:11:18
+ * @Last Modified time: 2019-03-10 00:05:41
  */
 
 <template>
@@ -76,6 +76,7 @@ input::-webkit-input-placeholder {
 </style>
 
 <script>
+import {apiSearchName} from "./../../../assets/js/axios/api.js"
 export default {
   data() {
     return {
@@ -92,24 +93,29 @@ export default {
     //   }
     // }
 
-    var token = this.Cookie.getCookie("token");
-    // console.log(token);
-
-    this.$axios({
-      method: "post",
-      url: "http://localhost:9000/api/adminLogin/getAdminTo",
-      headers: {
-        token: token
-      }
-    })
-      .then(res => {
-        // console.log(res.data);
+    // var token = this.Cookie.getCookie("token");
+    apiSearchName({})
+    .then(res => {
         this.name = res.data.data.name;
       })
-      .catch(error => {
-        // console.info(error.request.status);
+    ;
+    // console.log(token);
+
+    // this.$axios({
+    //   method: "post",
+    //   url: "api/adminLogin/getAdminTo",
+    //   headers: {
+    //     token: token
+    //   }
+    // })
+    //   .then(res => {
+    //     // console.log(res.data);
+    //     this.name = res.data.data.name;
+    //   })
+    //   .catch(error => {
+    //     // console.info(error.request.status);
        
-     });
+    //  });
   },
   methods: {
     full_screen() {
