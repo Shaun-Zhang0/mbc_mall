@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-07 23:15:22
+ * @Last Modified time: 2019-03-08 14:11:18
  */
 
 <template>
@@ -84,13 +84,13 @@ export default {
     };
   },
   mounted() {
-    {
-      //判断是否为登录状态，否则跳转到登陆界面
-      // let login_token = document.cookie.indexOf("token=");
-      // if ((login_token = -1)) {
-      //   this.$router.push("/brand/login");
-      // }
-    }
+    // {
+    //   // 判断是否为登录状态，否则跳转到登陆界面
+    //   let login_token = document.cookie.indexOf("token=");
+    //   if ((login_token == "")) {
+    //     this.$router.push("/brand/login");
+    //   }
+    // }
 
     var token = this.Cookie.getCookie("token");
     // console.log(token);
@@ -107,7 +107,7 @@ export default {
         this.name = res.data.data.name;
       })
       .catch(error => {
-        console.info(error.request.status);
+        // console.info(error.request.status);
        
      });
   },
