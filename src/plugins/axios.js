@@ -3,19 +3,25 @@
 import Vue from "vue";
 import axios from "axios";
 import router from "../router";
+
 import { message } from "./element";
 import { Message } from "element-ui";
 import Cookie from "../assets/js/cookie"; //设置cookie
 
-
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+// axios.defaults.headers.post["Content-Type"] =
+//   "application/x-www-form-urlencoded";
+if (Cookie.getCookie("token")) {
+  axios.defaults.headers.post["token"] = Cookie.getCookie("token");
+}
+
+axios.defaults.baseURL = "http://localhost:9000";
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  // timeout: 60 * 1000, // Timeout
+  timeout: 6 * 1000 // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
 
@@ -23,9 +29,9 @@ Vue.use(router);
 
 const _axios = axios.create(config);
 
-
 _axios.interceptors.request.use(
   function(config) {
+    
     // Do something before request is sent
     console.log(config.url);
     // if(config.url == "http://localhost:9000/api/adminLogin/login"){
@@ -34,19 +40,18 @@ _axios.interceptors.request.use(
     //   });
     //   axios.interceptors.request.eject(myInterceptor);
     //   // axios.interceptors.request.eject;
-   
+
     // }
 
-
-    
-    // console.log(Cookie.getCookie("token")); 
-    if(!Cookie.getCookie("token") && config.url != "http://localhost:9000/api/adminLogin/login"){
+    // console.log(Cookie.getCookie("token"));
+    if (
+      !Cookie.getCookie("token") &&
+      config.url != "http://localhost:9000/api/adminLogin/login"
+    ) {
       Message.error({
         message: "登录验证已过期，请重新登录"
       });
       router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
-    
-    
     }
     return config;
   },
@@ -113,6 +118,44 @@ Plugin.install = function(Vue, options) {
     }
   });
 };
+
+/**
+ * get方法，对应get请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ */
+export function get(url, params) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(url, {
+        params: params
+      })
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
+
+/**
+ * post方法，对应post请求
+ * @param {String} url [请求的url地址]
+ * @param {Object} params [请求时携带的参数]
+ */
+export function post(url, params) {
+  return new Promise((resolve, reject) => {
+    axios
+      .post(url, params)
+      .then(res => {
+        resolve(res);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+}
 
 Vue.use(Plugin);
 
