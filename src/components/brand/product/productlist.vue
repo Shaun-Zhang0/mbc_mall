@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-07 17:50:02
+ * @Last Modified time: 2019-03-08 23:48:55
  */
 
 <template>
@@ -32,8 +32,8 @@
           <el-col :span="5">
             <el-form-item label="商品状态">
               <el-select v-model="product.status" placeholder="请选择商品状态">
-                <el-option label="正常" value="0"></el-option>
-                <el-option label="下架" value="1"></el-option>
+                <el-option label="正常" value="1"></el-option>
+                <el-option label="下架" value="0"></el-option>
 
               </el-select>
             </el-form-item>
@@ -51,8 +51,8 @@
       <!-- 按钮区 -->
       <el-row style="margin-bottom:20px;">
         <el-col>
-          <el-button type="success">批量上架</el-button>
-          <el-button type="info">批量下架</el-button>
+          <el-button type="success" @click="batchShelf">批量上架</el-button>
+          <el-button type="info" @click="btachOutShelf">批量下架</el-button>
           <el-button type="danger">批量删除</el-button>
           <el-button type="primary" icon="el-icon-search" @click="searchProduct">搜索</el-button>
         </el-col>
@@ -60,7 +60,7 @@
       <!-- 数据区 -->
       <el-row>
         <template>
-          <el-table :data="productlist" style="width: 100%" size="mini">
+          <el-table :data="productlist" ref="productlist" style="width: 100%" size="mini" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50">
             </el-table-column>
             <el-table-column label="商品id" prop="id" width="80"></el-table-column>
@@ -72,16 +72,16 @@
             </el-table-column>
             <el-table-column label="建议售价(元)" prop="recommendPrice"></el-table-column>
             <el-table-column label="商品价格(元)" prop="price"></el-table-column>
-            <el-table-column label="商品状态" prop="status"></el-table-column>
+            <el-table-column label="商品状态" prop="productStatuss"></el-table-column>
             <el-table-column label="剩余库存" prop="quantity" width="80"></el-table-column>
             <el-table-column width="150" label="发布时间" prop="createTime"></el-table-column>
             <el-table-column align="right">
               <template slot-scope="scope">
 
-                <span :class="icon" style="font-size:20px;cursor: pointer " title="上架" @click="handeleShelves(scope.$index, scope.row)"></span>
-                <!-- <span class="iconfont icon-xiangqing" style="font-size:20px;cursor: pointer " title="商品详情" @click="handleshow(scope.$index, scope.row)"></span> -->
+                <span v-if="scope.row.productStatus == '0'" class="iconfont icon-shangjia1" style="font-size:20px;cursor: pointer " title="上架" @click="handeleShelves(scope.$index, scope.row)"></span>
+                <span v-if="scope.row.productStatus == '1'" class="iconfont icon-xiajia1" style="font-size:20px;cursor: pointer " title="下架" @click="handeleOutOfShelves(scope.$index, scope.row)"></span>
                 <span class="iconfont icon-xiangqing" style="font-size:20px;cursor: pointer " title="商品详情" @click="handleEdit(scope.$index,scope.row)"></span>
-                <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除商品" @click="handleDelete(scope.$index,scope.row)"></span>
+                <!-- <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除商品" @click="handleDelete(scope.$index,scope.row)"></span> -->
 
               </template>
             </el-table-column>
@@ -90,7 +90,8 @@
       </el-row>
       <el-row style="text-align:center;margin-bottom:20px;">
 
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage" :page-sizes="[5, 10, 15]" :page-size="50" layout="total, sizes, prev, pager, next" :total="400">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+        </el-pagination>
         </el-pagination>
 
       </el-row>
@@ -200,7 +201,7 @@
     <el-dialog :visible.sync="dialog_showimg" width="80%" style="">
       <img :src="show_imgurl" alt="" style="max-height:100%;max-width:100%">
     </el-dialog>
-
+    <toTop style="bottom:5%;right:0%;"></toTop>
   </div>
 
 </template>
@@ -218,36 +219,40 @@
 </style>
 
 <script>
+import toTop from "./../../mall/index/to_top";
+
 export default {
+  components: {
+    toTop: toTop
+  },
   mounted() {
     this.product_init();
     this.token = this.Cookie.getCookie("token");
   },
   data() {
     return {
-      token:"",
-      currentPage: 1,
-      pageNum: 1,
-      pageSize: 5,
+      token: "",
+      pageNum: 1, //初始化页数
+      pageSize: 5, //初始化条数
       dialog_showimg: false, //是否显示展示图片的对话框
       dialog_showproduct: false, //是否显示商品详情的对话框
       dialog_editproduct: false, //是否显示编辑商品的对话框
       update_productimg: false, //是否显示图片上传 --v-if控制
       img: require("../../../../public/img/1.jpg"),
       show_imgurl: "",
-      icon: "iconfont icon-shangjia",
+
       /**查询商品的信息 */
       product: {
         name: "", //要查询的商品名称
         id: "", //要查询商品的id
-        status: "", //要查询商品的状态
+        status: null, //要查询商品的状态
         create_time: "",
         startTime: "", //要查询商品的发布时间 开始时间点
         endTime: "" //要查询商品的发布时间  结束时间点
       },
       /**展示商品详情的信息 */
       product_show: {
-        id: null,
+        id: null, //商品Id
         name: "", //商品名称
         quantity: "", //库存数量
         price: "", //商品单价
@@ -266,12 +271,27 @@ export default {
         product_statusname: "" //商品状态
       },
       /**商品列表信息 */
-      productlist: [{}]
+      productlist: [{}], //商品列表数据
+      productArray: [], //批量操作的对象数组
+      productIdArray: [] //批量操作的商品ID数组
     };
   },
 
   methods: {
+    /**商品列表初始化 */
     product_init() {
+      let tempStatus;
+      let tempId;
+      if (this.product.status == null) {
+        tempStatus = -1;
+      } else {
+        tempStatus = this.product.status;
+      }
+      if (this.product.id == "") {
+        tempId = 0;
+      } else {
+        tempId = this.product.id;
+      }
       this.$axios({
         method: "post",
         url: "http://localhost:9000/api/product/product/findByCondition",
@@ -279,9 +299,9 @@ export default {
           pageNum: this.pageNum,
           pageSize: this.pageSize
         },
-                headers: {
-                  token: this.token
-                }
+        headers: {
+          token: this.token
+        }
       }).then(res => {
         //   console.log(res.data.data);
         this.productlist = res.data.data;
@@ -296,7 +316,7 @@ export default {
         //   console.log(this.productlist);
       });
     },
-
+    /**查看商品图片大图 */
     show_img(index, row) {
       this.dialog_showimg = true;
       this.show_imgurl = row.imgPath;
@@ -323,10 +343,10 @@ export default {
           this.product_show.warehouseid = "3"; //仓库名称
           this.product_show.cagegoryid = "2"; //分类名称
           this.product_show.weight = 0.125; //商品质量
-
           this.product_show.color = ["红色", "黑色"]; //商品颜色
-          this.product_show.product_status = "1"; //商品状态]
-
+          this.product_show.product_status = String(
+            res.data.data.productStatus
+          ); //商品状态]
           this.product_show.details = res.data.data.description;
         })
         .catch(error => {
@@ -350,10 +370,25 @@ export default {
         }
       )
         .then(() => {
-          this.$message({
-            type: "success",
-            message:
-              "商品id为： " + row.id + " 商品名称为：" + row.name + " 上架成功!"
+          this.productIdArray.push(row.id);
+          this.$axios({
+            method: "post",
+            url: "http://localhost:9000/api/product/product/on_sale",
+            data: this.productIdArray
+          }).then(res => {
+            this.$options.methods.product_init.bind(this)();
+            this.productIdArray = [];
+
+            console.log(res.data.msg);
+            this.$message({
+              type: "success",
+              message:
+                "商品id为： " +
+                row.id +
+                " 商品名称为：" +
+                row.name +
+                " 上架成功!"
+            });
           });
         })
         .catch(() => {
@@ -363,17 +398,16 @@ export default {
           });
         });
     },
-    /**商品删除 */
-    handleDelete: function(index, row) {
-      //删除商品信息
-      console.log("删除");
+    /**商品下架 */
+    handeleOutOfShelves(index, row) {
+      this.dialog_shelves = true;
       this.$confirm(
         "是否将商品id为： " +
           row.id +
           " 商品名称为：" +
           row.name +
-          " 商品删除？",
-        "删除",
+          " 商品下架？",
+        "下架",
         {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
@@ -381,32 +415,100 @@ export default {
         }
       )
         .then(() => {
-          this.$message({
-            type: "success",
-            message:
-              "商品id为： " + row.id + " 商品名称为：" + row.name + " 删除成功!"
+          this.productIdArray.push(row.id);
+          this.$axios({
+            method: "post",
+            url: "http://localhost:9000/api/product/product/off_sale",
+            data: this.productIdArray
+          }).then(res => {
+            this.$options.methods.product_init.bind(this)();
+            this.productIdArray = [];
+
+            console.log(res.data.msg);
+            this.$message({
+              type: "success",
+              message:
+                "商品id为： " +
+                row.id +
+                " 商品名称为：" +
+                row.name +
+                " 下架成功!"
+            });
           });
         })
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消下架"
           });
         });
     },
+    /**商品删除 */
+    // handleDelete: function(index, row) {
+    //   //删除商品信息
+    //   console.log("删除");
+    //   this.$confirm(
+    //     "是否将商品id为： " +
+    //       row.id +
+    //       " 商品名称为：" +
+    //       row.name +
+    //       " 商品删除？",
+    //     "删除",
+    //     {
+    //       confirmButtonText: "确定",
+    //       cancelButtonText: "取消",
+    //       type: "warning"
+    //     }
+    //   )
+    //     .then(() => {
+    //       this.$message({
+    //         type: "success",
+    //         message:
+    //           "商品id为： " + row.id + " 商品名称为：" + row.name + " 删除成功!"
+    //       });
+    //     })
+    //     .catch(() => {
+    //       this.$message({
+    //         type: "info",
+    //         message: "已取消删除"
+    //       });
+    //     });
+    // },
     /**每页展示的商品条数*/
     handleSizeChange(value) {
       // console.log(value);
+      let tempStatus;
+      let tempId;
+      if (this.product.status == null) {
+        tempStatus = -1;
+      } else {
+        tempStatus = this.product.status;
+      }
+      if (this.product.id == "") {
+        tempId = 0;
+      } else {
+        tempId = this.product.id;
+      }
+      this.product.startTime = this.product.create_time[0];
+      this.product.endTime = this.product.create_time[1];
       this.$axios({
         method: "post",
         url: "http://localhost:9000/api/product/product/findByCondition",
         data: {
+          id: tempId,
+          productName: this.product.name,
+          productStatus: tempStatus,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
           pageNum: this.pageNum,
           pageSize: value
         }
       }).then(res => {
         //   console.log(res.data.data);
+        this.pageSize = value;
+        this.pageNum = this.pageNum;
         this.productlist = res.data.data;
+
         for (var i in this.productlist) {
           var time = this.productlist[i].createTime;
 
@@ -421,15 +523,31 @@ export default {
     },
     /**跳转第几页的商品列表*/
     handleCurrentChange(value) {
+      let tempStatus;
+
+      // console.log(this.product.status);
+      if (this.product.status == null) {
+        tempStatus = -1;
+      } else {
+        tempStatus = this.product.status;
+      }
+      this.product.startTime = this.product.create_time[0];
+      this.product.endTime = this.product.create_time[1];
+
       this.$axios({
         method: "post",
         url: "http://localhost:9000/api/product/product/findByCondition",
         data: {
+          productName: this.product.name,
+          productStatus: tempStatus,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
           pageNum: value,
           pageSize: this.pageSize
         }
       }).then(res => {
         //   console.log(res.data.data);
+        this.pageNum = value;
         this.productlist = res.data.data;
         for (var i in this.productlist) {
           var time = this.productlist[i].createTime;
@@ -440,38 +558,41 @@ export default {
             .replace(/\.[\d]{3}Z/, "");
 
           this.productlist[i].createTime = times;
+
+          // this.$options.methods.handleSizeChange.bind(this)();
         }
       });
     },
     /**搜索商品*/
     searchProduct() {
-      //   console.log(this.product.create_time);
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
-      //   console.log(this.product.startTime+ " " + this.product.endTime);
-      if (this.product.id == "") {
-        delete this.product.id;
-      } else if (this.product.name == "") {
-        delete this.product.name;
-      } else if (this.product.status == "") {
-        delete this.product.status;
-      } else if (this.product.create_time == "") {
-        delete this.product.startTime;
-        delete this.product.endTime;
+
+      let tempStatus;
+      let tempId;
+      if (this.product.status == null) {
+        tempStatus = -1;
+      } else {
+        tempStatus = this.product.status;
       }
+      if (this.product.id == "") {
+        tempId = 0;
+      } else {
+        tempId = this.product.id;
+      }
+
       this.$axios({
         method: "post",
         url: "http://localhost:9000/api/product/product/findByCondition",
         data: {
-          id: this.product.id,
+          id: tempId,
           productName: this.product.name,
-          productStatus: this.product.status,
+          productStatus: tempStatus,
           startTime: this.product.startTime,
           endTime: this.product.endTime,
           pageNum: 1,
-          pageSize: 3
+          pageSize: 5
         }
-        
       }).then(res => {
         //   console.log(res.data.data);
         this.productlist = res.data.data;
@@ -487,6 +608,7 @@ export default {
         }
       });
     },
+    /**编辑商品信息 */
     editProdcut() {
       //   console.log(this.product_show);
       this.$confirm("是否确认更改商品信息 ", {
@@ -528,6 +650,116 @@ export default {
             message: "已取消更改"
           });
         });
+    },
+    /**商品选择 */
+    handleSelectionChange(val) {
+      this.productArray = val;
+      // console.log(this.productArray);
+    },
+    /**批量上架 */
+    batchShelf() {
+      const length = this.productArray.length;
+      for (let i = 0; i < length; i++) {
+        this.productIdArray.push(this.productArray[i].id);
+      }
+      if (length != 0) {
+        this.$confirm("是否批量上架商品？", "批量操作", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$axios({
+              method: "post",
+              url: "http://localhost:9000/api/product/product/on_sale",
+              data: this.productIdArray
+            }).then(res => {
+              if (res.data.msg == "商品状态不正确") {
+                this.$message({
+                  type: "warning",
+                  message: res.data.msg + "，请重新选择商品"
+                });
+                this.productIdArray = [];
+                this.productArray = [];
+                this.$refs.productlist.clearSelection();
+              } else {
+                this.$options.methods.product_init.bind(this)();
+                this.productIdArray = [];
+                this.productArray = [];
+                console.log(res.data.msg);
+                this.$message({
+                  type: "success",
+                  message: "商品批量上架成功"
+                });
+              }
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消批量操作"
+            });
+          });
+      } else {
+        this.$message({
+          type: "warning",
+          message: "请选择需要批量操作的商品"
+        });
+      }
+      // console.log(this.productIdArray);
+    },
+    /**批量下架 */
+    btachOutShelf() {
+      const length = this.productArray.length;
+      for (let i = 0; i < length; i++) {
+        this.productIdArray.push(this.productArray[i].id);
+      }
+      // console.log(this.productArray);
+      if (length != 0) {
+        this.$confirm("是否批量下架商品？", "批量操作", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            this.$axios({
+              method: "post",
+              url: "http://localhost:9000/api/product/product/off_sale",
+              data: this.productIdArray
+            }).then(res => {
+              if (res.data.msg == "商品状态不正确") {
+                this.$message({
+                  type: "warning",
+                  message: res.data.msg + "， 请重新选择商品"
+                });
+                this.productIdArray = [];
+                this.productArray = [];
+                this.$refs.productlist.clearSelection();
+                this.$options.methods.product_init.bind(this)();
+              } else {
+                this.$options.methods.product_init.bind(this)();
+                this.productIdArray = [];
+                this.productArray = [];
+                console.log(res.data.msg);
+                this.$message({
+                  type: "success",
+                  message: "商品批量下架成功"
+                });
+              }
+            });
+          })
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "已取消批量操作"
+            });
+          });
+      } else {
+        this.$message({
+          type: "warning",
+          message: "请选择需要批量操作的商品"
+        });
+      }
     }
   }
 };
