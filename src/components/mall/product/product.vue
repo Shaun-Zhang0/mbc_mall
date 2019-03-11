@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-01 19:02:43
+ * @Last Modified time: 2019-03-10 19:15:33
  */
 
 <template>
@@ -48,7 +48,7 @@
                     </el-col>
                 </el-row>
 
-                <el-row class="product_color">
+                <!-- <el-row class="product_color">
                     <el-row>
                         <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :md="24" :lg="20">颜色分类</el-col>
@@ -62,10 +62,10 @@
 
                         </el-col>
                     </el-row>
-                </el-row>
+                </el-row> -->
 
                 <el-row class="buy_num">
-                    <el-row>
+                    <el-row >
                         <el-col :xs="0" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :xs="10 " :md="4" :lg="4">选择数量</el-col>
                         <!-- <el-col :xs="10" :md="8" :lg="9" class="stock" :style="{display : stock}">{{buy_color}}剩余库存:
@@ -75,7 +75,7 @@
                     <el-row>
                         <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col class="select_num" :sm="4" :md="4" :lg="20">
-                            <el-input-number v-model="select_num" :min="1" :max="product.buy_limit" label="描述文字"></el-input-number>
+                            <el-input-number :title='"最大限购数量为："+product.buy_limit' v-model="select_num" :min="1" :max="product.buy_limit" label="描述文字"></el-input-number>
                         </el-col>
                     </el-row>
                 </el-row>
@@ -84,7 +84,7 @@
                     <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="20">
                         <router-link to="/mall/order" tag="span">
-                            <el-button type="info" class="confirm_button">确认购买</el-button>
+                            <el-button type="info" class="confirm_button">确认代理</el-button>
                         </router-link>
                     </el-col>
                 </el-row>
