@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-08 23:48:55
+ * @Last Modified time: 2019-03-10 15:45:32
  */
 
 <template>
@@ -90,7 +90,7 @@
       </el-row>
       <el-row style="text-align:center;margin-bottom:20px;">
 
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+        <el-pagination  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
         </el-pagination>
         </el-pagination>
 
@@ -220,6 +220,11 @@
 
 <script>
 import toTop from "./../../mall/index/to_top";
+import { apiSearchProduct } from "./../../../assets/js/axios/api.js";
+import { apiproductInit } from "./../../../assets/js/axios/api.js";
+import { apiSizeChange } from "./../../../assets/js/axios/api.js";
+import { apiCurrentChange } from "./../../../assets/js/axios/api.js";
+import { apiEditProduct } from "./../../../assets/js/axios/api.js";
 
 export default {
   components: {
@@ -292,16 +297,9 @@ export default {
       } else {
         tempId = this.product.id;
       }
-      this.$axios({
-        method: "post",
-        url: "http://localhost:9000/api/product/product/findByCondition",
-        data: {
-          pageNum: this.pageNum,
-          pageSize: this.pageSize
-        },
-        headers: {
-          token: this.token
-        }
+      apiproductInit({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
       }).then(res => {
         //   console.log(res.data.data);
         this.productlist = res.data.data;
@@ -313,8 +311,8 @@ export default {
             .replace(/\.[\d]{3}Z/, "");
           this.productlist[i].createTime = times;
         }
-        //   console.log(this.productlist);
       });
+      
     },
     /**查看商品图片大图 */
     show_img(index, row) {
@@ -327,7 +325,7 @@ export default {
       this.product_show.id = row.id;
       this.$axios
         .get(
-          "http://localhost:9000/api/product/product/findOne/" +
+          "api/product/product/findOne/" +
             this.product_show.id
         )
         .then(res => {
@@ -373,7 +371,7 @@ export default {
           this.productIdArray.push(row.id);
           this.$axios({
             method: "post",
-            url: "http://localhost:9000/api/product/product/on_sale",
+            url: "api/product/product/on_sale",
             data: this.productIdArray
           }).then(res => {
             this.$options.methods.product_init.bind(this)();
@@ -491,19 +489,15 @@ export default {
       }
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
-      this.$axios({
-        method: "post",
-        url: "http://localhost:9000/api/product/product/findByCondition",
-        data: {
-          id: tempId,
+     apiSizeChange({
+        id: tempId,
           productName: this.product.name,
           productStatus: tempStatus,
           startTime: this.product.startTime,
           endTime: this.product.endTime,
           pageNum: this.pageNum,
           pageSize: value
-        }
-      }).then(res => {
+     }).then(res => {
         //   console.log(res.data.data);
         this.pageSize = value;
         this.pageNum = this.pageNum;
@@ -520,6 +514,7 @@ export default {
           this.productlist[i].createTime = times;
         }
       });
+    
     },
     /**跳转第几页的商品列表*/
     handleCurrentChange(value) {
@@ -534,17 +529,13 @@ export default {
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
 
-      this.$axios({
-        method: "post",
-        url: "http://localhost:9000/api/product/product/findByCondition",
-        data: {
-          productName: this.product.name,
+      apiCurrentChange({
+         productName: this.product.name,
           productStatus: tempStatus,
           startTime: this.product.startTime,
           endTime: this.product.endTime,
           pageNum: value,
           pageSize: this.pageSize
-        }
       }).then(res => {
         //   console.log(res.data.data);
         this.pageNum = value;
@@ -558,16 +549,11 @@ export default {
             .replace(/\.[\d]{3}Z/, "");
 
           this.productlist[i].createTime = times;
-
-          // this.$options.methods.handleSizeChange.bind(this)();
         }
       });
     },
     /**搜索商品*/
     searchProduct() {
-      this.product.startTime = this.product.create_time[0];
-      this.product.endTime = this.product.create_time[1];
-
       let tempStatus;
       let tempId;
       if (this.product.status == null) {
@@ -580,25 +566,22 @@ export default {
       } else {
         tempId = this.product.id;
       }
-
-      this.$axios({
-        method: "post",
-        url: "http://localhost:9000/api/product/product/findByCondition",
-        data: {
-          id: tempId,
-          productName: this.product.name,
-          productStatus: tempStatus,
-          startTime: this.product.startTime,
-          endTime: this.product.endTime,
-          pageNum: 1,
-          pageSize: 5
-        }
+      this.product.startTime = this.product.create_time[0];
+      this.product.endTime = this.product.create_time[1];
+      apiSearchProduct({
+        id: tempId,
+        productName: this.product.name,
+        productStatus: tempStatus,
+        startTime: this.product.startTime,
+        endTime: this.product.endTime,
+        pageNum: 1,
+        pageSize: this.pageSize
       }).then(res => {
         //   console.log(res.data.data);
         this.productlist = res.data.data;
+        this.pageNum = 1;
         for (var i in this.productlist) {
           var time = this.productlist[i].createTime;
-
           var times = new Date(+new Date(time) + 8 * 3600 * 1000)
             .toISOString()
             .replace(/T/g, " ")
@@ -618,11 +601,8 @@ export default {
       })
         .then(() => {
           this.product_show.sizeArray = this.product_show.size.split("/");
-          this.$axios({
-            method: "post",
-            url: "http://localhost:9000/api/product/product/update",
-            data: {
-              id: this.product_show.id,
+          apiEditProduct({
+             id: this.product_show.id,
               productColors: this.product_show.color,
               productName: this.product_show.name,
               productSku: this.product_show.quantity,
@@ -635,7 +615,6 @@ export default {
               productQuality: this.product_show.weight,
               productSizes: this.product_show.sizeArray,
               productStatus: this.product_show.product_status
-            }
           }).then(res => {
             this.$message({
               type: "success",
@@ -643,6 +622,31 @@ export default {
             });
             this.$options.methods.product_init.bind(this)();
           });
+        //  this.$axios({
+        //     method: "post",
+        //     url: "api/product/product/update",
+        //     data: {
+        //       id: this.product_show.id,
+        //       productColors: this.product_show.color,
+        //       productName: this.product_show.name,
+        //       productSku: this.product_show.quantity,
+        //       productPrice: this.product_show.price,
+        //       productRecommendprice: this.product_show.suggested_price,
+        //       productDefails: this.product_show.details,
+        //       warehouseId: this.product_show.warehouseid,
+        //       limitNum: this.product_show.limit_num,
+        //       scategoryId: this.product_show.cagegoryid,
+        //       productQuality: this.product_show.weight,
+        //       productSizes: this.product_show.sizeArray,
+        //       productStatus: this.product_show.product_status
+        //     }
+        //   }).then(res => {
+        //     this.$message({
+        //       type: "success",
+        //       message: "商品信息更改成功"
+        //     });
+        //     this.$options.methods.product_init.bind(this)();
+        //   });
         })
         .catch(() => {
           this.$message({
