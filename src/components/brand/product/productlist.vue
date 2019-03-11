@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 15:45:32
+ * @Last Modified time: 2019-03-11 23:07:58
  */
 
 <template>
@@ -90,106 +90,153 @@
       </el-row>
       <el-row style="text-align:center;margin-bottom:20px;">
 
-        <el-pagination  @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
         </el-pagination>
         </el-pagination>
 
       </el-row>
     </div>
     <!-- 编辑商品 -->
-    <el-dialog title="商品详情" :visible.sync="dialog_editproduct" width="40%">
-      <el-form label-width="120px">
-        <el-form-item label="商品id">
-          {{product_show.id}}
-        </el-form-item>
-        <el-form-item label="商品名称">
-          <el-col :span="12">
-            <el-input v-model="product_show.name"></el-input>
+    <el-dialog title="商品编辑" :visible.sync="dialog_editproduct" width="62%">
+      <el-form label-width="400px;" style="">
+        <el-row>
+          <el-col :span="8">
+            <ElFormItem label="商品名称 :" style="">
+              <el-col :span="15">
+                <el-input v-model="product_show.name"></el-input>
+              </el-col>
+            </ElFormItem>
           </el-col>
-        </el-form-item>
-        <el-form-item label="商品图片">
-          <img style="max-width:100%;max-height:100%;" :src="img" alt="">
-          <el-button size="mini" @click="update_productimg = !update_productimg">更换图片</el-button>
-          <el-upload v-if="update_productimg" class="upload-demo" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-            <i class="el-icon-upload"></i>
-            <div class="el-upload__text">将文件拖到此处，或
-              <em>点击上传</em>
-            </div>
-            <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB</div>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="商品单价(元)">
-          <el-col :span="12">
-            <el-input v-model="product_show.price"></el-input>
+          <el-col :span="8">
+            <ElFormItem label="库存数量 :">
+              <el-col :span="15">
+                <el-input v-model="product_show.quantity"></el-input>
+              </el-col>
+            </ElFormItem>
           </el-col>
-        </el-form-item>
-        <el-form-item label="建议零售价(元)">
-          <el-col :span="12">
-            <el-input v-model="product_show.suggested_price"></el-input>
+          <el-col :span="8">
+            <ElFormItem label="建议售价 :">
+              <el-col :span="15">
+                <el-input v-model="product_show.suggested_price"></el-input>
+              </el-col>
+            </ElFormItem>
           </el-col>
-        </el-form-item>
-        <el-form-item label="库存数量">
-          <el-col :span="12">
-            <el-input v-model="product_show.quantity"></el-input>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <ElFormItem label="商品单价 :">
+              <el-col :span="15">
+                <el-input v-model="product_show.price"></el-input>
+              </el-col>
+            </ElFormItem>
           </el-col>
-        </el-form-item>
-        <el-form-item label="限购数量">
-          <el-col :span="12">
-            <el-input v-model="product_show.limit_num"></el-input>
+          <el-col :span="8">
+            <ElFormItem label="商品类别 :">
+              <el-col :span="15">
+                <el-select placeholder="请选择商品类别" v-model="product_show.cagegoryid">
+                  <el-option label="手机" value="1"></el-option>
+                  <el-option label="电脑" value="2"></el-option>
+                </el-select>
+              </el-col>
+            </ElFormItem>
           </el-col>
-        </el-form-item>
-        <el-form-item label="商品仓库">
-          <el-col :span="12">
-            <el-select placeholder="请选择仓库" v-model="product_show.warehouseid">
-              <el-option label="本地仓库1" value="1"></el-option>
-              <el-option label="本地仓库2" value="2"></el-option>
-              <el-option label="本地仓库3" value="3"></el-option>
+          <el-col :span="8">
+            <ElFormItem label="限购数量 :" style="">
+              <el-col :span="15">
+                <el-input v-model="product_show.limit_num"></el-input>
+              </el-col>
+            </ElFormItem>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="8">
+            <ElFormItem label="商品重量 :" style="">
+              <el-col :span="15">
+                <el-input v-model="product_show.weight"></el-input>
+              </el-col>
+            </ElFormItem>
+          </el-col>
+          <el-col :span="8">
+            <ElFormItem label="商品仓库 :" style="">
+              <el-col :span="15">
+                <el-select placeholder="请选择仓库" v-model="product_show.warehouseid">
+                  <el-option label="本地仓库1" value="1"></el-option>
+                  <el-option label="本地仓库2" value="2"></el-option>
+                  <el-option label="本地仓库3" value="3"></el-option>
+                </el-select>
+              </el-col>
+            </ElFormItem>
+          </el-col>
+          <el-col :span="8">
+            <ElFormItem label="商品状态 :" style="">
+              <el-col :span="15">
+                <el-select placeholder="请选择商品状态" v-model="product_show.product_status">
+                  <el-option label="上架" value="1"></el-option>
+                  <el-option label="下架" value="0"></el-option>
+                </el-select>
+              </el-col>
+            </ElFormItem>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="16">
+            <el-form-item :inline="true" label="商品尺寸 :" style="margin-left:2px">
+              <el-col :span="15">
+                <el-input v-model="product_show.size"></el-input>
+              </el-col>
+            </el-form-item>
+          </el-col>
 
-            </el-select>
+        </el-row>
+        <el-row>
+          <el-col :span="16">
+            <el-form-item label="商品颜色 :" style="margin-left:2px">
+              <el-checkbox-group v-model="product_show.color">
+                <el-checkbox label="红色" border></el-checkbox>
+                <el-checkbox label="黄色" border></el-checkbox>
+                <el-checkbox label="黑色" border></el-checkbox>
+                <el-checkbox label="蓝色" border></el-checkbox>
+              </el-checkbox-group>
+
+            </el-form-item>
           </el-col>
-        </el-form-item>
-        <el-form-item label="商品类别">
-          <el-col :span="12">
-            <el-select placeholder="请选择商品类别" v-model="product_show.cagegoryid">
-              <el-option label="手机" value="1"></el-option>
-              <el-option label="电脑" value="2"></el-option>
-            </el-select>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="商品重量">
-          <el-col :span="12">
-            <el-input v-model="product_show.weight"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="商品尺寸">
-          <el-col :span="12">
-            <el-input v-model="product_show.size"></el-input>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="商品颜色">
+        </el-row>
+
+        <el-row>
           <el-col :span="24">
-            <el-checkbox-group v-model="product_show.color">
-              <el-checkbox label="红色" border></el-checkbox>
-              <el-checkbox label="黄色" border></el-checkbox>
-              <el-checkbox label="黑色" border></el-checkbox>
-              <el-checkbox label="蓝色" border></el-checkbox>
-            </el-checkbox-group>
+            <el-col :span="12">
+              <el-form-item label="商品图片">
+                <img style="max-width:100%;max-height:100%;" :src="img" alt="">
+              </el-form-item>
+            </el-col>
+            <el-col :span="10" :offset="2">
+              <el-button size="mini" @click="update_productimg = !update_productimg">更换图片</el-button>
+              <el-upload v-if="update_productimg" style="margin-top:20px;" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">将文件拖到此处，或
+                  <em>点击上传</em>
+                </div>
+                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB</div>
+              </el-upload>
+            </el-col>
+
           </el-col>
-        </el-form-item>
-        <el-form-item label="商品状态">
-          <el-col :span="12">
-            <el-select placeholder="请选择商品状态" v-model="product_show.product_status">
-              <el-option label="上架" value="1"></el-option>
-              <el-option label="下架" value="0"></el-option>
-            </el-select>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="商品描述">
+
+        </el-row>
+
+        <el-row>
           <el-col :span="24">
-            <el-input type="textarea" :rows="4" v-model="product_show.details" placeholder="请输入内容" style="resize: none">
-            </el-input>
+
+            <el-form-item label="描述信息 :">
+              <el-col :span="24">
+                <el-input type="textarea" :rows="4" v-model="product_show.details" placeholder="请输入内容" style="resize: none">
+                </el-input>
+              </el-col>
+            </el-form-item>
+
           </el-col>
-        </el-form-item>
+        </el-row>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialog_editproduct = false">取 消</el-button>
@@ -312,7 +359,6 @@ export default {
           this.productlist[i].createTime = times;
         }
       });
-      
     },
     /**查看商品图片大图 */
     show_img(index, row) {
@@ -324,10 +370,7 @@ export default {
       this.dialog_editproduct = true;
       this.product_show.id = row.id;
       this.$axios
-        .get(
-          "api/product/product/findOne/" +
-            this.product_show.id
-        )
+        .get("api/product/product/findOne/" + this.product_show.id)
         .then(res => {
           // console.log(res);
           this.product_show.sizeArray = ["5", "10"]; //商品尺寸
@@ -489,15 +532,15 @@ export default {
       }
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
-     apiSizeChange({
+      apiSizeChange({
         id: tempId,
-          productName: this.product.name,
-          productStatus: tempStatus,
-          startTime: this.product.startTime,
-          endTime: this.product.endTime,
-          pageNum: this.pageNum,
-          pageSize: value
-     }).then(res => {
+        productName: this.product.name,
+        productStatus: tempStatus,
+        startTime: this.product.startTime,
+        endTime: this.product.endTime,
+        pageNum: this.pageNum,
+        pageSize: value
+      }).then(res => {
         //   console.log(res.data.data);
         this.pageSize = value;
         this.pageNum = this.pageNum;
@@ -514,7 +557,6 @@ export default {
           this.productlist[i].createTime = times;
         }
       });
-    
     },
     /**跳转第几页的商品列表*/
     handleCurrentChange(value) {
@@ -530,12 +572,12 @@ export default {
       this.product.endTime = this.product.create_time[1];
 
       apiCurrentChange({
-         productName: this.product.name,
-          productStatus: tempStatus,
-          startTime: this.product.startTime,
-          endTime: this.product.endTime,
-          pageNum: value,
-          pageSize: this.pageSize
+        productName: this.product.name,
+        productStatus: tempStatus,
+        startTime: this.product.startTime,
+        endTime: this.product.endTime,
+        pageNum: value,
+        pageSize: this.pageSize
       }).then(res => {
         //   console.log(res.data.data);
         this.pageNum = value;
@@ -602,19 +644,19 @@ export default {
         .then(() => {
           this.product_show.sizeArray = this.product_show.size.split("/");
           apiEditProduct({
-             id: this.product_show.id,
-              productColors: this.product_show.color,
-              productName: this.product_show.name,
-              productSku: this.product_show.quantity,
-              productPrice: this.product_show.price,
-              productRecommendprice: this.product_show.suggested_price,
-              productDefails: this.product_show.details,
-              warehouseId: this.product_show.warehouseid,
-              limitNum: this.product_show.limit_num,
-              scategoryId: this.product_show.cagegoryid,
-              productQuality: this.product_show.weight,
-              productSizes: this.product_show.sizeArray,
-              productStatus: this.product_show.product_status
+            id: this.product_show.id,
+            productColors: this.product_show.color,
+            productName: this.product_show.name,
+            productSku: this.product_show.quantity,
+            productPrice: this.product_show.price,
+            productRecommendprice: this.product_show.suggested_price,
+            productDefails: this.product_show.details,
+            warehouseId: this.product_show.warehouseid,
+            limitNum: this.product_show.limit_num,
+            scategoryId: this.product_show.cagegoryid,
+            productQuality: this.product_show.weight,
+            productSizes: this.product_show.sizeArray,
+            productStatus: this.product_show.product_status
           }).then(res => {
             this.$message({
               type: "success",
@@ -622,31 +664,31 @@ export default {
             });
             this.$options.methods.product_init.bind(this)();
           });
-        //  this.$axios({
-        //     method: "post",
-        //     url: "api/product/product/update",
-        //     data: {
-        //       id: this.product_show.id,
-        //       productColors: this.product_show.color,
-        //       productName: this.product_show.name,
-        //       productSku: this.product_show.quantity,
-        //       productPrice: this.product_show.price,
-        //       productRecommendprice: this.product_show.suggested_price,
-        //       productDefails: this.product_show.details,
-        //       warehouseId: this.product_show.warehouseid,
-        //       limitNum: this.product_show.limit_num,
-        //       scategoryId: this.product_show.cagegoryid,
-        //       productQuality: this.product_show.weight,
-        //       productSizes: this.product_show.sizeArray,
-        //       productStatus: this.product_show.product_status
-        //     }
-        //   }).then(res => {
-        //     this.$message({
-        //       type: "success",
-        //       message: "商品信息更改成功"
-        //     });
-        //     this.$options.methods.product_init.bind(this)();
-        //   });
+          //  this.$axios({
+          //     method: "post",
+          //     url: "api/product/product/update",
+          //     data: {
+          //       id: this.product_show.id,
+          //       productColors: this.product_show.color,
+          //       productName: this.product_show.name,
+          //       productSku: this.product_show.quantity,
+          //       productPrice: this.product_show.price,
+          //       productRecommendprice: this.product_show.suggested_price,
+          //       productDefails: this.product_show.details,
+          //       warehouseId: this.product_show.warehouseid,
+          //       limitNum: this.product_show.limit_num,
+          //       scategoryId: this.product_show.cagegoryid,
+          //       productQuality: this.product_show.weight,
+          //       productSizes: this.product_show.sizeArray,
+          //       productStatus: this.product_show.product_status
+          //     }
+          //   }).then(res => {
+          //     this.$message({
+          //       type: "success",
+          //       message: "商品信息更改成功"
+          //     });
+          //     this.$options.methods.product_init.bind(this)();
+          //   });
         })
         .catch(() => {
           this.$message({
