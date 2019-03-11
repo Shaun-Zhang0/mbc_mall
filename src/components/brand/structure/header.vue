@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 00:05:41
+ * @Last Modified time: 2019-03-11 11:45:57
  */
 
 <template>
@@ -76,7 +76,7 @@ input::-webkit-input-placeholder {
 </style>
 
 <script>
-import {apiSearchName} from "./../../../assets/js/axios/api.js"
+import { apiSearchInfo } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     return {
@@ -85,26 +85,22 @@ export default {
     };
   },
   mounted() {
-    // {
-    //   // 判断是否为登录状态，否则跳转到登陆界面
-    //   let login_token = document.cookie.indexOf("token=");
-    //   if ((login_token == "")) {
-    //     this.$router.push("/brand/login");
-    //   }
-    // }
+    var token = this.Cookie.getCookie("token");
+    console.log(token);
 
-    // var token = this.Cookie.getCookie("token");
-    apiSearchName({})
-    .then(res => {
+    apiSearchInfo({})
+      .then(res => {
+        // console.log(res.data);
         this.name = res.data.data.name;
       })
-    ;
-    // console.log(token);
+      .catch(error => {
+        console.info(error.request.status);
+      });
 
     // this.$axios({
     //   method: "post",
     //   url: "api/adminLogin/getAdminTo",
-    //   headers: {
+    //   header: {
     //     token: token
     //   }
     // })
@@ -114,8 +110,7 @@ export default {
     //   })
     //   .catch(error => {
     //     // console.info(error.request.status);
-       
-    //  });
+    //   });
   },
   methods: {
     full_screen() {
@@ -158,14 +153,21 @@ export default {
           this.Cookie.delCookie("token");
 
           if (this.Cookie.getCookie("token") == null) {
-            this.$router.push("/brand/login");
             this.$message({
               type: "success",
               message: "注销成功!"
             });
+            setTimeout(() => {
+              this.$router.push("/brand/login");
+            }, 1000);
           }
         })
-        .catch(error => {});
+        .catch(error => {
+          this.$message({
+            type: "info",
+            message: "取消注销操作!"
+          });
+        });
       // this.Cookie.delCookie('token');
     }
   }
