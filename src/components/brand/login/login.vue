@@ -2,14 +2,13 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 00:00:07
+ * @Last Modified time: 2019-03-11 11:44:33
  */
 
 <template>
   <div class="main">
     <el-row class="title">跨境平台—厂商管理系统</el-row>
     <el-row class="input_area">
-
       <el-form :rules="rules" :model="login" ref="login">
         <el-row>
           <el-col class="form_border" :span="8" :offset="8">
@@ -17,13 +16,11 @@
               <el-col :span="20" :offset="2">
                 <el-form-item label="邮箱" prop="login_email">
                   <el-input class="input-with-select" v-model="login.login_email" placeholder="请输入登录邮箱" @keydown.enter.native="submitForm('login')">
-
                   </el-input>
                 </el-form-item>
 
               </el-col>
             </el-row>
-
             <el-row>
               <el-col :span="20" :offset="2">
                 <el-form-item label="密码" prop="login_pwd">
@@ -188,16 +185,17 @@ export default {
               "Content-Type": "application/x-www-form-urlencoded"
             }
           }).then(res => {
-            console.log(res.data);
+            console.log(res.data.data.token);
+            this.Cookie.setCookie("token", res.data.data.token);
             if (res.data.code == 200) {
-              this.Cookie.setCookie("token", res.data.data.token);
+              
               this.$message({
                 message: "验证成功,登陆中",
                 type: "success"
               });
               setTimeout(() => {
                 this.$router.push({ path: "/brand" }); /**路由跳转到系统首页 */
-              }, 1200);
+              }, 1500);
             } else if (res.data.code == 400) {
               this.$message({
                 message: "密码或用户名错误，请重新输入",
@@ -207,50 +205,7 @@ export default {
             }
           });
 
-          // this.$axios({
-          //   method: "post",
-          //   url: "api/adminLogin/login",
-          //   data: {
-          //     email: this.login.login_email,
-          //     password: this.login.login_pwd
-          //   },
-          //   transformRequest: [
-          //     function(data) {
-          //       // Do whatever you want to transform the data
-          //       let ret = "";
-          //       for (let it in data) {
-          //         ret +=
-          //           encodeURIComponent(it) +
-          //           "=" +
-          //           encodeURIComponent(data[it]) +
-          //           "&";
-          //       }
-          //       return ret;
-          //     }
-          //   ],
-
-          //   headers: {
-          //     "Content-Type": "application/x-www-form-urlencoded"
-          //   }
-          // }).then(res => {
-          //   console.log(res.data);
-          //   if (res.data.code == 200) {
-          //     this.Cookie.setCookie("token", res.data.data.token);
-          //     this.$message({
-          //       message: "验证成功,登陆中",
-          //       type: "success"
-          //     });
-          //     setTimeout(() => {
-          //       this.$router.push({ path: "/brand" }); /**路由跳转到系统首页 */
-          //     }, 1200);
-          //   } else if (res.data.code == 400) {
-          //     this.$message({
-          //       message: "密码或用户名错误，请重新输入",
-          //       type: "warning"
-          //     });
-          //     this.$refs.login.resetFields(); //清空表单数据
-          //   }
-          // });
+        
           this.verify_show = false;
           this.check_num = 0;
         }, 1000);
