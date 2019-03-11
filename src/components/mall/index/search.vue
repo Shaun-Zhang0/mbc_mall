@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 17:01:58 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-28 17:55:15
+ * @Last Modified time: 2019-03-10 19:29:19
  */
 <template>
   <div>
@@ -16,7 +16,7 @@
       <el-col :xs="2" :sm="7" :md="7" :lg="3" :xl="3">&nbsp;</el-col>
       <el-col :xs="20" :sm="10" :md="10" :lg="8" :xl="9" class="form">
         <el-row>
-          <el-input class="input search_input" placeholder="搜索 商品/厂商">
+          <el-input class="input search_input" placeholder="搜索 商品">
             <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white;" slot="append">搜索</el-button>
           </el-input>
         </el-row>
