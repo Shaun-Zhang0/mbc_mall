@@ -4,50 +4,37 @@ import Vue from "vue";
 import axios from "axios";
 import router from "../router";
 
-import { message } from "./element";
 import { Message } from "element-ui";
 import Cookie from "../assets/js/cookie"; //设置cookie
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post["token"] = Cookie.getCookie("token");
+console.log(Cookie.getCookie("token"));
 // axios.defaults.headers.post["Content-Type"] =
 //   "application/x-www-form-urlencoded";
-if (Cookie.getCookie("token")) {
-  axios.defaults.headers.post["token"] = Cookie.getCookie("token");
-}
+// if (Cookie.getCookie("token")) {
+//   axios.defaults.headers.post["token"] = Cookie.getCookie("token");
+// }
 
 axios.defaults.baseURL = "http://localhost:9000";
 
 let config = {
   // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  timeout: 6 * 1000 // Timeout
+  timeout: 10 * 1000 // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 };
 
 Vue.use(router);
 
-const _axios = axios.create(config);
+axios.create(config);
 
-_axios.interceptors.request.use(
+axios.interceptors.request.use(
   function(config) {
-    
     // Do something before request is sent
     console.log(config.url);
-    // if(config.url == "http://localhost:9000/api/adminLogin/login"){
-    //   var myInterceptor = axios.interceptors.request.use(function () {
-    //     console.log(123);
-    //   });
-    //   axios.interceptors.request.eject(myInterceptor);
-    //   // axios.interceptors.request.eject;
-
-    // }
-
-    // console.log(Cookie.getCookie("token"));
-    if (
-      !Cookie.getCookie("token") &&
-      config.url != "http://localhost:9000/api/adminLogin/login"
-    ) {
+    
+    if (!Cookie.getCookie("token")&& config.url != "api/adminLogin/login") {
       Message.error({
         message: "登录验证已过期，请重新登录"
       });
@@ -62,7 +49,7 @@ _axios.interceptors.request.use(
 );
 
 // Add a response interceptor
-_axios.interceptors.response.use(
+axios.interceptors.response.use(
   function(response) {
     // Do something with response data
     return response;
@@ -103,17 +90,17 @@ _axios.interceptors.response.use(
 );
 
 Plugin.install = function(Vue, options) {
-  Vue.axios = _axios;
-  window.axios = _axios;
+  Vue.axios = axios;
+  window.axios = axios;
   Object.defineProperties(Vue.prototype, {
     axios: {
       get() {
-        return _axios;
+        return axios;
       }
     },
     $axios: {
       get() {
-        return _axios;
+        return axios;
       }
     }
   });
