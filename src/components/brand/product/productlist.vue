@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-11 23:07:58
+ * @Last Modified time: 2019-03-13 23:15:08
  */
 
 <template>
@@ -101,63 +101,63 @@
       <el-form label-width="400px;" style="">
         <el-row>
           <el-col :span="8">
-            <ElFormItem label="商品名称 :" style="">
+            <el-form-item label="商品名称 :" style="">
               <el-col :span="15">
                 <el-input v-model="product_show.name"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="库存数量 :">
+            <el-form-item label="库存数量 :">
               <el-col :span="15">
                 <el-input v-model="product_show.quantity"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="建议售价 :">
+            <el-form-item label="建议售价 :">
               <el-col :span="15">
                 <el-input v-model="product_show.suggested_price"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <ElFormItem label="商品单价 :">
+            <el-form-item label="商品单价 :">
               <el-col :span="15">
                 <el-input v-model="product_show.price"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="商品类别 :">
+            <el-form-item label="商品类别 :">
               <el-col :span="15">
                 <el-select placeholder="请选择商品类别" v-model="product_show.cagegoryid">
                   <el-option label="手机" value="1"></el-option>
                   <el-option label="电脑" value="2"></el-option>
                 </el-select>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="限购数量 :" style="">
+            <el-form-item label="限购数量 :" style="">
               <el-col :span="15">
                 <el-input v-model="product_show.limit_num"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="8">
-            <ElFormItem label="商品重量 :" style="">
+            <el-form-item label="商品重量 :" style="">
               <el-col :span="15">
                 <el-input v-model="product_show.weight"></el-input>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="商品仓库 :" style="">
+            <el-form-item label="商品仓库 :" style="">
               <el-col :span="15">
                 <el-select placeholder="请选择仓库" v-model="product_show.warehouseid">
                   <el-option label="本地仓库1" value="1"></el-option>
@@ -165,17 +165,17 @@
                   <el-option label="本地仓库3" value="3"></el-option>
                 </el-select>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
           <el-col :span="8">
-            <ElFormItem label="商品状态 :" style="">
+            <el-form-item label="商品状态 :" style="">
               <el-col :span="15">
                 <el-select placeholder="请选择商品状态" v-model="product_show.product_status">
                   <el-option label="上架" value="1"></el-option>
                   <el-option label="下架" value="0"></el-option>
                 </el-select>
               </el-col>
-            </ElFormItem>
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -417,19 +417,22 @@ export default {
             url: "api/product/product/on_sale",
             data: this.productIdArray
           }).then(res => {
-            this.$options.methods.product_init.bind(this)();
-            this.productIdArray = [];
+            console.log(res.data.code);
+            if (res.data.code == 200) {
+              this.$options.methods.product_init.bind(this)();
+              this.productIdArray = [];
 
-            console.log(res.data.msg);
-            this.$message({
-              type: "success",
-              message:
-                "商品id为： " +
-                row.id +
-                " 商品名称为：" +
-                row.name +
-                " 上架成功!"
-            });
+              console.log(res.data.msg);
+              this.$message({
+                type: "success",
+                message:
+                  "商品id为： " +
+                  row.id +
+                  " 商品名称为：" +
+                  row.name +
+                  " 上架成功!"
+              });
+            }
           });
         })
         .catch(() => {
@@ -462,19 +465,21 @@ export default {
             url: "http://localhost:9000/api/product/product/off_sale",
             data: this.productIdArray
           }).then(res => {
-            this.$options.methods.product_init.bind(this)();
-            this.productIdArray = [];
+            if (res.data.code == 200) {
+              this.$options.methods.product_init.bind(this)();
+              this.productIdArray = [];
 
-            console.log(res.data.msg);
-            this.$message({
-              type: "success",
-              message:
-                "商品id为： " +
-                row.id +
-                " 商品名称为：" +
-                row.name +
-                " 下架成功!"
-            });
+              console.log(res.data.msg);
+              this.$message({
+                type: "success",
+                message:
+                  "商品id为： " +
+                  row.id +
+                  " 商品名称为：" +
+                  row.name +
+                  " 下架成功!"
+              });
+            }
           });
         })
         .catch(() => {
@@ -732,7 +737,7 @@ export default {
                 this.$options.methods.product_init.bind(this)();
                 this.productIdArray = [];
                 this.productArray = [];
-                console.log(res.data.msg);
+                // console.log(res.data.msg);
                 this.$message({
                   type: "success",
                   message: "商品批量上架成功"
@@ -786,7 +791,7 @@ export default {
                 this.$options.methods.product_init.bind(this)();
                 this.productIdArray = [];
                 this.productArray = [];
-                console.log(res.data.msg);
+                // console.log(res.data.msg);
                 this.$message({
                   type: "success",
                   message: "商品批量下架成功"
