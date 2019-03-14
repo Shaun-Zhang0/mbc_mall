@@ -7,7 +7,6 @@
       <div class="el-container">
         <app-aside></app-aside>
         <router-view></router-view>
-
       </div>
     </div>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
@@ -15,7 +14,6 @@
 
 </template>
 <script>
-
 /**厂商管理平台 */
 import Header from "./components/brand/structure/header";
 import Aside from "./components/brand/structure/aside";
@@ -28,7 +26,6 @@ import Orderlist from "./components/brand/order/orderlist";
 import Chargeback from "./components/brand/order/chargeback";
 import login from "./components/brand/login/login";
 import register from "./components/brand/register/register";
-
 
 export default {
   components: {
@@ -48,7 +45,6 @@ export default {
 </script>
 
 <style>
-
 html,
 body {
   margin: 0;
@@ -86,5 +82,4 @@ body {
   height: 60px;
   line-height: 60px;
 }
-
 </style>
