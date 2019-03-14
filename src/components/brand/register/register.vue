@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-06 15:56:23
+ * @Last Modified time: 2019-03-14 21:19:30
  */
 
 <template>
@@ -110,6 +110,13 @@
                             </router-link>
                         </el-col>
                     </el-row>
+                    <el-row style="padding-top: 30px;">
+                        <el-col :span="20" :offset="2">
+                            <router-link to="/mall/index" tag="span">
+                                <el-button type="warning" style="width: 100%;">进入跨境商城</el-button>
+                            </router-link>
+                        </el-col>
+                    </el-row>
 
                 </el-col>
             </el-col>
@@ -184,6 +191,7 @@ html {
 }
 </style>
 <script>
+import { apibrandemail } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     // 邮箱格式验证
@@ -195,6 +203,11 @@ export default {
       setTimeout(() => {
         //   验证注册邮箱是否已被注册
         if (mailReg.test(value)) {
+           apibrandemail({
+               email: value
+           }).then(res => {
+               console.log(res.data);
+           })
             if(value == "brand@qq.com"){
                 callback(new Error("邮箱已被注册"));
             }
