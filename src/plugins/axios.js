@@ -7,34 +7,31 @@ import router from "../router";
 import { Message } from "element-ui";
 import Cookie from "../assets/js/cookie"; //设置cookie
 
-// Full config:  https://github.com/axios/axios#request-config
-// axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-axios.defaults.headers.post["token"] = Cookie.getCookie("token");
-console.log(Cookie.getCookie("token"));
-// axios.defaults.headers.post["Content-Type"] =
-//   "application/x-www-form-urlencoded";
-// if (Cookie.getCookie("token")) {
-//   axios.defaults.headers.post["token"] = Cookie.getCookie("token");
-// }
-
 axios.defaults.baseURL = "http://localhost:9000";
 
 let config = {
-  // baseURL: process.env.baseURL || process.env.apiUrl || ""
-  timeout: 10 * 1000 // Timeout
-  // withCredentials: true, // Check cross-site Access-Control
+  timeout: 6 * 1000, // Timeout
 };
 
 Vue.use(router);
 
 axios.create(config);
 
+    
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
-    console.log(config.url);
     
-    if (!Cookie.getCookie("token")&& config.url != "api/adminLogin/login") {
+    const token = Cookie.getCookie("token");
+    if (token) {
+        // 这里将token设置到headers中
+        config.headers.token = token;
+    }
+
+    if (
+      !token&&
+      config.url != "api/login/adminLogin/login"
+    ) {
       Message.error({
         message: "登录验证已过期，请重新登录"
       });
@@ -109,14 +106,11 @@ Plugin.install = function(Vue, options) {
 /**
  * get方法，对应get请求
  * @param {String} url [请求的url地址]
- * @param {Object} params [请求时携带的参数]
  */
-export function get(url, params) {
+export function get(url) {
   return new Promise((resolve, reject) => {
     axios
-      .get(url, {
-        params: params
-      })
+      .get(url)
       .then(res => {
         resolve(res);
       })
@@ -130,6 +124,7 @@ export function get(url, params) {
  * post方法，对应post请求
  * @param {String} url [请求的url地址]
  * @param {Object} params [请求时携带的参数]
+ *
  */
 export function post(url, params) {
   return new Promise((resolve, reject) => {
