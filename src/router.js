@@ -25,6 +25,8 @@ import order from "./components/mall/buy/order.vue";
 /**订单列表 */
 import orderlist from "./components/mall/order/orderlist.vue";
 import orderinfo from "./components/mall/order/orderinfo.vue";
+
+import searchResult from "./components/mall/search/search.vue";
 Vue.use(Router);
 
 export default new Router({
@@ -92,24 +94,35 @@ export default new Router({
       component: orderlist,
       meta: { keepAlive: false }
     },
-    {//header
-      path: "/mall/order",
-      name: 'order',
-      component: order,
-      meta: { keepAlive: false }
-    },
-    {//header
-      path: "/mall/myorderlist/orderinfo",
-      name: 'orderinfo',
-      component: orderinfo,
-      meta: { keepAlive: false }
-    },
-    {//轮播图
+    // {//header
+    //   path: "/mall/order",
+    //   name: 'order',
+    //   component: order,
+    //   meta: { keepAlive: false }
+    // },
+    // {//订单详情页
+    //   path: "/mall/myorderlist/orderinfo",
+    //   name: 'orderinfo',
+    //   component: orderinfo,
+    //   meta: { keepAlive: false }
+    // },
+    {//商品详情页
       path: "/mall/product/:id",
       name: 'product',
       component: product,
       meta: { keepAlive: false }
+    },
+    {
+      path: "/mall/searchResult",
+      name: 'searchResult',
+      component: searchResult,
+      meta: { keepAlive: false },
+      query:{
+        product_name:""
+      }
+      
     }
   ]
+  
 });
     
