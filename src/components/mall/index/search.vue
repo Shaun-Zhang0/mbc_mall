@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-14 17:01:58 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 19:29:19
+ * @Last Modified time: 2019-03-12 13:42:33
  */
 <template>
   <div>
@@ -16,8 +16,10 @@
       <el-col :xs="2" :sm="7" :md="7" :lg="3" :xl="3">&nbsp;</el-col>
       <el-col :xs="20" :sm="10" :md="10" :lg="8" :xl="9" class="form">
         <el-row>
-          <el-input class="input search_input" placeholder="搜索 商品">
-            <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white;" slot="append">搜索</el-button>
+          <el-input class="input search_input" value="global_data.search_Keyword" v-model="Keyword" placeholder="搜索 商品">
+            <!-- <router-link to="/mall/searchResult" tag="el-button"> -->
+            <el-button class="el-icon-search" style="background-color:rgb(253, 40, 40);color:white;" slot="append" @click="search">搜索</el-button>
+            <!-- </router-link> -->
           </el-input>
         </el-row>
         <el-row style="margin-top:-20px;">
@@ -29,7 +31,7 @@
     </el-row>
   </div>
 </template>
-<style >
+<style>
 .row {
   max-height: 150px;
   line-height: 100px;
@@ -74,9 +76,11 @@
 }
 </style>
 <script>
+import global_data from "./../../global_ data";
 export default {
   data() {
     return {
+      Keyword: "",
       suggest_word: [
         { word: "苹果手机" },
         { word: "针织衫" },
@@ -86,6 +90,12 @@ export default {
         { word: "运动鞋" }
       ]
     };
+  },
+  methods: {
+    search() {
+      // global_data.search_Keyword = this.Keyword;
+      this.$router.push({ path: "/mall/searchResult",name: 'searchResult',query:{product_name: this.Keyword} }); /**路由跳转到系统首页 */
+    }
   }
 };
 </script>
