@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-03 20:57:18
+ * @Last Modified time: 2019-03-14 21:15:11
  */
 <template>
     <div>
@@ -181,7 +181,9 @@
                         </el-row>
                         <el-row style="padding-top: 20px; font-size: 14px;">
                             <el-col :xs="6" :sm="4" :md="5" :lg="8">
-                                <span class="header_menu_item header_menu_user">厂商入驻</span>
+                                <router-link :to="'/brand/register'" tag="span">
+                                    <span class="header_menu_item header_menu_user">厂商入驻</span>
+                                </router-link>
                             </el-col>
                             <el-col :xs="3" :sm="6" :md="5" :lg="4">&nbsp;</el-col>
                             <el-col :xs="6" :sm="4" :md="4" :lg="8">
@@ -295,8 +297,8 @@ export default {
       logout_visible: false
     };
   },
-  created () {
-    this.login_status = true;  
+  created() {
+    this.login_status = true;
   },
   methods: {
     menu_expand() {
