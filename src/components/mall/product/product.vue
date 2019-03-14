@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 19:15:33
+ * @Last Modified time: 2019-03-12 11:18:49
  */
 
 <template>
@@ -83,14 +83,12 @@
                 <el-row class="confirm">
                     <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
                     <el-col :md="24" :lg="20">
-                        <router-link to="/mall/order" tag="span">
                             <el-button type="info" class="confirm_button">确认代理</el-button>
-                        </router-link>
                     </el-col>
                 </el-row>
 
                 <el-row class="product_details">
-                    <el-row class="details_tip" style="">
+                    <el-row class="details_tip" >
                         <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
                         <el-col :span="20">
                             <span>查看更多手机</span>
