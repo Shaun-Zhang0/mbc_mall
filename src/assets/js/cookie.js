@@ -25,7 +25,9 @@ const delCookie = function delCookie(name)
     exp.setTime(exp.getTime() - 1); 
     var cval=getCookie(name); 
     if(cval!=null) 
-        document.cookie= name + "="+cval+";expires="+exp.toGMTString(); 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString() + ";path=/brand"; 
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString() + ";path=/   "; 
+
 } 
 export default{
     setCookie,getCookie,delCookie
