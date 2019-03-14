@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:39:53 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-12 18:26:20
+ * @Last Modified time: 2019-03-13 23:18:16
  */
 
 <template>
@@ -18,21 +18,21 @@
         <div class="order_border" style="padding-left: 10px;padding-right:10px;">
             <el-row style="font-size: 28px;text-align: center;  margin-bottom: 70px;margin-top: 20px;margin-left: 20px;"></el-row>
             <!-- 查找区 -->
-            <el-form ref="product" :model="product" label-width="80px">
+            <el-form ref="order" :model="order" label-width="80px" style="margin-top: 90px;">
                 <el-row>
-                    <el-col :span="4" :offset="5">
+                    <el-col :span="5" :offset="5">
                         <el-form-item label="订单号">
-                            <el-input v-model="product.name" placeholder="请输入订单号"></el-input>
+                            <el-input v-model.number="order.id" placeholder="请输入订单号" @keydown.enter.native="searchOrder"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
-                        <el-form-item label="销售商">
-                            <el-input v-model.number="product.id" placeholder="请输入销售商名称"></el-input>
+                        <el-form-item label="商品名称">
+                            <el-input v-model="order.name" placeholder="请输入商品名称" @keydown.enter.native="searchOrder"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="订单状态">
-                            <el-select v-model="product.status" placeholder="请选择订单状态">
+                            <el-select v-model="order.status" placeholder="请选择订单状态">
                                 <el-option label="未付款" value="0"></el-option>
                                 <el-option label="已付款" value="1"></el-option>
                                 <el-option label="未发货" value="2"></el-option>
@@ -45,16 +45,13 @@
                         </el-form-item>
                     </el-col>
 
-                </el-row>
-                <el-row>
                     <el-col :span="12" :offset="5">
                         <el-form-item label="创建时间">
-                            <el-date-picker v-model="product.create_time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                            <el-date-picker v-model="order.create_time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                             </el-date-picker>
 
                         </el-form-item>
                     </el-col>
-
                 </el-row>
             </el-form>
             <!-- 按钮区 -->
@@ -62,7 +59,7 @@
                 <el-col>
                     <el-button type="success">批量发货</el-button>
                     <el-button type="danger">批量删除</el-button>
-                    <el-button type="primary" icon="el-icon-search">搜索</el-button>
+                    <el-button type="primary" icon="el-icon-search" @click="searchOrder">搜索</el-button>
                 </el-col>
             </el-row>
             <!-- 表格区 -->
@@ -72,23 +69,22 @@
                         <el-table-column type="selection" width="35">
                         </el-table-column>
 
-                        <el-table-column label="订单号" prop="id"></el-table-column>
-                        <el-table-column label="用户账号" prop="order_user"></el-table-column>
+                        <el-table-column label="订单号" prop="orderNo"></el-table-column>
+                        <el-table-column label="用户账号" prop="buyerNick"></el-table-column>
                         <el-table-column label="销售商名称" prop="order_store"></el-table-column>
                         <el-table-column label="物流号" prop="logistics_num"></el-table-column>
-                        <el-table-column label="订单状态" prop="order_status"></el-table-column>
+                        <el-table-column label="订单状态" prop="orderStatus"></el-table-column>
                         <el-table-column label="订单金额(元)" prop="order_price"></el-table-column>
                         <el-table-column label="完成时间" width="150" prop="finish_time"></el-table-column>
-                        <el-table-column label="创建时间" width="150" prop="create_time"></el-table-column>
+                        <el-table-column label="创建时间" width="150" prop="createTime"></el-table-column>
                         <el-table-column label="备注" width="150" prop="order_details"></el-table-column>
 
-                        <el-table-column label="操作" align="center">
+                        <el-table-column label="操作" align="center" width="140">
                             <template slot-scope="scope">
                                 <span class="iconfont icon-xiangqing" style="font-size:20px;cursor: pointer " title="订单详情" @click="show_order(scope.$index, scope.row)"></span>
-                                <span class="iconfont icon-fahuo" style="font-size:20px;cursor: pointer " title="订单发货" @click="dialog_send_order = true"></span>
-                                <span class="iconfont icon-iconfontedit" style="font-size:20px;cursor: pointer " title="编辑订单" @click="dialog_edit_order = true"></span>
+                                <span class="iconfont icon-fahuo" style="font-size:20px;cursor: pointer " title="订单发货" @click="shipPeration(scope.$index, scope.row)"></span>
+                                <span class="iconfont icon-iconfontedit" style="font-size:20px;cursor: pointer " title="编辑订单" @click="editOrder(scope.$index, scope.row)"></span>
                                 <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除订单" @click="del_order(scope.$index, scope.row)"></span>
-
                             </template>
                         </el-table-column>
 
@@ -96,8 +92,10 @@
                 </template>
             </el-row>
             <!-- 分页区 -->
-            <el-row class="pagination">
-                <el-pagination style="top:50%;text-align: center;" layout="prev, pager, next" :total="1000"></el-pagination>
+            <el-row style="text-align:center;margin-bottom:20px;">
+
+                <el-pagination @size-change="handleSizeChange" @current-change="handlePageChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+                </el-pagination>
             </el-row>
         </div>
         <!-- 订单详情 -->
@@ -128,6 +126,10 @@
                         <br>
                         <span>{{order_info.product_details}}</span>
                         <span style="color: rgb(165, 165, 165);float: right">x{{order_info.product_num}}</span>
+                        <br>
+                        <el-col :span="16"> <img style="max-width:100%;max-height:100%;" :src="img" alt=""></el-col>
+                        
+                       
                     </el-col>
                 </el-form-item>
 
@@ -140,7 +142,8 @@
                 <el-form-item label="订单金额：">
                     <el-col :span="24">
                         <span>{{order_info.product_price}}</span>
-                        <span class="amounttips">商品单价</span>
+                        <span style="padding-left:20px;color: rgb(165, 165, 165);">x{{order_info.product_num}}</span>
+                        <span style="color: rgb(165, 165, 165);float: right">商品单价</span>
                         <br>
                         <span>+ {{order_info.order_post_fee}}</span>
                         <span class="amounttips">运费</span>
@@ -185,10 +188,10 @@
         <el-dialog title="订单发货" :visible.sync="dialog_send_order">
             <el-form :model="send_order" label-width="100px">
                 <el-form-item label="订单号">
-                    {{order_info.order_id}}
+                    {{send_order.order_id}}
                 </el-form-item>
                 <el-form-item label="收货地址">
-                    {{order_info.order_rece_address}}
+                    {{send_order.address}}
                 </el-form-item>
                 <el-form-item label="快递公司">
                     <el-select placeholder="请选择快递公司" v-model="send_order.express">
@@ -209,38 +212,35 @@
 
                 <el-form-item label="订单号：">
                     <el-col :span="24">
-                        {{order_info.order_id}}
+                        {{edit_order.order_id}}
                     </el-col>
                 </el-form-item>
 
                 <el-form-item label="商品信息：">
                     <el-col :span="24">
                         <span>{{edit_order.product_name}}</span>
-                        <br>
-
-                        <el-select v-if="order_info.order_active == 2||order_info.order_active == 1" placeholder="请选择商品规格" v-model="edit_order.product_details">
-                            <el-option label="红色，5.8英寸" value="shanghai"></el-option>
-                            <el-option label="黑色，5.8英寸" value="beijing"></el-option>
-                        </el-select>
-                        <span v-else>{{edit_order.product_details}}</span>
-                        <el-input-number style="float: right" v-if="order_info.order_active == 1" v-model="edit_order.product_num" :min="1" :max="10"></el-input-number>
+                        <br> {{edit_order.product_details}}
+                       
+                        <el-input-number style="float: right" v-if="edit_order.order_active == 1" v-model="edit_order.product_num" :min="1" :max="10"></el-input-number>
                         <span v-else style="color: rgb(165, 165, 165);float: right">x{{edit_order.product_num}}</span>
+                        <br>
+                        <el-col :span="16"> <img style="max-width:100%;max-height:100%;" :src="img" alt=""></el-col>
                     </el-col>
                 </el-form-item>
 
                 <el-form-item label="用户账号：">
                     <el-col :span="24">
-                        <span>炒鸡帅哥</span>
+                        <span>{{edit_order.username}}</span>
                     </el-col>
                 </el-form-item>
 
                 <el-form-item label="订单金额：">
                     <el-col :span="24">
-                        <span>{{order_info.product_price}}</span>
+                        <span>{{edit_order.product_price}}</span>
                         <span style="padding-left:20px;color: rgb(165, 165, 165);">x{{edit_order.product_num}}</span>
                         <span style="color: rgb(165, 165, 165);float: right">商品单价</span>
                         <br>
-                        <span>+ {{order_info.order_post_fee}}</span>
+                        <span>+ {{edit_order.order_post_fee}}</span>
                         <span style="color: rgb(165, 165, 165);float: right">运费</span>
                         <br>
                         <span>{{edit_sum_pay}}</span>
@@ -298,43 +298,64 @@
   box-shadow: 10px 10px 5px #888888;
 }
 
-.amounttips{
+.amounttips {
   color: rgb(165, 165, 165);
   float: right;
 }
 </style>
 
 <script>
+import { apiOrderinit } from "./../../../assets/js/axios/api.js";
+import { apiOrderDetails } from "./../../../assets/js/axios/api.js";
+import { formatTime } from "./../../../assets/js/timeFormat.js";
+import { apiSearchOrder } from "./../../../assets/js/axios/api.js";
+import { apiPageNum } from "./../../../assets/js/axios/api.js";
+import { apiPageSize } from "./../../../assets/js/axios/api.js";
 export default {
+  mounted() {
+    this.orderInit();
+  },
   data() {
     return {
+      img: require("../../../../public/img/1.jpg"),
+      pageNum: 1,
+      pageSize: 5,
       dialog_order_details: false, //订单详情对话框
       dialog_send_order: false, //订单发货对话框
       dialog_edit_order: false,
 
       //编辑订单
       edit_order: {
+        order_id: "",
+        product_price: "",
+        order_active: 1,
         product_name: "IphoneX", //编辑后的商品名称
         product_details: "红色，5.8英寸", //编辑后的商品细节，例如颜色，尺寸
         order_payment_type: "在线支付", //编辑后的支付方式
+        username: "",
         rece_name: "郑扬志", //编辑后的收件人姓名
         rece_phone: "15915945621", //编辑后的收件人的联系方式
         rece_address: "广东省广州市虐塘路 09号 谎小区 70号楼 7单元 616室", //编辑后的收货地址
         order_details: "麻烦尽快发货，因为最近比较忙", //编辑后的订单备注
         product_num: 1, //修改后的商品数量
         order_store: "我的销售商",
-        sum_product: null
+        sum_product: null,
+        order_post_fee: 10
       },
       //发货处理
       send_order: {
+        order_id: "",
+        address: "",
         express: "" //快递公司
       },
       //查询订单信息
-      product: {
+      order: {
         name: "", //要查询的商品名称
         id: "", //要查询商品的id
         status: "", //要查询商品的状态
-        create_time: "" //要查询商品的发布时间区间开始
+        create_time: "", //要查询商品的创建时间区间开始
+        startTime: "", //创建开始时间
+        endTime: "" //创建结束时间
       },
       //订单详情数据
       order_info: {
@@ -345,9 +366,9 @@ export default {
         order_payment_type: "在线支付", //订单支付方式
         /**订货单时间*/
         order_create_time: "2019-03-10 12:30:55", //订单创建时间
-        order_send_time: "2019-03-10 12:30:55", //订单发货时间
+        order_send_time: "", //订单发货时间
         order_payment_time: "2019-03-10 12:30:55", //订单支付时间
-        order_rec_time: "2019-03-10 12:30:55", //订货收货时间
+        order_rec_time: "", //订货收货时间
         order_finish_time: "", //订单完成时间
         /**相关商品的新消息*/
         product_imgurl: "img/1.jpg", //商品图片
@@ -372,17 +393,17 @@ export default {
       order_list: [
         {
           /**订单相关信息*/
-          id: "11231231231", //订单号
-          create_time: "2019-03-10 12:30:55", //订单创建时间
+          orderNo: "11231231231", //订单号
+          createTime: "2019-03-10 12:30:55", //订单创建时间
           finish_time: "2019-03-10 12:30:55",
-          order_status: "待支付", //订单状态
+          orderStatus: "待支付", //订单状态
           order_price: "9999", //订单金额
           order_details: "麻烦尽快发货，因为最近比较忙",
           /**相关商品信息*/
           product_name: "iphoneX",
 
           /**用户信息*/
-          order_user: "及机会", //下单用户
+          buyerNick: "及机会", //下单用户
           order_store: "我的销售商",
           logistics_num: 11523484878
         }
@@ -392,23 +413,65 @@ export default {
   computed: {
     //   订单详情中的总金额计算
     sum_orderpay: function() {
-      return this.order_info.order_post_fee + this.order_info.product_price;
+      return (
+        this.order_info.order_post_fee +
+        this.order_info.product_price * this.order_info.product_num
+      );
     },
     // 编辑订单中的总金额计算
     edit_sum_pay: function() {
       return (
-        this.edit_order.product_num * this.order_info.product_price +
-        this.order_info.order_post_fee
+        this.edit_order.product_num * this.edit_order.product_price +
+        this.edit_order.order_post_fee
       );
     }
   },
   methods: {
+    /**订单数据初始化 */
+    orderInit() {
+      apiOrderinit({
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+        brandId: 1
+      }).then(res => {
+        console.log(res.data.data);
+        this.order_list = res.data.data;
+        for (var i in this.order_list) {
+          var time = this.order_list[i].createTime;
+          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "");
+          this.order_list[i].createTime = times;
+        }
+      });
+    },
     /**打开订单详情的对话框*/
     show_order(index, row) {
-      console.log(row.id);
       this.dialog_order_details = true;
-      this.order_info.order_id = row.id;
-
+      this.order_info.id = row.id;
+      apiOrderDetails(row.id).then(res => {
+        console.log(res.data.data);
+        this.order_info.order_id = res.data.data.orderNo;
+        this.order_info.product_name = res.data.data.productName;
+        this.order_info.product_num = res.data.data.num;
+        this.order_info.order_user = res.data.data.buyerNick;
+        this.order_info.product_price = res.data.data.productPrice;
+        this.order_info.order_rece_name = res.data.data.receiverName;
+        this.order_info.order_rece_phone = res.data.data.receiverPhone;
+        this.order_info.order_rece_address = res.data.data.receiverAddress;
+        this.order_info.order_create_time = formatTime(
+          res.data.data.createTime
+        );
+        if (res.data.data.paymentTime != null) {
+          this.order_info.order_payment_time = formatTime(
+            res.data.data.paymentTime
+          );
+        }
+        //订单发货时间
+        //订单收货时间
+        //订单完成时间
+      });
       //判断订单状态
       if (this.order_info.order_finish_time != "") {
         this.order_info.order_active = 5;
@@ -462,6 +525,28 @@ export default {
           });
         });
     },
+    /**展示订单发货操作的界面 */
+    shipPeration(index, row) {
+      this.dialog_send_order = true;
+      apiOrderDetails(row.id).then(res => {
+        this.send_order.address = res.data.data.receiverAddress;
+        this.send_order.order_id = row.orderNo;
+      });
+    },
+    /**编辑订单 */
+    editOrder(index, row) {
+      this.dialog_edit_order = true;
+      apiOrderDetails(row.id).then(res => {
+        this.edit_order.order_id = res.data.data.orderNo;
+        this.edit_order.product_name = res.data.data.productName;
+        this.edit_order.product_num = res.data.data.num;
+        this.edit_order.username = res.data.data.buyerNick;
+        this.edit_order.product_price = res.data.data.productPrice;
+        this.edit_order.rece_name = res.data.data.receiverName;
+        this.edit_order.rece_phone = res.data.data.receiverPhone;
+        this.edit_order.rece_address = res.data.data.receiverAddress;
+      });
+    },
     /**打开订单发货的对话框，判断是否对订单进行发货操作*/
     send_operation() {
       this.dialog_send_order = true;
@@ -483,6 +568,82 @@ export default {
             message: "已取消发货"
           });
         });
+    },
+    /**搜索订单 */
+    searchOrder() {
+      this.order.startTime = this.order.create_time[0];
+      this.order.endTime = this.order.create_time[1];
+      //  console.log(this.order);
+      apiSearchOrder({
+        pageNum: 1,
+        pageSize: 5,
+        productName: this.order.name,
+        orderNo: this.order.id,
+        OrderStatus: this.order.status,
+        startTime: this.order.startTime,
+        endTime: this.order.endTime
+      }).then(res => {
+        console.log(res.data.data);
+        this.pageNum = 1;
+
+        this.order_list = res.data.data;
+        for (var i in this.order_list) {
+          var time = this.order_list[i].createTime;
+          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "");
+          this.order_list[i].createTime = times;
+        }
+      });
+    },
+    /**每一页的订单条数 */
+    handleSizeChange(size) {
+      apiPageSize({
+        pageNum: this.pageNum,
+        pageSize: size,
+        productName: this.order.name,
+        orderNo: this.order.id,
+        OrderStatus: this.order.status,
+        startTime: this.order.startTime,
+        endTime: this.order.endTime
+      }).then(res => {
+        console.log(res.data.data);
+        this.pageSize = size;
+        this.order_list = res.data.data;
+        for (var i in this.order_list) {
+          var time = this.order_list[i].createTime;
+          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "");
+          this.order_list[i].createTime = times;
+        }
+      });
+    },
+    /**订单跳转到第几页的数据 */
+    handlePageChange(page) {
+      apiPageNum({
+        pageNum: page,
+        pageSize: this.pageSize,
+        productName: this.order.name,
+        orderNo: this.order.id,
+        OrderStatus: this.order.status,
+        startTime: this.order.startTime,
+        endTime: this.order.endTime
+      }).then(res => {
+        console.log(res.data.data);
+        this.pageNum = page;
+        this.order_list = res.data.data;
+        for (var i in this.order_list) {
+          var time = this.order_list[i].createTime;
+          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+            .toISOString()
+            .replace(/T/g, " ")
+            .replace(/\.[\d]{3}Z/, "");
+          this.order_list[i].createTime = times;
+        }
+      });
     }
   }
 };
