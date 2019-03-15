@@ -10,27 +10,33 @@ import Cookie from "../assets/js/cookie"; //设置cookie
 axios.defaults.baseURL = "http://localhost:9000";
 
 let config = {
-  timeout: 6 * 1000, // Timeout
+  timeout: 6 * 1000 // Timeout
 };
 
 Vue.use(router);
 
 axios.create(config);
+//不需要拦截器的url
+var notInterceptors = [
+  "api/login/adminLogin/login",
+  "api/personal//brand/register",
+  "api/login/login/brand/email"
+];
 
-    
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
-    
+
     const token = Cookie.getCookie("token");
     if (token) {
-        // 这里将token设置到headers中
-        config.headers.token = token;
+      // 这里将token设置到headers中
+      config.headers.token = token;
     }
 
     if (
-      !token&&
-      config.url != "api/login/adminLogin/login"
+      !token &&
+      // config.url != "api/login/adminLogin/login"
+      notInterceptors.indexOf(config.url) == -1
     ) {
       Message.error({
         message: "登录验证已过期，请重新登录"
