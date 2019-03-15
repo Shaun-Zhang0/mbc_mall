@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-14 21:19:30
+ * @Last Modified time: 2019-03-15 22:37:13
  */
 
 <template>
@@ -16,7 +16,7 @@
         <el-row class="input_area">
             <el-col style="background-color:white" class="form_border" :span="16" :offset="4">
                 <el-col :span="18" style="border-right: 1px solid #ccc;margin-bottom:20px;">
-                    <el-form :rules="rules" :model="register" ref="register">
+                    <el-form :rules="rules" status-icon :model="register" ref="register">
                         <el-row>
                             <el-col :span="24">
 
@@ -65,19 +65,12 @@
                                 <el-row>
                                     <el-col :span="14" :offset="5">
                                         <el-form-item label="联系方式" prop="register_phone">
-                                            <el-input v-model="register.register_phone " placeholder="请输入联系方式" @keydown.enter.native="submitForm('register')">
+                                            <el-input v-model.number="register.register_phone " placeholder="请输入联系方式" @keydown.enter.native="submitForm('register')">
                                             </el-input>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="主营范围" prop="register_brange">
-                                            <el-input v-model="register.register_brange" placeholder="请输入主营范围" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
+
                                 <el-row>
                                     <el-col :span="14" :offset="5">
                                         <el-form-item label="厂商地址" prop="register_address">
@@ -203,15 +196,15 @@ export default {
       setTimeout(() => {
         //   验证注册邮箱是否已被注册
         if (mailReg.test(value)) {
-           apibrandemail({
-               email: value
-           }).then(res => {
-               console.log(res.data);
-           })
-            if(value == "brand@qq.com"){
-                callback(new Error("邮箱已被注册"));
+          apibrandemail({
+            email: value
+          }).then(res => {
+            if (res.data.msg == "邮箱不可用，已被使用") {
+              callback(new Error("邮箱已被注册"));
+            } else {
+              callback();
             }
-          callback();
+          });
         } else {
           callback(new Error("请输入正确的邮箱格式"));
         }
@@ -223,10 +216,10 @@ export default {
         return callback(new Error("联系方式不得为空"));
       }
       setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入正确的联系方式格式"));
-        } else {
+        if (Number.isInteger(value)) {
           callback();
+        } else {
+          callback(new Error("请输入正确的联系方式格式"));
         }
       }, 100);
     };
@@ -241,6 +234,7 @@ export default {
     };
     // 数据返回
     return {
+      status: 0,
       show_close: false, //不显示对话框的关闭按钮
       verify_status: false, //展示验证成功
       verify_show: false, //验证框的显示
@@ -250,9 +244,8 @@ export default {
         register_name: "", //厂商名称
         register_email: "", //邮箱绑定
         register_pwd: "", //登录密码
-        register_brange: "", //营业范围
         register_address: "", //厂商地址
-        register_phone: "", //联系方式
+        register_phone: null, //联系方式
         register_lperson: "", //厂商法人
         register_checkpwd: ""
       },
@@ -276,9 +269,7 @@ export default {
         register_phone: [
           { required: true, validator: checkPhone, trigger: "blur" }
         ],
-        register_brange: [
-          { required: true, message: "主营范围不得为空", trigger: "blur" } //厂商名称的验证规则
-        ],
+
         register_address: [
           { required: true, message: "厂商地址不得为空", trigger: "blur" } //厂商名称的验证规则
         ]
@@ -292,17 +283,37 @@ export default {
         this.verify_status = true;
         this.disabled = true;
 
+        this.axios({
+          method: "POST",
+          url: "api/personal//brand/register",
+          data: {
+            name: this.register.register_name,
+            password: this.register.register_pwd,
+            email: this.register.register_email,
+            phone: this.register.register_phone,
+            address: this.register.register_address,
+            linkman: this.register.register_lperson
+          }
+        }).then(res => {
+          if (res.data.msg == "success") {
+            this.$message({
+              message: "注册成功",
+              type: "success"
+            });
+            setTimeout(() => {
+              this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+            }, 2000);
+          }
+        });
+
         setTimeout(() => {
           this.$message({
-            message: "验证成功,登陆ing",
+            message: "验证成功,正在注册中",
             type: "success"
           });
           this.verify_show = false;
           this.check_num = 0;
-          setTimeout(() => {
-            this.$router.push({ path: "/" }); /**路由跳转到系统首页 */
-          }, 1200);
-        }, 1000);
+        }, 1);
         return;
       } else {
         this.verify_status = false;
