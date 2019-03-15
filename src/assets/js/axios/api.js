@@ -104,3 +104,10 @@ export const apibrandemail = params => {
     QS.stringify(params)
   );
 };
+
+/**
+ * 厂商入驻api
+ */
+export const apibrandIn = params => {
+  // return post("")  
+}
