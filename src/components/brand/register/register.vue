@@ -2,149 +2,149 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-15 22:37:13
+ * @Last Modified time: 2019-03-20 20:56:36
  */
 
 <template>
-    <div class="main">
-        <el-row class="title">
-            <el-col :span="6" :offset="9">
-                跨境平台—厂商入驻
-            </el-col>
-        </el-row>
+  <div class="main">
+    <el-row class="title">
+      <el-col :span="6" :offset="9">
+        跨境平台—厂商入驻
+      </el-col>
+    </el-row>
 
-        <el-row class="input_area">
-            <el-col style="background-color:white" class="form_border" :span="16" :offset="4">
-                <el-col :span="18" style="border-right: 1px solid #ccc;margin-bottom:20px;">
-                    <el-form :rules="rules" status-icon :model="register" ref="register">
-                        <el-row>
-                            <el-col :span="24">
+    <el-row class="input_area">
+      <el-col style="background-color:white" class="form_border" :span="16" :offset="4">
+        <el-col :span="18" style="border-right: 1px solid #ccc;margin-bottom:20px;">
+          <el-form :rules="rules" status-icon :model="register" ref="register">
+            <el-row>
+              <el-col :span="24">
 
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="厂商名称" prop="register_name">
-                                            <el-input class="input-with-select" v-model="register.register_name" placeholder="请输入厂商名称" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="绑定邮箱" prop="register_email">
-                                            <el-input class="input-with-select" v-model="register.register_email" placeholder="请输入绑定邮箱，用于登录的凭证" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="登录密码" prop="register_pwd">
-                                            <el-input class="input-with-select" type="password" v-model="register.register_pwd" placeholder="请输入登录密码" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="确认登录密码" prop="register_checkpwd">
-                                            <el-input class="input-with-select" type="password" v-model="register.register_checkpwd" placeholder="请再次输入登录密码" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="法人" prop="register_lperson">
-                                            <el-input class="input-with-select" v-model="register.register_lperson" placeholder="请输入厂商法人" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="联系方式" prop="register_phone">
-                                            <el-input v-model.number="register.register_phone " placeholder="请输入联系方式" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row>
-                                    <el-col :span="14" :offset="5">
-                                        <el-form-item label="厂商地址" prop="register_address">
-                                            <el-input v-model="register.register_address" placeholder="请输入厂商地址" @keydown.enter.native="submitForm('register')">
-                                            </el-input>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                                <el-row style="padding-top:10px;top:0">
-                                    <el-col :span="12" :offset="6">
-                                        <el-form-item>
-                                            <el-button style="width:100%" type="primary" @click="submitForm('register')">注册</el-button>
-                                        </el-form-item>
-                                    </el-col>
-                                </el-row>
-
-                            </el-col>
-
-                        </el-row>
-
-                    </el-form>
-                </el-col>
-                <el-col :span="6" style="text-align:center;height: 300px;">
-                    <el-row style="color:#999999;padding-top:30px;font-size:12px;">已有厂商账号，请直接登录</el-row>
-                    <el-row style="padding-top: 30px;">
-                        <el-col :span="20" :offset="2">
-                            <router-link to="/brand/login" tag="span">
-                                <el-button type="success" style="width: 100%;">登录</el-button>
-                            </router-link>
-                        </el-col>
-                    </el-row>
-                    <el-row style="padding-top: 30px;">
-                        <el-col :span="20" :offset="2">
-                            <router-link to="/mall/index" tag="span">
-                                <el-button type="warning" style="width: 100%;">进入跨境商城</el-button>
-                            </router-link>
-                        </el-col>
-                    </el-row>
-
-                </el-col>
-            </el-col>
-        </el-row>
-
-        <el-row class="footer">
-            <el-col :span="6" :offset="6">Copyright：
-                <span class="iconfont icon-banquan"></span>猿聚团队</el-col>
-            <el-col :span="6">version 0.1.0</el-col>
-        </el-row>
-
-        <el-dialog title="验证" top=35vh :show-close=show_close :close-on-click-modal=false :modal=false :visible.sync="verify_show" width="30%">
-            <span>
                 <el-row>
-                    <el-col :span="24">
-
-                        <el-slider v-model="check_num" :disabled="disabled"></el-slider>
-                        <span>请将滑块移动到 100</span>
-
-                    </el-col>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="厂商名称" prop="register_name">
+                      <el-input prefix-icon="iconfont icon-changshangzhongxin" class="input-with-select" v-model="register.register_name" placeholder="请输入厂商名称" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :span="4">
-                        目前 {{check_num}} {{verify_check}}
-                        <br>
-                        <!-- <span v-if="verify_status" class="el-icon-circle-check-outline" style="color:#D7E1EB">匹配</span> -->
-                    </el-col>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="绑定邮箱" prop="register_email">
+                      <el-input prefix-icon="iconfont icon-youxiang" class="input-with-select" v-model="register.register_email" placeholder="请输入绑定邮箱，用于登录的凭证" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
-                <el-row style="text-align:right">
-                    <el-button @click="close_dialog">关 闭</el-button>
+                <el-row>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="登录密码" prop="register_pwd">
+                      <el-input prefix-icon="iconfont icon-mima" class="input-with-select" type="password" v-model="register.register_pwd" placeholder="请输入登录密码" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
                 </el-row>
-            </span>
-        </el-dialog>
+                <el-row>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="确认登录密码" prop="register_checkpwd">
+                      <el-input prefix-icon="iconfont icon-mima" class="input-with-select" type="password" v-model="register.register_checkpwd" placeholder="请再次输入登录密码" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
 
-    </div>
+                <el-row>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="法人" prop="register_lperson">
+                      <el-input prefix-icon="iconfont icon-farendaibiaoxingming" class="input-with-select" v-model="register.register_lperson" placeholder="请输入厂商法人" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="联系方式" prop="register_phone">
+                      <el-input prefix-icon="iconfont icon-lianxifangshi" v-model.number="register.register_phone " placeholder="请输入联系方式" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row>
+                  <el-col :span="14" :offset="5">
+                    <el-form-item label="厂商地址" prop="register_address">
+                      <el-input prefix-icon="iconfont icon-dizhi" v-model="register.register_address" placeholder="请输入厂商地址" @keydown.enter.native="submitForm('register')">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+                <el-row style="padding-top:10px;top:0">
+                  <el-col :span="12" :offset="6">
+                    <el-form-item>
+                      <el-button style="width:100%" type="primary" @click="submitForm('register')">注册</el-button>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+
+              </el-col>
+
+            </el-row>
+
+          </el-form>
+        </el-col>
+        <el-col :span="6" style="text-align:center;height: 300px;">
+          <el-row style="color:#999999;padding-top:30px;font-size:12px;">已有厂商账号，请直接登录</el-row>
+          <el-row style="padding-top: 30px;">
+            <el-col :span="20" :offset="2">
+              <router-link to="/brand/login" tag="span">
+                <el-button type="success" style="width: 100%;">登录</el-button>
+              </router-link>
+            </el-col>
+          </el-row>
+          <el-row style="padding-top: 30px;">
+            <el-col :span="20" :offset="2">
+              <router-link to="/mall/index" tag="span">
+                <el-button type="warning" style="width: 100%;">进入跨境商城</el-button>
+              </router-link>
+            </el-col>
+          </el-row>
+
+        </el-col>
+      </el-col>
+    </el-row>
+
+    <el-row class="footer">
+      <el-col :span="6" :offset="6">Copyright：
+        <span class="iconfont icon-banquan"></span>猿聚团队</el-col>
+      <el-col :span="6">version 0.1.0</el-col>
+    </el-row>
+
+    <el-dialog title="验证" top=35vh :show-close=show_close :close-on-click-modal=false :modal=false :visible.sync="verify_show" width="30%">
+      <span>
+        <el-row>
+          <el-col :span="24">
+
+            <el-slider v-model="check_num" :disabled="disabled"></el-slider>
+            <span>请将滑块移动到 100</span>
+
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="4">
+            目前 {{check_num}} {{verify_check}}
+            <br>
+            <!-- <span v-if="verify_status" class="el-icon-circle-check-outline" style="color:#D7E1EB">匹配</span> -->
+          </el-col>
+        </el-row>
+        <el-row style="text-align:right">
+          <el-button @click="close_dialog">关 闭</el-button>
+        </el-row>
+      </span>
+    </el-dialog>
+
+  </div>
 
 </template>
 <style scoped>
@@ -185,6 +185,7 @@ html {
 </style>
 <script>
 import { apibrandemail } from "./../../../assets/js/axios/api.js";
+import { apibrandIn } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     // 邮箱格式验证
@@ -278,22 +279,17 @@ export default {
   },
   computed: {
     verify_check() {
-      /**登录滑块验证  */
+      /**注册滑块验证  */
       if (this.check_num == 100) {
         this.verify_status = true;
         this.disabled = true;
-
-        this.axios({
-          method: "POST",
-          url: "api/personal//brand/register",
-          data: {
-            name: this.register.register_name,
-            password: this.register.register_pwd,
-            email: this.register.register_email,
-            phone: this.register.register_phone,
-            address: this.register.register_address,
-            linkman: this.register.register_lperson
-          }
+        apibrandIn({
+          name: this.register.register_name,
+          password: this.register.register_pwd,
+          email: this.register.register_email,
+          phone: this.register.register_phone,
+          address: this.register.register_address,
+          linkman: this.register.register_lperson
         }).then(res => {
           if (res.data.msg == "success") {
             this.$message({
@@ -301,7 +297,9 @@ export default {
               type: "success"
             });
             setTimeout(() => {
-              this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+              this.$router.push({
+                path: "/brand/login"
+              }); /**路由跳转到系统首页 */
             }, 2000);
           }
         });
