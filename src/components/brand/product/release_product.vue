@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:16 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 12:41:55
+ * @Last Modified time: 2019-03-20 21:25:12
  */
 
 <template>
@@ -50,7 +50,6 @@
                         <el-form-item label="商品类别" prop="cagegoryid">
                             <el-select v-model="form.cagegoryid" placeholder="请选择商品类别">
                                 <el-option v-for="category in category" :label="category.label" :value="category.value"></el-option>
-
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -126,25 +125,28 @@
                 <el-row>
                     <el-col :span="6" :offset="5">
                         <el-form-item label="商品图片">
-                            <el-upload class="avatar-uploader" action="" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                            </el-upload>
+
+                            <!-- <form name="imgForm" id="imgForm" enctype="multipart/form-data" action="图片上传接口" method='post'>
+                                <input class="input-loc-img" name="imgLocal" id="imgLocal" type='file' accept="image/*" @change="selectImg" />
+                            </form> -->
+                            <input type="file" class="form-control" @change="onFileChange">
                         </el-form-item>
                     </el-col>
 
+                </el-row>
+                <el-row class="form-group" v-if="image">
+                    <!-- <label>背景图预览</label> -->
+                    <el-col :span="12" :offset="6"><img style="max-width: 50%;max-height: 50%;border: 1px solid #ccc" :src="image" alt=""></el-col>
                 </el-row>
                 <el-row style="margin-top: 10px;">
                     <el-col :span="6" :offset="9">
                         <el-form-item>
                             <el-button type="primary" @click="release('form')">发布</el-button>
-                            <el-button @click="clear_info">重置</el-button>
+                            <el-button>重置</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
-
             </el-form>
-
         </div>
     </div>
 </template>
@@ -211,9 +213,11 @@ export default {
         limit_num: null, //限购数量
         brandId: 1, //厂商ID
         product_status: null, //商品状态
-        arraySize: []
+        arraySize: [],
+        file: "",
+        imgUrl: ""
       },
-      imageUrl: "", // 商品图片的url
+      image: "",
       rules: {
         name: [
           { required: true, message: "商品名称不得为空", trigger: "blur" } //密码的验证规则
@@ -263,6 +267,35 @@ export default {
     };
   },
   methods: {
+      /**上传图片 */
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      this.form.file = files[0];
+      let formData = new FormData(); //通过formdata上传
+      this.createImage(this.form.file);
+      formData.append("file", this.form.file);
+      var that = this;
+      this.axios({
+        method: "POST",
+        url: "api/product/upload",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" }
+      }).then(function(res) {
+        console.log(res.data);
+        that.form.imgUrl = res.data;
+      });
+    },
+    /**获取图片的本地路径，用于显示 */
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+
+      reader.onload = e => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
     release(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -272,22 +305,20 @@ export default {
             type: "warning"
           })
             .then(() => {
-              apiReleaseProduct(
-                {
-                  productName: this.form.name,
-                  productSku: this.form.quantity,
-                  productPrice: this.form.price,
-                  productRecommendprice: this.form.suggested_price,
-                  productDefails: this.form.details,
-                  warehouseId: this.form.warehouseid,
-                  productColors: this.form.color,
-                  scategoryId: this.form.cagegoryid,
-                  productWeight: this.form.weight,
-                  productSizes: this.form.arraySize,
-                  productStatue: this.form.productStatue
-                  
-                }
-              ).then(res => {
+              apiReleaseProduct({
+                productName: this.form.name,
+                productSku: this.form.quantity,
+                productPrice: this.form.price,
+                productRecommendprice: this.form.suggested_price,
+                productDefails: this.form.details,
+                warehouseId: this.form.warehouseid,
+                productColors: this.form.color,
+                scategoryId: this.form.cagegoryid,
+                productWeight: this.form.weight,
+                productSizes: this.form.arraySize,
+                productStatue: this.form.productStatue,
+                productPicture: this.form.imgUrl
+              }).then(res => {
                 this.$message({
                   type: "success",
                   message: "新的商品发布成功!"
@@ -307,65 +338,6 @@ export default {
           return false;
         }
       });
-
-      //           var token = this.Cookie.getCookie("token");
-      //           this.form.arraySize = this.form.size.split("/");
-      //           this.$axios({
-      //             method: "post",
-      //             url: "api/product/product/save",
-      //             data: {
-      //               productName: this.form.name,
-      //               productSku: this.form.quantity,
-      //               productPrice: this.form.price,
-      //               productRecommendprice: this.form.suggested_price,
-      //               productDefails: this.form.details,
-      //               warehouseId: this.form.warehouseid,
-      //               productColors: this.form.color,
-      //               scategoryId: this.form.cagegoryid,
-      //               productWeight: this.form.weight,
-      //               productSizes: this.form.arraySize,
-      //               productStatue: this.form.productStatue
-      //             },
-      //             headers: {
-      //               token: token
-      //             }
-      //           }).then(res => {
-      //             this.$message({
-      //               type: "success",
-      //               message: "新的商品发布成功!"
-      //             });
-      //             this.$refs.form.resetFields(); //清空表单数据
-      //           });
-      //         })
-      //         .catch(() => {
-      //           this.$message({
-      //             type: "info",
-      //             message: "已取消发布"
-      //           });
-      //         });
-      //     } else {
-      //       //   console.log("error submit!!");
-      //       return false;
-      //     }
-      //   });
-    },
-
-    clear_info() {},
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      console.log(URL.createObjectURL(file.raw));
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
     }
   }
 };
