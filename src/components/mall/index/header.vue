@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-14 21:15:11
+ * @Last Modified time: 2019-03-20 14:56:55
  */
 <template>
     <div>
@@ -236,7 +236,7 @@
                 </el-col>
             </el-col>
         </el-row>
-        <MallLogin ref='login_show'></MallLogin>
+        <MallLogin v-on:storeName="storeName" ref='login_show'></MallLogin>
     </div>
 </template>
 <style scoped>
@@ -254,7 +254,7 @@
   text-align: center;
 }
 .header_items:hover {
-  /* color: rgb(247, 34, 34); */
+  color: rgb(247, 34, 34);
 }
 .header_menu {
   background-color: white;
@@ -292,13 +292,28 @@ export default {
   data() {
     return {
       expand: false,
-      login_status: true,
+      login_status: false,
       login_name: "超级大帅哥",
       logout_visible: false
     };
   },
+  computed: {
+    getStoreName() {
+      if (this.Cookie.getCookie("storeName")) {
+        this.login_status = true;
+      }
+      console.log(this.Cookie.getCookie("storeName"));
+      return this.Cookie.getCookie("storeName");
+    }
+  },
   created() {
-    this.login_status = true;
+    let name = this.Cookie.getCookie("storeName");
+    if (!name) {
+      this.login_status = false;
+    } else {
+      this.login_status = true;
+      this.login_name = name;
+    }
   },
   methods: {
     menu_expand() {
@@ -308,8 +323,23 @@ export default {
       this.$refs.login_show.dialogForLogin = true;
     },
     logout() {
-      this.login_status = false;
+      this.logout_visible = false;
+
+      this.Cookie.delCookie("storeName");
+      this.Cookie.delCookie("storeToken");
+      if (!this.Cookie.getCookie("storeName")) {
+        this.login_status = false;
+      }
       this.$router.push("/mall/index");
+    },
+    storeName(value) {
+      if (value != "") {
+        this.login_status = true;
+        this.$refs.login_show.dialogForLogin = false;
+
+        this.login_name = value;
+        // console.log(this.Cookie.getCookie("storeName"));
+      }
     }
   }
 };
