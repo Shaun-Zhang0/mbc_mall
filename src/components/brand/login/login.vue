@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-14 14:42:13
+ * @Last Modified time: 2019-03-20 14:47:43
  */
 
 <template>
@@ -15,7 +15,7 @@
             <el-row>
               <el-col :span="20" :offset="2">
                 <el-form-item label="邮箱" prop="login_email">
-                  <el-input class="input-with-select" v-model="login.login_email" placeholder="请输入登录邮箱" @keydown.enter.native="submitForm('login')">
+                  <el-input suffix-icon="iconfont icon-youxiang" class="input-with-select" v-model="login.login_email" placeholder="请输入登录邮箱" @keydown.enter.native="submitForm('login')">
                   </el-input>
                 </el-form-item>
 
@@ -24,7 +24,7 @@
             <el-row>
               <el-col :span="20" :offset="2">
                 <el-form-item label="密码" prop="login_pwd">
-                  <el-input v-model="login.login_pwd" type="password" placeholder="请输入登录密码" @keydown.enter.native="submitForm('login')">
+                  <el-input suffix-icon="iconfont icon-mima" v-model="login.login_pwd" type="password" placeholder="请输入登录密码" @keydown.enter.native="submitForm('login')">
                   </el-input>
                 </el-form-item>
               </el-col>
@@ -180,15 +180,12 @@ export default {
         setTimeout(() => {
           apiLogin({
             email: this.login.login_email,
-            password: this.login.login_pwd,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            }
+            password: this.login.login_pwd
           }).then(res => {
             console.log(res.data.data.token);
-            this.Cookie.setCookie("token", res.data.data.token);
             if (res.data.code == 200) {
-              
+              this.Cookie.setCookie("token", res.data.data.token);
+
               this.$message({
                 message: "验证成功,登陆中",
                 type: "success"
@@ -205,7 +202,6 @@ export default {
             }
           });
 
-        
           this.verify_show = false;
           this.check_num = 0;
         }, 1000);
