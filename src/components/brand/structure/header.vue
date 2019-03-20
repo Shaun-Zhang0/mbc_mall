@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-14 14:00:41
+ * @Last Modified time: 2019-03-19 11:38:48
  */
 
 <template>
@@ -85,36 +85,35 @@ export default {
     };
   },
   mounted() {
-    
-    var token = this.Cookie.getCookie("token");
-    console.log(token);
+    if (token) {
+      var token = this.Cookie.getCookie("token");
+      console.log(token);
+    }
 
-
-    // apiSearchInfo({})
-    //   .then(res => {
-    //     // console.log(res.data);
-    //     this.name = res.data.data.name;
-    //   })
-    //   .catch(error => {
-    //     console.info(error.request.status);
-    //   });
-
-    this.$axios({
-      method: "post",
-      url: "api/login/adminLogin/getAdminTo",
-      header: {
-        token: token
-  
-}
-    })
-    
+    apiSearchInfo({})
       .then(res => {
         // console.log(res.data);
         this.name = res.data.data.name;
       })
       .catch(error => {
-        // console.info(error.request.status);
+        console.info(error.request.status);
       });
+
+    // this.$axios({
+    //   method: "post",
+    //   url: "api/login/adminLogin/getAdminTo",
+    //   header: {
+    //     token: token
+    //   }
+    // })
+
+    //   .then(res => {
+    //     // console.log(res.data);
+    //     this.name = res.data.data.name;
+    //   })
+    //   .catch(error => {
+    //     // console.info(error.request.status);
+    //   });
   },
   methods: {
     full_screen() {
