@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-15 21:42:49 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-02-26 16:31:22
+ * @Last Modified time: 2019-03-16 22:10:14
  */
 <template>
   <div style="width:100%">
@@ -17,7 +17,7 @@
           </el-col>
         </el-row>
 
-        <el-row @mouseenter.native="expand = true" v-show="show" class="menu_item" v-for="item in menu_items">
+        <el-row @mouseenter.native="showMenu(item)" v-show="show" class="menu_item" v-for="item in menu_items">
           <el-col :xs="0" :sm="1" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
           <el-col :xs="23" :sm="23" :lg="23" :xl="10" :span="23">
             <span :class="item.icon"></span>
@@ -30,17 +30,18 @@
         <div v-for="kind in menu_show">
           <el-row class="subkind">
             <el-col :xs="0" :sm="0" :md="1" :lg="1" :xl="1">&nbsp;</el-col>
-            <el-col :xs="24" :sm="4" :lg="4" :span="3" style="margin-top:5px;">{{kind.second_menu}} ></el-col>
+            <el-col :xs="24" :sm="4" :lg="4" :span="3" style="margin-top:5px;">{{kind.categoryName}} ></el-col>
             <el-col :xs="24" :sm="18" :md="20" :lg="19">
               <el-row style="font-size:13px;">
-                <el-col v-for="name in kind.third_menu" style="padding-top:5px;padding-bottom:5px;" :xs="6" :lg="4"  :span="4">
-                  <span class="subkind_item">{{name.name}}</span>
+                <el-col v-for="name in kind.categoryList" style="padding-top:5px;padding-bottom:5px;" :xs="6" :lg="4" :span="4">
+                  <span class="subkind_item">{{name.categoryName}}</span>
                 </el-col>
               </el-row>
             </el-col>
           </el-row>
         </div>
       </el-col>
+
     </el-row>
   </div>
 </template>
@@ -106,137 +107,221 @@
 }
 </style>
 <script>
+import { apiMallMenuShow } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     return {
       expand: false,
       show: true,
+      /**一级菜单 */
       menu_items: [
-        { icon: "iconfont icon-weibiaoti2fuzhi09", name: "家用电器" },
-        { icon: "iconfont icon-diannao", name: "电脑 办公" },
-        { icon: "iconfont icon-gehuhuazhuang", name: "个护化妆" },
-        { icon: "iconfont icon-tubiao", name: "钟表" },
-        { icon: "iconfont icon-shipinyinliao", name: "食品饮料 保健食品" },
-        { icon: "iconfont icon-qicheyongpin", name: "汽车用品" },
-        { icon: "iconfont icon-wanju", name: "玩具乐器" },
-        { icon: "iconfont icon-shouji", name: "手机" },
-        { icon: "iconfont icon-shuma", name: "数码" },
-        { icon: "iconfont icon-jiaju", name: "家居家装" },
-        { icon: "iconfont icon-chuju", name: "厨具" },
-        { icon: "iconfont icon-fushi", name: "服饰内衣" },
-        { icon: "iconfont icon-lipinxiangbao", name: "礼品箱包" },
-        { icon: "iconfont icon-35", name: "珠宝" },
-        { icon: "iconfont icon-yundongjiankangzhuanhuan01", name: "运动健康" },
-        { icon: "iconfont icon-tushu", name: "图书 音像" },
-        { icon: "iconfont icon-lvxing", name: "旅行 充值 票务" }
-      ],
-      menu_show: [
         {
-          second_menu: "大型电器",
-          third_menu : [
-            { name: "平板电视" },
-            { name: "空调" },
-            { name: "家庭影院" },
-            { name: "DVD播放器" },
-            { name: "迷你音响" },
-            { name: "烟机灶具" },
-            { name: "热水器" },
-            { name: "消毒柜 " },
-            { name: "洗碗机 " },
-            { name: "酒柜冷柜" },
-            { name: "热水器" },
-            { name: "冰箱" },
-            { name: "洗衣机" },
-            { name: "家电配件" },
-            { name: "家电下乡" }
-          ]
+          icon: "iconfont icon-weibiaoti2fuzhi09",
+          name: "家用电器",
+          id: 1
         },
         {
-          second_menu: "生活电器",
-          third_menu: [
-            { name: "电风扇" },
-            { name: "冷风扇" },
-            { name: "净化器" },
-            { name: "饮水器" },
-            { name: "挂烫机/熨斗" },
-            { name: "吸尘器" },
-            { name: "电话机" },
-            { name: "插座 " },
-            { name: "收音/录机 " },
-            { name: "清洁机" },
-            { name: "加湿机" },
-            { name: "取暖机" },
-            { name: "扫地机器人" },
-            { name: "干衣机" },
-            { name: "电器配件" },
-            { name: "其他生活电器" }
-          ]
+          icon: "iconfont icon-diannao",
+          name: "电脑 办公",
+          id: 2
         },
         {
-          second_menu: "厨房电器",
-          third_menu: [
-            { name: "料理/榨汁机" },
-            { name: "豆浆机" },
-            { name: "电饭煲" },
-            { name: "电压力锅" },
-            { name: "面包机" },
-            { name: "咖啡机" },
-            { name: "微波炉" },
-            { name: "电烤箱" },
-            { name: "电磁炉" },
-            { name: "电饼铛/烧烤盘" },
-            { name: "煮蛋器" },
-            { name: "酸奶机" },
-            { name: "电炖锅" },
-            { name: "电水壶/热水壶" },
-            { name: "多用途锅" },
-            { name: "果蔬解毒机" },
-            { name: "其他厨房电器" }
-          ]
+          icon: "iconfont icon-gehuhuazhuang",
+          name: "个护化妆",
+          id: 3
         },
         {
-          second_menu: "个护健康",
-          third_menu: [
-            { name: "剃须刀" },
-            { name: "剃毛/脱毛器" },
-            { name: "口腔护理" },
-            { name: "电吹风" },
-            { name: "美容器" },
-            { name: "按摩椅" },
-            { name: "足浴盆" },
-            { name: "血压计" },
-            { name: "健康秤/厨房秤" },
-            { name: "血糖仪" },
-            { name: "体温计" },
-            { name: "计步/脂肪检测仪" },
-            { name: "其他健康电器" }
-          ]
+          icon: "iconfont icon-tubiao",
+          name: "钟表",
+          id: 4
         },
         {
-          second_menu: "五金家装",
-          third_menu: [
-            { name: "电动工具" },
-            { name: "手动工具" },
-            { name: "仪器仪表" },
-            { name: "浴霸/排气扇" },
-            { name: "灯具" },
-            { name: "LED灯" },
-            { name: "洁身器" },
-            { name: "水槽" },
-            { name: "龙头" },
-            { name: "淋浴花洒" },
-            { name: "厨卫五金" },
-            { name: "家具五金" },
-            { name: "门铃" },
-            { name: "电气开关" },
-            { name: "插座" },
-            { name: "电工电料" },
-            { name: "监控安防" },
-            { name: "电线/线缆" }
-          ]
+          icon: "iconfont icon-shipinyinliao",
+          name: "食品饮料 保健食品",
+          id: 5
+        },
+        {
+          icon: "iconfont icon-qicheyongpin",
+          name: "汽车用品",
+          id: 6
+        },
+        {
+          icon: "iconfont icon-wanju",
+          name: "玩具乐器",
+          id: 7
+        },
+        {
+          icon: "iconfont icon-shouji",
+          name: "手机",
+          id: 8
+        },
+        {
+          icon: "iconfont icon-shuma",
+          name: "数码",
+          id: 9
+        },
+        {
+          icon: "iconfont icon-jiaju",
+          name: "家居家装",
+          id: 10
+        },
+        {
+          icon: "iconfont icon-chuju",
+          name: "厨具",
+          id: 11
+        },
+        {
+          icon: "iconfont icon-fushi",
+          name: "服饰内衣",
+          id: 12
+        },
+        {
+          icon: "iconfont icon-lipinxiangbao",
+          name: "礼品箱包",
+          id: 13
+        },
+        {
+          icon: "iconfont icon-35",
+          name: "珠宝",
+          id: 14
+        },
+        {
+          icon: "iconfont icon-yundongjiankangzhuanhuan01",
+          name: "运动健康",
+          id: 15
+        },
+        {
+          icon: "iconfont icon-tushu",
+          name: "图书 音像",
+          id: 16
+        },
+        {
+          icon: "iconfont icon-lvxing",
+          name: "旅行 充值 票务",
+          id: 17
         }
-      ]
+      ],
+      menu_show: []
+      /**二级菜单 和 三级菜单 */
+      // menu_show: [
+      //   {
+      //     categoryName: "大型电器",
+      //     third_menu: [
+      //       { name: "平板电视" },
+      //       { name: "空调" },
+      //       { name: "家庭影院" },
+      //       { name: "DVD播放器" },
+      //       { name: "迷你音响" },
+      //       { name: "烟机灶具" },
+      //       { name: "热水器" },
+      //       { name: "消毒柜 " },
+      //       { name: "洗碗机 " },
+      //       { name: "酒柜冷柜" },
+      //       { name: "热水器" },
+      //       { name: "冰箱" },
+      //       { name: "洗衣机" },
+      //       { name: "家电配件" },
+      //       { name: "家电下乡" }
+      //     ]
+      //   },
+      //   {
+      //     categoryName: "生活电器",
+      //     third_menu: [
+      //       { name: "电风扇" },
+      //       { name: "冷风扇" },
+      //       { name: "净化器" },
+      //       { name: "饮水器" },
+      //       { name: "挂烫机/熨斗" },
+      //       { name: "吸尘器" },
+      //       { name: "电话机" },
+      //       { name: "插座 " },
+      //       { name: "收音/录机 " },
+      //       { name: "清洁机" },
+      //       { name: "加湿机" },
+      //       { name: "取暖机" },
+      //       { name: "扫地机器人" },
+      //       { name: "干衣机" },
+      //       { name: "电器配件" },
+      //       { name: "其他生活电器" }
+      //     ]
+      //   },
+      //   {
+      //     second_menu: "厨房电器",
+      //     third_menu: [
+      //       { name: "料理/榨汁机" },
+      //       { name: "豆浆机" },
+      //       { name: "电饭煲" },
+      //       { name: "电压力锅" },
+      //       { name: "面包机" },
+      //       { name: "咖啡机" },
+      //       { name: "微波炉" },
+      //       { name: "电烤箱" },
+      //       { name: "电磁炉" },
+      //       { name: "电饼铛/烧烤盘" },
+      //       { name: "煮蛋器" },
+      //       { name: "酸奶机" },
+      //       { name: "电炖锅" },
+      //       { name: "电水壶/热水壶" },
+      //       { name: "多用途锅" },
+      //       { name: "果蔬解毒机" },
+      //       { name: "其他厨房电器" }
+      //     ]
+      //   },
+      //   {
+      //     second_menu: "个护健康",
+      //     third_menu: [
+      //       { name: "剃须刀" },
+      //       { name: "剃毛/脱毛器" },
+      //       { name: "口腔护理" },
+      //       { name: "电吹风" },
+      //       { name: "美容器" },
+      //       { name: "按摩椅" },
+      //       { name: "足浴盆" },
+      //       { name: "血压计" },
+      //       { name: "健康秤/厨房秤" },
+      //       { name: "血糖仪" },
+      //       { name: "体温计" },
+      //       { name: "计步/脂肪检测仪" },
+      //       { name: "其他健康电器" }
+      //     ]
+      //   },
+      //   {
+      //     second_menu: "五金家装",
+      //     third_menu: [
+      //       { name: "电动工具" },
+      //       { name: "手动工具" },
+      //       { name: "仪器仪表" },
+      //       { name: "浴霸/排气扇" },
+      //       { name: "灯具" },
+      //       { name: "LED灯" },
+      //       { name: "洁身器" },
+      //       { name: "水槽" },
+      //       { name: "龙头" },
+      //       { name: "淋浴花洒" },
+      //       { name: "厨卫五金" },
+      //       { name: "家具五金" },
+      //       { name: "门铃" },
+      //       { name: "电气开关" },
+      //       { name: "插座" },
+      //       { name: "电工电料" },
+      //       { name: "监控安防" },
+      //       { name: "电线/线缆" }
+      //     ]
+      //   }
+      // ]
     };
+  },
+  methods: {
+    showMenu(val) {
+      // console.log(val.id);
+      this.expand = true;
+      apiMallMenuShow(val.id).then(res => {
+        if (res.data.msg == "成功") {
+          this.menu_show = res.data.data;
+          // console.log(this.menu_show);
+        }
+      });
+    }
   }
 };
 </script>
