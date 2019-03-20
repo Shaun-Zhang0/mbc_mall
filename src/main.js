@@ -11,7 +11,10 @@ import Cookie from "./assets/js/cookie"; //设置cookie
 Object.defineProperty(Vue.prototype, "$http", {
   value: axios
 });
+
+
 Vue.prototype.Cookie = Cookie;
+
 
 
 /**厂商管理平台 */
