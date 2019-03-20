@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:38 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-10 00:49:15
+ * @Last Modified time: 2019-03-20 21:04:48
  */
 
 <template>
@@ -17,7 +17,7 @@
 
         <div class="border">
             <el-row class="info_title">用户个人信息</el-row>
-            <el-form :rules="rules" ref="form" :model="form" label-width="80px">
+            <el-form v-loading="loading" :rules="rules" ref="form" :model="form" label-width="80px">
                 <el-row>
                     <el-col :span="6" :offset="5">
                         <el-form-item label="厂商id">
@@ -107,22 +107,24 @@
 }
 </style>
 <script>
-import {apiSearchInfo} from "./../../../assets/js/axios/api.js";
+import { apiSearchInfo } from "./../../../assets/js/axios/api.js";
+import { apibrandInfoUpdata } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     return {
+      loading: true,
       show_emali: false,
       emali_status: false,
       token: "",
       form: {
-        id: "123", //厂商id
-        name: "养鸡场", //厂商名称
-        business_range: "卖各种鸡", //经营范围
-        address: "广东省广州市虐塘路 09号 谎小区 111号楼 7单元 616室", //厂商地址
-        legal_person: "郑扬志", //法人或者联系人
-        lperson_phone: "1234579845", //联系方式
-        email: "472184137@qq.com",
-        status: "正常"
+        id: "", //厂商id
+        name: "", //厂商名称
+        business_range: "", //经营范围
+        address: "", //厂商地址
+        legal_person: "", //法人或者联系人
+        lperson_phone: "", //联系方式
+        email: "",
+        status: ""
       },
       rules: {
         name: [
@@ -146,26 +148,27 @@ export default {
   mounted() {
     this.token = this.Cookie.getCookie("token");
     console.log(this.token);
-    
+
     apiSearchInfo({})
-    .then(res => {
-        console.log(res.data);
-        this.form.name = res.data.data.name;
-        this.form.id = res.data.data.adminId;
-        this.form.address = res.data.data.address;
-        this.form.legal_person = res.data.data.username;
-        if (res.data.data.state == 1) {
-          this.form.status = "正常";
-        } else {
-          this.form.status = "冻结";
+      .then(res => {
+        if (res.data.code == 200) {
+          this.loading = false;
+          this.form.name = res.data.data.name;
+          this.form.id = res.data.data.adminId;
+          this.form.address = res.data.data.address;
+          this.form.legal_person = res.data.data.username;
+          if (res.data.data.state == 1) {
+            this.form.status = "正常";
+          } else {
+            this.form.status = "冻结";
+          }
+          this.form.email = res.data.data.email;
+          this.form.lperson_phone = res.data.data.phone;
         }
-        this.form.email = res.data.data.email;
-        this.form.lperson_phone = res.data.data.phone;
       })
       .catch(error => {
         // console.info(error.request.status);
       });
-   
   },
   methods: {
     edit(formName) {
@@ -177,25 +180,19 @@ export default {
             type: "warning"
           })
             .then(() => {
-              this.$axios({
-                method: "post",
-                url: "",
-                data: {
-                  id: this.form.id,
-                  name: this.form.name,
-                  phone: this.form.lperson_phone,
-                  address: this.form.address
-                  //   business_range: this.form.business_range //   厂商经营范围
-                }
-              }).then(res => {
-                {
-                  this.$message({
-                    type: "success",
-                    message: "个人信息修改成功!"
-                  });
-                  this.$router.push({ path: "/brand" });
-                } /**路由跳转到系统首页 */
-              });
+              //   apibrandInfoUpdata({
+              //     id: this.form.id,
+              //     name: this.form.name,
+              //     phone: this.form.lperson_phone,
+              //     address: this.form.address
+              //   }).then(res => {
+              //     if (res.data.msg == "success") {
+              //       this.$message({
+              //         type: "success",
+              //         message: "个人信息修改成功!"
+              //       });
+              //     }
+              //   });
             })
             .catch(() => {
               this.$message({
