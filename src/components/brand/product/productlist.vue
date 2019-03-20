@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-13 23:15:08
+ * @Last Modified time: 2019-03-20 21:52:14
  */
 
 <template>
@@ -31,7 +31,7 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="商品状态">
-              <el-select v-model="product.status" placeholder="请选择商品状态">
+              <el-select v-model="product.status" clearable placeholder="请选择商品状态">
                 <el-option label="正常" value="1"></el-option>
                 <el-option label="下架" value="0"></el-option>
 
@@ -60,14 +60,14 @@
       <!-- 数据区 -->
       <el-row>
         <template>
-          <el-table :data="productlist" ref="productlist" style="width: 100%" size="mini" @selection-change="handleSelectionChange">
+          <el-table v-loading="loading" :data="productlist" ref="productlist" style="width: 100%" size="mini" @selection-change="handleSelectionChange">
             <el-table-column type="selection" width="50">
             </el-table-column>
             <el-table-column label="商品id" prop="id" width="80"></el-table-column>
             <el-table-column label="商品名称" prop="name"></el-table-column>
-            <el-table-column prop="imgPath" label="商品图片" width="100">
+            <el-table-column prop="picture" label="商品图片" width="100">
               <template slot-scope="scope">
-                <img :src="scope.row.imgPath" alt="" title="查看大图" style="width: 50px;height: 50px;cursor: pointer;" @click="show_img(scope.$index, scope.row)">
+                <img :src="scope.row.picture" alt="" title="查看大图" style="width: 50px;height: 50px;cursor: pointer;" @click="show_img(scope.$index, scope.row)">
               </template>
             </el-table-column>
             <el-table-column label="建议售价(元)" prop="recommendPrice"></el-table-column>
@@ -81,7 +81,7 @@
                 <span v-if="scope.row.productStatus == '0'" class="iconfont icon-shangjia1" style="font-size:20px;cursor: pointer " title="上架" @click="handeleShelves(scope.$index, scope.row)"></span>
                 <span v-if="scope.row.productStatus == '1'" class="iconfont icon-xiajia1" style="font-size:20px;cursor: pointer " title="下架" @click="handeleOutOfShelves(scope.$index, scope.row)"></span>
                 <span class="iconfont icon-xiangqing" style="font-size:20px;cursor: pointer " title="商品详情" @click="handleEdit(scope.$index,scope.row)"></span>
-                <!-- <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除商品" @click="handleDelete(scope.$index,scope.row)"></span> -->
+                <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除商品" @click="handleDelete(scope.$index,scope.row)"></span>
 
               </template>
             </el-table-column>
@@ -90,7 +90,7 @@
       </el-row>
       <el-row style="text-align:center;margin-bottom:20px;">
 
-        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="pageNum" :page-sizes="pageArray" layout="total, sizes, prev, pager, next" :total="totalNum">
         </el-pagination>
         </el-pagination>
 
@@ -133,9 +133,12 @@
           <el-col :span="8">
             <el-form-item label="商品类别 :">
               <el-col :span="15">
-                <el-select placeholder="请选择商品类别" v-model="product_show.cagegoryid">
+                <!-- <el-select placeholder="请选择商品类别" v-model="product_show.cagegoryid">
                   <el-option label="手机" value="1"></el-option>
                   <el-option label="电脑" value="2"></el-option>
+                </el-select> -->
+                <el-select v-model="product_show.cagegoryid" placeholder="请选择商品类别">
+                  <el-option v-for="category in category" :label="category.label" :value="category.value"></el-option>
                 </el-select>
               </el-col>
             </el-form-item>
@@ -204,36 +207,27 @@
 
         <el-row>
           <el-col :span="24">
-            <el-col :span="12">
+            <el-col :span="11">
               <el-form-item label="商品图片">
-                <img style="max-width:100%;max-height:100%;" :src="img" alt="">
+                <img style="max-width:50%;max-height:50%;" :src="product_show.img" alt="">
               </el-form-item>
             </el-col>
-            <el-col :span="10" :offset="2">
-              <el-button size="mini" @click="update_productimg = !update_productimg">更换图片</el-button>
-              <el-upload v-if="update_productimg" style="margin-top:20px;" drag action="https://jsonplaceholder.typicode.com/posts/" multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">将文件拖到此处，或
-                  <em>点击上传</em>
-                </div>
-                <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过5MB</div>
-              </el-upload>
+
+            <el-col :span="11" :offset="1">
+              <el-form-item label="更换图片">
+                <input type="file" @change="onFileChange">
+              </el-form-item>
             </el-col>
-
           </el-col>
-
         </el-row>
-
         <el-row>
           <el-col :span="24">
-
             <el-form-item label="描述信息 :">
               <el-col :span="24">
                 <el-input type="textarea" :rows="4" v-model="product_show.details" placeholder="请输入内容" style="resize: none">
                 </el-input>
               </el-col>
             </el-form-item>
-
           </el-col>
         </el-row>
 
@@ -245,10 +239,10 @@
     </el-dialog>
 
     <!-- 展示图片 -->
-    <el-dialog :visible.sync="dialog_showimg" width="80%" style="">
-      <img :src="show_imgurl" alt="" style="max-height:100%;max-width:100%">
+    <el-dialog top="9vh" :visible.sync="dialog_showimg" width="70%" style="text-align:center">
+      <img :src="show_imgurl" alt="" style="max-height:50%;max-width:50%">
     </el-dialog>
-    <toTop style="bottom:5%;right:0%;"></toTop>
+    <toTop v-if="!dialog_showimg" style="bottom:5%;right:0%;" ></toTop>
   </div>
 
 </template>
@@ -262,6 +256,7 @@
   margin-top: 5px;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
+  
 }
 </style>
 
@@ -284,15 +279,29 @@ export default {
   data() {
     return {
       token: "",
+      loading: true,
       pageNum: 1, //初始化页数
-      pageSize: 5, //初始化条数
+      pageSize: 10, //初始化条数
+      totalNum: 0,
+      pageArray: [5, 10, 20],
       dialog_showimg: false, //是否显示展示图片的对话框
       dialog_showproduct: false, //是否显示商品详情的对话框
       dialog_editproduct: false, //是否显示编辑商品的对话框
       update_productimg: false, //是否显示图片上传 --v-if控制
       img: require("../../../../public/img/1.jpg"),
       show_imgurl: "",
-
+      file: "", //获得文件的url
+      image: "", //展示图片的url
+      category: [
+        {
+          label: "手机",
+          value: 1
+        },
+        {
+          label: "电脑",
+          value: 2
+        }
+      ],
       /**查询商品的信息 */
       product: {
         name: "", //要查询的商品名称
@@ -319,9 +328,11 @@ export default {
         weight: null, //商品重量
         limit_num: null, //限购数量
         brandId: 1, //厂商ID
-        product_status: "", //商品状态
-        product_statusname: "" //商品状态
+        product_status: null, //商品状态
+        product_statusname: "", //商品状态
+        img: ""
       },
+
       /**商品列表信息 */
       productlist: [{}], //商品列表数据
       productArray: [], //批量操作的对象数组
@@ -330,6 +341,35 @@ export default {
   },
 
   methods: {
+    /**上传图片 */
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      this.file = files[0];
+      let formData = new FormData(); //通过formdata上传
+      this.createImage(this.file);
+      formData.append("file", this.file);
+      var that = this;
+      this.axios({
+        method: "POST",
+        url: "api/product/upload",
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" }
+      }).then(function(res) {
+        console.log(res.data);
+        // that.form.imgUrl = res.data;
+        that.product_show.img = res.data;
+      });
+    },
+    /**获取图片的url */
+    createImage(file) {
+      var image = new Image();
+      var reader = new FileReader();
+      var vm = this;
+      reader.onload = e => {
+        vm.image = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
     /**商品列表初始化 */
     product_init() {
       let tempStatus;
@@ -346,10 +386,13 @@ export default {
       }
       apiproductInit({
         pageNum: this.pageNum,
+        productStatus: tempStatus,
         pageSize: this.pageSize
       }).then(res => {
-        //   console.log(res.data.data);
+        console.log(res.data.data);
         this.productlist = res.data.data;
+        this.totalNum = res.data.data[0].countTotal;
+        this.loading = false;
         for (var i in this.productlist) {
           var time = this.productlist[i].createTime;
           var times = new Date(+new Date(time) + 8 * 3600 * 1000)
@@ -363,7 +406,7 @@ export default {
     /**查看商品图片大图 */
     show_img(index, row) {
       this.dialog_showimg = true;
-      this.show_imgurl = row.imgPath;
+      this.show_imgurl = row.picture;
     },
     /**查看商品详情 */
     handleEdit(index, row) {
@@ -372,18 +415,18 @@ export default {
       this.$axios
         .get("api/product/product/findOne/" + this.product_show.id)
         .then(res => {
-          // console.log(res);
+          console.log(res);
           this.product_show.sizeArray = ["5", "10"]; //商品尺寸
           this.product_show.size = this.product_show.sizeArray.join("/");
-
           this.product_show.name = res.data.data.name;
           this.product_show.price = res.data.data.price;
           this.product_show.suggested_price = res.data.data.recommendPrice;
           this.product_show.quantity = 10; //库存数量
           this.product_show.limit_num = 2; //限购数量
           this.product_show.warehouseid = "3"; //仓库名称
-          this.product_show.cagegoryid = "2"; //分类名称
+          this.product_show.cagegoryid = 2;
           this.product_show.weight = 0.125; //商品质量
+          this.product_show.img = res.data.data.picture;
           this.product_show.color = ["红色", "黑色"]; //商品颜色
           this.product_show.product_status = String(
             res.data.data.productStatus
@@ -417,12 +460,9 @@ export default {
             url: "api/product/product/on_sale",
             data: this.productIdArray
           }).then(res => {
-            console.log(res.data.code);
             if (res.data.code == 200) {
               this.$options.methods.product_init.bind(this)();
               this.productIdArray = [];
-
-              console.log(res.data.msg);
               this.$message({
                 type: "success",
                 message:
@@ -489,37 +529,6 @@ export default {
           });
         });
     },
-    /**商品删除 */
-    // handleDelete: function(index, row) {
-    //   //删除商品信息
-    //   console.log("删除");
-    //   this.$confirm(
-    //     "是否将商品id为： " +
-    //       row.id +
-    //       " 商品名称为：" +
-    //       row.name +
-    //       " 商品删除？",
-    //     "删除",
-    //     {
-    //       confirmButtonText: "确定",
-    //       cancelButtonText: "取消",
-    //       type: "warning"
-    //     }
-    //   )
-    //     .then(() => {
-    //       this.$message({
-    //         type: "success",
-    //         message:
-    //           "商品id为： " + row.id + " 商品名称为：" + row.name + " 删除成功!"
-    //       });
-    //     })
-    //     .catch(() => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消删除"
-    //       });
-    //     });
-    // },
     /**每页展示的商品条数*/
     handleSizeChange(value) {
       // console.log(value);
@@ -546,28 +555,27 @@ export default {
         pageNum: this.pageNum,
         pageSize: value
       }).then(res => {
-        //   console.log(res.data.data);
-        this.pageSize = value;
-        this.pageNum = this.pageNum;
-        this.productlist = res.data.data;
+        if (res.data.code == 200) {
+          this.pageSize = value;
+          this.pageNum = this.pageNum;
+          this.productlist = res.data.data;
 
-        for (var i in this.productlist) {
-          var time = this.productlist[i].createTime;
+          for (var i in this.productlist) {
+            var time = this.productlist[i].createTime;
 
-          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "");
+            var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "");
 
-          this.productlist[i].createTime = times;
+            this.productlist[i].createTime = times;
+          }
         }
       });
     },
     /**跳转第几页的商品列表*/
     handleCurrentChange(value) {
       let tempStatus;
-
-      // console.log(this.product.status);
       if (this.product.status == null) {
         tempStatus = -1;
       } else {
@@ -585,17 +593,19 @@ export default {
         pageSize: this.pageSize
       }).then(res => {
         //   console.log(res.data.data);
-        this.pageNum = value;
-        this.productlist = res.data.data;
-        for (var i in this.productlist) {
-          var time = this.productlist[i].createTime;
+        if (res.data.code == 200) {
+          this.pageNum = value;
+          this.productlist = res.data.data;
+          for (var i in this.productlist) {
+            var time = this.productlist[i].createTime;
 
-          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "");
+            var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "");
 
-          this.productlist[i].createTime = times;
+            this.productlist[i].createTime = times;
+          }
         }
       });
     },
@@ -625,16 +635,18 @@ export default {
         pageSize: this.pageSize
       }).then(res => {
         //   console.log(res.data.data);
-        this.productlist = res.data.data;
-        this.pageNum = 1;
-        for (var i in this.productlist) {
-          var time = this.productlist[i].createTime;
-          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "");
+        if (res.data.code == 200) {
+          this.productlist = res.data.data;
+          this.pageNum = 1;
+          for (var i in this.productlist) {
+            var time = this.productlist[i].createTime;
+            var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "");
 
-          this.productlist[i].createTime = times;
+            this.productlist[i].createTime = times;
+          }
         }
       });
     },
@@ -659,6 +671,7 @@ export default {
             warehouseId: this.product_show.warehouseid,
             limitNum: this.product_show.limit_num,
             scategoryId: this.product_show.cagegoryid,
+            productPicture: this.product_show.img,
             productQuality: this.product_show.weight,
             productSizes: this.product_show.sizeArray,
             productStatus: this.product_show.product_status
@@ -669,31 +682,6 @@ export default {
             });
             this.$options.methods.product_init.bind(this)();
           });
-          //  this.$axios({
-          //     method: "post",
-          //     url: "api/product/product/update",
-          //     data: {
-          //       id: this.product_show.id,
-          //       productColors: this.product_show.color,
-          //       productName: this.product_show.name,
-          //       productSku: this.product_show.quantity,
-          //       productPrice: this.product_show.price,
-          //       productRecommendprice: this.product_show.suggested_price,
-          //       productDefails: this.product_show.details,
-          //       warehouseId: this.product_show.warehouseid,
-          //       limitNum: this.product_show.limit_num,
-          //       scategoryId: this.product_show.cagegoryid,
-          //       productQuality: this.product_show.weight,
-          //       productSizes: this.product_show.sizeArray,
-          //       productStatus: this.product_show.product_status
-          //     }
-          //   }).then(res => {
-          //     this.$message({
-          //       type: "success",
-          //       message: "商品信息更改成功"
-          //     });
-          //     this.$options.methods.product_init.bind(this)();
-          //   });
         })
         .catch(() => {
           this.$message({
