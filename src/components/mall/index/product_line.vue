@@ -2,14 +2,14 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:13 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-12 12:50:54
+ * @Last Modified time: 2019-03-17 21:54:41
  */
 
 <template>
   <div>
     <el-row style="z-index:1;" v-for="products in product_list">
       <el-row class="product_title">
-        <el-col :xs="15" :sm="8" :md="6" :lg="5" :offset="1" style="font-size:20px;">{{products.title}}</el-col>
+        <el-col :xs="15" :sm="8" :md="6" :lg="5" :offset="1" style="font-size:20px;">{{products.name}}</el-col>
         <el-col :xs="1" :sm="0" :md="0" :lg="3" :xl="4">&nbsp;</el-col>
         <el-col :xs="6" :sm="3" :md="6" :lg="3">
           <span class="line_title_more" style="font-size:12px;">更多>></span>
@@ -17,21 +17,21 @@
       </el-row>
 
       <el-row style="height:100%;margin-top:15px;margin-bottom:15px">
-        <object v-for="lists in products.list">
+        <object v-for="lists in products.productInfoList">
           <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6" style="height:100%;">
 
             <div style="position: relative;height:300px;">
               <el-col :span="24" class="card">
                 <div align="center">
-                  <img :src="lists.img" class="image">
+                  <img :src="lists.productPicture" class="image">
                 </div>
                 <div style="padding: 14px;">
-                  <span>{{lists.product_name}}</span>
+                  <span>{{lists.productName}}</span>
                   <div style="font-size:12px;color:grey">
                     {{lists.brand}}
                   </div>
                   <div style="text-align:center; color: rgb(253, 40, 40);">
-                    ￥{{lists.price}}
+                    ￥{{lists.productPrice}}
                   </div>
                 </div>
               </el-col>
@@ -45,7 +45,7 @@
                     <el-button class="buttonline iconfont icon-xihuan" type="danger" title="标记为喜欢" circle></el-button>
                   </el-col>
                   <el-col :span="2" :offset="3">
-                    <router-link :to="'/mall/product/'+lists.id" tag="span">
+                    <router-link :to="'/mall/product/'+lists.id"  tag="span">
                       <!-- <router-link :to="'/mall/product/'+lists.id" tag="span"> -->
                       <el-button class="buttonline iconfont icon-xiangqing" type="success" title="查看详情" circle></el-button>
                     </router-link>
@@ -253,6 +253,18 @@ export default {
       ]
     };
   },
-  methods: {}
+  methods: {},
+  mounted () {
+      this.axios({
+        method:"POST",
+        url:"api/product/product/findProductToIndex",
+        data:[2,5]
+        
+      })
+      .then(res => {
+        console.log(res);
+        this.product_list = res.data.data;
+      })
+  }
 };
 </script>
