@@ -3,8 +3,8 @@
 import Vue from "vue";
 import axios from "axios";
 import router from "../router";
-
 import { Message } from "element-ui";
+
 import Cookie from "../assets/js/cookie"; //设置cookie
 
 axios.defaults.baseURL = "http://localhost:9000";
@@ -16,21 +16,39 @@ let config = {
 Vue.use(router);
 
 axios.create(config);
+
 //不需要拦截器的url
 var notInterceptors = [
   "api/login/adminLogin/login",
+  "api/login/adminLogin/getAdminTo",
   "api/personal//brand/register",
-  "api/login/login/brand/email"
+  "api/login/login/brand/email",
+  "api/catalog/category/getCategory/",
+  "api/product/product/findProductToIndex",
+  "api/product/storeProduct/saveStoreProduct"
 ];
+
+for (let i = 0; i <= 20; i++) {
+  let url = "api/catalog/category/getCategory/" + i;
+  notInterceptors.push(url);
+}
+for (let i = 0; i <= 50; i++) {
+  let url = "api/product/product/findOne/" + i;
+  notInterceptors.push(url);
+}
 
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
 
     const token = Cookie.getCookie("token");
+    const storeToken = Cookie.getCookie("storeToken");
     if (token) {
       // 这里将token设置到headers中
       config.headers.token = token;
+    }
+    if(storeToken){
+      config.headers.token = storeToken;
     }
 
     if (
