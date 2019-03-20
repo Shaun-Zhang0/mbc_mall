@@ -11,7 +11,6 @@
     </div>
     <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
-
 </template>
 <script>
 /**厂商管理平台 */
