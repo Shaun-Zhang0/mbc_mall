@@ -1,10 +1,18 @@
+/*
+ * @Author: Shaun.Zhang 
+ * @Date: 2019-03-20 14:52:59 
+ * @Last Modified by:   Shaun.Zhang 
+ * @Last Modified time: 2019-03-20 14:52:59 
+ */
+
 /**
  * api接口统一管理
  */
+import Vue from "vue";
+
 import { post, get } from "./../../../plugins/axios";
 import axios from "./../../../plugins/axios";
 import QS from "qs"; // 引入qs模块，用来序列化post类型的数据，后面会提到
-
 /**
  * 厂商管理登录api
  */
@@ -20,9 +28,15 @@ export const apiSearchInfo = params => {
 };
 
 /**
+ * 修改厂商信息api
+ */
+export const apibrandInfoUpdata = params => {
+  return post("api/login/login/brand/update",params);
+}
+/**
  * 发布商品信息api
  */
-export const apiReleaseProduct = token => {
+export const apiReleaseProduct = params => {
   return post("api/product/product/save", params);
 };
 
@@ -82,7 +96,12 @@ export const apiOrderDetails = id => {
 export const apiSearchOrder = params => {
   return post("api/order/order/findOrderByCondition", params);
 };
-
+/**
+ * 订单编辑api
+ */
+export const apiEditOrder = params => {
+  return post("api/order/order/updateOrder",params);
+}
 /**
  * 订单页数跳转api
  */
@@ -99,15 +118,38 @@ export const apiPageSize = params => {
  * 厂商入驻验证邮箱是否可用api
  */
 export const apibrandemail = params => {
-  return post(
-    "api/login/login/brand/email",
-    QS.stringify(params)
-  );
+  return post("api/login/login/brand/email", QS.stringify(params));
 };
-
 /**
  * 厂商入驻api
  */
 export const apibrandIn = params => {
-  // return post("")  
+  return post("api/personal/brand/register", params);
+};
+/**
+ *进货平台的商品展示api 
+ */
+export const apiMallProductshow = id => {
+  return get("api/product/product/findOne/"+id);
+};
+
+/**
+ * 进货平台的分类菜单显示
+ */
+export const apiMallMenuShow = id => {
+  return get("api/catalog/category/getCategory/" + id);  
+}
+
+/**
+ * 进货平台的销售商登录api
+ */
+export const apiMallLogin = params => {
+  return post("api/login/adminLogin/login",QS.stringify(params));
+}
+
+/**
+ * 进货平台的代理商品api
+ */
+export const apiProxyProduct = params => {
+  return post("api/product/storeProduct/saveStoreProduct",params);
 }
