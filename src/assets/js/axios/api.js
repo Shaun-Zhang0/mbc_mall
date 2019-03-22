@@ -1,8 +1,8 @@
 /*
- * @Author: Shaun.Zhang 
- * @Date: 2019-03-20 14:52:59 
- * @Last Modified by:   Shaun.Zhang 
- * @Last Modified time: 2019-03-20 14:52:59 
+ * @Author: Shaun.Zhang
+ * @Date: 2019-03-20 14:52:59
+ * @Last Modified by: Shaun.Zhang
+ * @Last Modified time: 2019-03-23 00:45:47
  */
 
 /**
@@ -12,8 +12,8 @@ import Vue from "vue";
 
 import { post, get } from "./../../../plugins/axios";
 import axios from "./../../../plugins/axios";
-import QS from "qs"; // 引入qs模块，用来序列化post类型的数据，后面会提到
-/**
+import QS from "qs";
+/*
  * 厂商管理登录api
  */
 export const apiLogin = params => {
@@ -31,13 +31,41 @@ export const apiSearchInfo = params => {
  * 修改厂商信息api
  */
 export const apibrandInfoUpdata = params => {
-  return post("api/login/login/brand/update",params);
-}
+  return post("api/login/login/brand/update", params);
+};
+
 /**
  * 发布商品信息api
  */
 export const apiReleaseProduct = params => {
   return post("api/product/product/save", params);
+};
+/**
+ * 账单管理中的查找订单api
+ */
+export const apiSearchFinance = params => {
+  return post("api/pay/findConditionBrandS", params);
+}
+
+/**
+ * 账单管理获取钱包余额等数据api
+ */
+export const apiGetfinance = id => {
+  return get("api/pay/getBrandCount/" + id);
+};
+
+/**
+ * 账单管理的未对账的订单api
+ */
+export const apiGetUncheckedOrder = params => {
+  return post("api/pay/findNBrandBillByToken", params);
+};
+
+/**
+ * 账单管理的已对账的订单api
+ */
+export const apiGetCheckedOrder = params => {
+  return post("api/pay/findYBrandBillByToken", params);
 };
 
 /**
@@ -100,8 +128,8 @@ export const apiSearchOrder = params => {
  * 订单编辑api
  */
 export const apiEditOrder = params => {
-  return post("api/order/order/updateOrder",params);
-}
+  return post("api/order/order/updateOrder", params);
+};
 /**
  * 订单页数跳转api
  */
@@ -127,29 +155,29 @@ export const apibrandIn = params => {
   return post("api/personal/brand/register", params);
 };
 /**
- *进货平台的商品展示api 
+ *进货平台的商品展示api
  */
 export const apiMallProductshow = id => {
-  return get("api/product/product/findOne/"+id);
+  return get("api/product/product/findOne/" + id);
 };
 
 /**
  * 进货平台的分类菜单显示
  */
 export const apiMallMenuShow = id => {
-  return get("api/catalog/category/getCategory/" + id);  
-}
+  return get("api/catalog/category/getCategory/" + id);
+};
 
 /**
  * 进货平台的销售商登录api
  */
 export const apiMallLogin = params => {
-  return post("api/login/adminLogin/login",QS.stringify(params));
-}
+  return post("api/login/adminLogin/login", QS.stringify(params));
+};
 
 /**
  * 进货平台的代理商品api
  */
 export const apiProxyProduct = params => {
-  return post("api/product/storeProduct/saveStoreProduct",params);
-}
+  return post("api/product/storeProduct/saveStoreProduct", params);
+};
