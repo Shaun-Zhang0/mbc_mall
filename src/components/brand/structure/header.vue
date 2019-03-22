@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-19 11:38:48
+ * @Last Modified time: 2019-03-23 00:03:51
  */
 
 <template>
@@ -85,35 +85,17 @@ export default {
     };
   },
   mounted() {
-    if (token) {
-      var token = this.Cookie.getCookie("token");
-      console.log(token);
+    if (this.Cookie.getCookie("token")) {
+      apiSearchInfo({})
+        .then(res => {
+          this.name = res.data.data.name;
+          this.Cookie.setCookie("id", res.data.data.brandId);
+        })
+        .catch(error => {
+        });
+    } else {
+      console.log("未登录");
     }
-
-    apiSearchInfo({})
-      .then(res => {
-        // console.log(res.data);
-        this.name = res.data.data.name;
-      })
-      .catch(error => {
-        console.info(error.request.status);
-      });
-
-    // this.$axios({
-    //   method: "post",
-    //   url: "api/login/adminLogin/getAdminTo",
-    //   header: {
-    //     token: token
-    //   }
-    // })
-
-    //   .then(res => {
-    //     // console.log(res.data);
-    //     this.name = res.data.data.name;
-    //   })
-    //   .catch(error => {
-    //     // console.info(error.request.status);
-    //   });
   },
   methods: {
     full_screen() {
