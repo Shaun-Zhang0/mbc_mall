@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 14:47:43
+ * @Last Modified time: 2019-03-22 22:20:38
  */
 
 <template>
@@ -182,8 +182,7 @@ export default {
             email: this.login.login_email,
             password: this.login.login_pwd
           }).then(res => {
-            console.log(res.data.data.token);
-            if (res.data.code == 200) {
+            if (res.data.msg == "请求成功") {
               this.Cookie.setCookie("token", res.data.data.token);
 
               this.$message({
