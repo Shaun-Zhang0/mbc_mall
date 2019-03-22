@@ -6,16 +6,13 @@ import store from "./store";
 import "./registerServiceWorker";
 import "./plugins/element.js";
 import Cookie from "./assets/js/cookie"; //设置cookie
-
+import { Message } from "element-ui";
 
 Object.defineProperty(Vue.prototype, "$http", {
   value: axios
 });
 
-
 Vue.prototype.Cookie = Cookie;
-
-
 
 /**厂商管理平台 */
 import header from "./components/brand/structure/header.vue"; //导入顶部导航栏的组件
@@ -44,3 +41,21 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount("#app");
+
+router.beforeEach((to, from, next) => {
+ if(to.meta.isLogin){
+   if(Cookie.getCookie("token")){
+     next();
+   }else{
+    Message.error({
+      message: "请在登录后在进行操作~"
+    });
+    next({
+      path:'/brand/login'
+    })
+   }
+ }else{
+   next();
+ }
+ 
+});
