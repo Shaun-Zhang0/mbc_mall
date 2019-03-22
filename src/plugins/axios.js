@@ -59,7 +59,7 @@ axios.interceptors.request.use(
       Message.error({
         message: "登录验证已过期，请重新登录"
       });
-      router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+      // router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
     }
     return config;
   },
