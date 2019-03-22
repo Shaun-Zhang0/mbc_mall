@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:38 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 21:04:48
+ * @Last Modified time: 2019-03-22 22:58:37
  */
 
 <template>
@@ -62,13 +62,6 @@
                     </el-col>
                 </el-row>
 
-                <!-- <el-row>
-                    <el-col :span="12" :offset="5">
-                        <el-form-item label="主营范围" prop="business_range">
-                            <el-input v-model="form.business_range"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row> -->
                 <el-row>
                     <el-col :span="12" :offset="5">
                         <el-form-item label="厂商地址" prop="address">
@@ -180,19 +173,19 @@ export default {
             type: "warning"
           })
             .then(() => {
-              //   apibrandInfoUpdata({
-              //     id: this.form.id,
-              //     name: this.form.name,
-              //     phone: this.form.lperson_phone,
-              //     address: this.form.address
-              //   }).then(res => {
-              //     if (res.data.msg == "success") {
-              //       this.$message({
-              //         type: "success",
-              //         message: "个人信息修改成功!"
-              //       });
-              //     }
-              //   });
+                apibrandInfoUpdata({
+                  id: this.form.id,
+                  name: this.form.name,
+                  phone: this.form.lperson_phone,
+                  address: this.form.address
+                }).then(res => {
+                  if (res.data.msg == "success") {
+                    this.$message({
+                      type: "success",
+                      message: "个人信息修改成功!"
+                    });
+                  }
+                });
             })
             .catch(() => {
               this.$message({
