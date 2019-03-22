@@ -29,31 +29,43 @@ export default new Router({
     {
       path: "/brand", //管理平台的首页
       component: Index,
-      meta: { keepAlive: true }
+      meta: { keepAlive: true, isLogin: true }
     },
     {
       path: "/brand/update_info", //更新信息页面
       name: "Update_info",
       component: Update_info,
-      meta: { keepAlive: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
     {
       path: "/brand/orderlist", //订单列表页面
       name: "Orderlist",
       component: Orderlist,
-      meta: { keepAlive: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
     {
       path: "/brand/release_product", //发布商品页面
       name: "Release_product",
       component: Release_product,
-      meta: { keepAlive: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
     {
       path: "/brand/Productlist", //商品列表页面
       name: "Productlist",
       component: Productlist,
-      meta: { keepAlive: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
 
     {
@@ -86,7 +98,10 @@ export default new Router({
       path: "/brand/finance", //财务管理界面
       name: "finance",
       component: finance,
-      meta: { keepAlive: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
     {
       path: "/mall/product/:id", //商品详情页面
