@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-03-20 14:53:37 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-22 22:46:42
+ * @Last Modified time: 2019-03-23 12:49:58
  */
 
 <template>
@@ -64,40 +64,11 @@
                 <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="未对账订单" name="first">
                         <!-- 查找区 -->
-                        <el-form ref="order" :inline="true" :model="order" label-width="80px" style="margin-top: 20px;text-align:center;">
-                            <el-row>
-                                <el-form-item label="订单号">
-                                    <el-input v-model.number="order.id" placeholder="请输入订单号" @keydown.enter.native="searchOrder"></el-input>
-                                </el-form-item>
-                                <el-form-item label="商品名称">
-                                    <el-input v-model="order.name" placeholder="请输入商品名称" @keydown.enter.native="searchOrder"></el-input>
-                                </el-form-item>
-                                <el-form-item label="创建时间">
-                                    <el-date-picker v-model="order.create_time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-                                    </el-date-picker>
-                                </el-form-item>
-                                <el-button type="success" icon="el-icon-search" circle></el-button>
-                            </el-row>
-                        </el-form>
                         <unCheckedFinance ref="unchecked"></unCheckedFinance>
 
                     </el-tab-pane>
                     <el-tab-pane label="已对账订单" name="second">
-                        <el-form ref="order" :inline="true" :model="order" label-width="80px" style="margin-top: 20px;text-align:center;">
-                            <el-row>
-                                <el-form-item label="订单号">
-                                    <el-input v-model.number="order.id" placeholder="请输入订单号" @keydown.enter.native="searchOrder"></el-input>
-                                </el-form-item>
-                                <el-form-item label="商品名称">
-                                    <el-input v-model="order.name" placeholder="请输入商品名称" @keydown.enter.native="searchOrder"></el-input>
-                                </el-form-item>
-                                <el-form-item label="创建时间">
-                                    <el-date-picker v-model="order.create_time" format="yyyy 年 MM 月 dd 日" value-format="yyyy-MM-dd" type="daterange" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-                                    </el-date-picker>
-                                </el-form-item>
-                                <el-button type="success" icon="el-icon-search" circle></el-button>
-                            </el-row>
-                        </el-form>
+                        
                         <checkedFinance ref="checked"></checkedFinance>
 
                     </el-tab-pane>
@@ -155,7 +126,7 @@
 </style>
  <script>
 import unCheckedFinance from "./../finance/unCheckedFinance";
-import  checkedFinance  from "./../finance/checkedFinance";
+import checkedFinance from "./../finance/checkedFinance";
 import { apiGetfinance } from "./../../../assets/js/axios/api.js";
 export default {
   components: {
@@ -179,13 +150,12 @@ export default {
       noArrival: 0.0, //未到账金额
       sellTotal: 0.0, //销售额
       fllowStore: 0, //销售商数量
-      orderlist:[{}],
-    
+      orderlist: [{}],
       order: {
-        name: "", //要查询的商品名称
-        id: "", //要查询商品的id
-        status: "", //要查询商品的状态
-        create_time: "", //要查询商品的创建时间区间开始
+        productName: "", //要查询的商品名称
+        orderNo: "", //要查询商品的id
+        status: 0, //要查询账单的状态
+        create_time: "", //要查询订单的创建时间区间开始
         startTime: "", //创建开始时间
         endTime: "" //创建结束时间
       }
@@ -194,20 +164,22 @@ export default {
   methods: {
     /**切换对账和未对账的界面 */
     handleClick(tab, event) {
-      //   console.log(tab, event);
       console.log(tab.index);
-      if(tab.index == 1){
-          console.log(this.$refs.checked)
-          console.log(this.$refs.checked.pageNum);
-          this.$refs.unchecked.pageSize = 5;
-          this.$refs.unchecked.pageNum = 1;
-
-            this.$refs.checked.init();
-} else if(tab.index == 0){
-    this.$refs.checked.pageNum = 1;
-    this.$refs.checked.pageSize = 5;
-    this.$refs.unchecked.init();
-}
+      if (tab.index == 1) {
+        this.order.productName = "";
+        this.order.orderNo = "";
+        this.order.create_time = "";
+        this.$refs.unchecked.pageSize = 5;
+        this.$refs.unchecked.pageNum = 1;
+        this.$refs.checked.init();
+      } else if (tab.index == 0) {
+        this.$refs.checked.pageNum = 1;
+        this.$refs.checked.pageSize = 5;
+        this.$refs.unchecked.init();
+        this.order.productName = "";
+        this.order.orderNo = "";
+        this.order.create_time = "";
+      }
     }
   }
 };
