@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-22 22:20:38
+ * @Last Modified time: 2019-03-23 12:37:08
  */
 
 <template>
@@ -97,6 +97,7 @@ html {
   margin: 0;
 }
 .footer {
+  font-size: 2vh;
   width: 100%;
   height: 80px;
   margin-top: 80px;
