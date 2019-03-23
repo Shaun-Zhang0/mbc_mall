@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang
  * @Date: 2019-03-20 14:52:59
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 00:45:47
+ * @Last Modified time: 2019-03-23 22:34:04
  */
 
 /**
@@ -13,6 +13,7 @@ import Vue from "vue";
 import { post, get } from "./../../../plugins/axios";
 import axios from "./../../../plugins/axios";
 import QS from "qs";
+
 /*
  * 厂商管理登录api
  */
@@ -23,8 +24,8 @@ export const apiLogin = params => {
 /**
  * 获取厂商信息api
  */
-export const apiSearchInfo = params => {
-  return post("api/login/adminLogin/getAdminTo", params);
+export const apiSearchInfo = (params, headers) => {
+  return post("api/login/adminLogin/getAdminTo", params, headers);
 };
 
 /**
@@ -43,9 +44,9 @@ export const apiReleaseProduct = params => {
 /**
  * 账单管理中的查找订单api
  */
-export const apiSearchFinance = params => {
-  return post("api/pay/findConditionBrandS", params);
-}
+export const apiSearchFinance = (params, headers) => {
+  return post("api/pay/findConditionBrandS", params, headers);
+};
 
 /**
  * 账单管理获取钱包余额等数据api
@@ -57,43 +58,43 @@ export const apiGetfinance = id => {
 /**
  * 账单管理的未对账的订单api
  */
-export const apiGetUncheckedOrder = params => {
-  return post("api/pay/findNBrandBillByToken", params);
+export const apiGetUncheckedOrder = (params, headers) => {
+  return post("api/pay/findNBrandBillByToken", params, headers);
 };
 
 /**
  * 账单管理的已对账的订单api
  */
-export const apiGetCheckedOrder = params => {
-  return post("api/pay/findYBrandBillByToken", params);
+export const apiGetCheckedOrder = (params, headers) => {
+  return post("api/pay/findYBrandBillByToken", params, headers);
 };
 
 /**
  * 商品搜索api
  */
-export const apiSearchProduct = params => {
-  return post("api/product/product/findByCondition", params);
+export const apiSearchProduct = (params, headers) => {
+  return post("api/product/product/findByCondition", params, headers);
 };
 
 /**
  * 商品列表初始化api
  */
-export const apiproductInit = params => {
-  return post("api/product/product/findByCondition", params);
+export const apiproductInit = (params, headers) => {
+  return post("api/product/product/findByCondition", params, headers);
 };
 
 /**
  * 展示商品条数api
  */
-export const apiSizeChange = params => {
-  return post("api/product/product/findByCondition", params);
+export const apiSizeChange = (params, headers) => {
+  return post("api/product/product/findByCondition", params, headers);
 };
 
 /**
  * 商品列表跳转页面api
  */
 export const apiCurrentChange = params => {
-  return post("api/product/product/findByCondition", params);
+  return post("api/product/product/findByCondition", params, headers);
 };
 
 /**
@@ -106,8 +107,8 @@ export const apiEditProduct = params => {
 /**
  * 初始化订单列表api
  */
-export const apiOrderinit = params => {
-  return post("api/order/order/findOrderByCondition", params);
+export const apiOrderinit = (params,headers) => {
+  return post("api/order/order/findOrderByCondition", params, headers);
 };
 
 /**
@@ -121,8 +122,8 @@ export const apiOrderDetails = id => {
 /**
  * 搜索订单api
  */
-export const apiSearchOrder = params => {
-  return post("api/order/order/findOrderByCondition", params);
+export const apiSearchOrder = (params,headers) => {
+  return post("api/order/order/findOrderByCondition", params, headers);
 };
 /**
  * 订单编辑api
@@ -133,14 +134,14 @@ export const apiEditOrder = params => {
 /**
  * 订单页数跳转api
  */
-export const apiPageNum = params => {
-  return post("api/order/order/findOrderByCondition", params);
+export const apiPageNum = (params, headers) => {
+  return post("api/order/order/findOrderByCondition", params, headers);
 };
 /**
  * 订单条数跳转api
  */
-export const apiPageSize = params => {
-  return post("api/order/order/findOrderByCondition", params);
+export const apiPageSize = (params,headers) => {
+  return post("api/order/order/findOrderByCondition", params, headers);
 };
 /**
  * 厂商入驻验证邮箱是否可用api
@@ -181,3 +182,17 @@ export const apiMallLogin = params => {
 export const apiProxyProduct = params => {
   return post("api/product/storeProduct/saveStoreProduct", params);
 };
+
+/**
+ * 获取销售商的名称api
+ */
+export const apiGetStoreNameapi = (params, headers) => {
+  return post("api/login/adminLogin/getAdminTo", params, headers);
+};
+
+/**
+ * 获取商品第三级分类列表
+ */
+export const apiGetCategory = params => {
+  return get("api/catalog/category/getCategoryByIsParent",params);
+}
