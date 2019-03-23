@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 21:52:14
+ * @Last Modified time: 2019-03-23 22:56:11
  */
 
 <template>
@@ -138,7 +138,7 @@
                   <el-option label="电脑" value="2"></el-option>
                 </el-select> -->
                 <el-select v-model="product_show.cagegoryid" placeholder="请选择商品类别">
-                  <el-option v-for="category in category" :label="category.label" :value="category.value"></el-option>
+                  <el-option v-for="category in category" :label="category.categoryName" :value="category.categoryId"></el-option>
                 </el-select>
               </el-col>
             </el-form-item>
@@ -242,7 +242,7 @@
     <el-dialog top="9vh" :visible.sync="dialog_showimg" width="70%" style="text-align:center">
       <img :src="show_imgurl" alt="" style="max-height:50%;max-width:50%">
     </el-dialog>
-    <toTop v-if="!dialog_showimg" style="bottom:5%;right:0%;" ></toTop>
+    <toTop v-if="!dialog_showimg" style="bottom:5%;right:0%;"></toTop>
   </div>
 
 </template>
@@ -256,7 +256,6 @@
   margin-top: 5px;
   -moz-box-shadow: 5px 5px 5px #888888;
   box-shadow: 10px 10px 5px #888888;
-  
 }
 </style>
 
@@ -275,6 +274,10 @@ export default {
   mounted() {
     this.product_init();
     this.token = this.Cookie.getCookie("token");
+    apiGetCategory().then(res => {
+      console.log(res.data.data);
+      this.category = res.data.data;
+    });
   },
   data() {
     return {
@@ -293,14 +296,7 @@ export default {
       file: "", //获得文件的url
       image: "", //展示图片的url
       category: [
-        {
-          label: "手机",
-          value: 1
-        },
-        {
-          label: "电脑",
-          value: 2
-        }
+      
       ],
       /**查询商品的信息 */
       product: {
@@ -384,11 +380,17 @@ export default {
       } else {
         tempId = this.product.id;
       }
-      apiproductInit({
-        pageNum: this.pageNum,
-        productStatus: tempStatus,
-        pageSize: this.pageSize
-      }).then(res => {
+      apiproductInit(
+        {
+          brandId: this.Cookie.getCookie("id"),
+          pageNum: this.pageNum,
+          productStatus: tempStatus,
+          pageSize: this.pageSize
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         console.log(res.data.data);
         this.productlist = res.data.data;
         this.totalNum = res.data.data[0].countTotal;
@@ -546,15 +548,20 @@ export default {
       }
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
-      apiSizeChange({
-        id: tempId,
-        productName: this.product.name,
-        productStatus: tempStatus,
-        startTime: this.product.startTime,
-        endTime: this.product.endTime,
-        pageNum: this.pageNum,
-        pageSize: value
-      }).then(res => {
+      apiSizeChange(
+        {
+          id: tempId,
+          productName: this.product.name,
+          productStatus: tempStatus,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
+          pageNum: this.pageNum,
+          pageSize: value
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         if (res.data.code == 200) {
           this.pageSize = value;
           this.pageNum = this.pageNum;
@@ -584,14 +591,19 @@ export default {
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
 
-      apiCurrentChange({
-        productName: this.product.name,
-        productStatus: tempStatus,
-        startTime: this.product.startTime,
-        endTime: this.product.endTime,
-        pageNum: value,
-        pageSize: this.pageSize
-      }).then(res => {
+      apiCurrentChange(
+        {
+          productName: this.product.name,
+          productStatus: tempStatus,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
+          pageNum: value,
+          pageSize: this.pageSize
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         //   console.log(res.data.data);
         if (res.data.code == 200) {
           this.pageNum = value;
@@ -625,15 +637,20 @@ export default {
       }
       this.product.startTime = this.product.create_time[0];
       this.product.endTime = this.product.create_time[1];
-      apiSearchProduct({
-        id: tempId,
-        productName: this.product.name,
-        productStatus: tempStatus,
-        startTime: this.product.startTime,
-        endTime: this.product.endTime,
-        pageNum: 1,
-        pageSize: this.pageSize
-      }).then(res => {
+      apiSearchProduct(
+        {
+          id: tempId,
+          productName: this.product.name,
+          productStatus: tempStatus,
+          startTime: this.product.startTime,
+          endTime: this.product.endTime,
+          pageNum: 1,
+          pageSize: this.pageSize
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         //   console.log(res.data.data);
         if (res.data.code == 200) {
           this.productlist = res.data.data;
@@ -693,7 +710,6 @@ export default {
     /**商品选择 */
     handleSelectionChange(val) {
       this.productArray = val;
-      // console.log(this.productArray);
     },
     /**批量上架 */
     batchShelf() {
@@ -745,7 +761,6 @@ export default {
           message: "请选择需要批量操作的商品"
         });
       }
-      // console.log(this.productIdArray);
     },
     /**批量下架 */
     btachOutShelf() {
@@ -753,7 +768,6 @@ export default {
       for (let i = 0; i < length; i++) {
         this.productIdArray.push(this.productArray[i].id);
       }
-      // console.log(this.productArray);
       if (length != 0) {
         this.$confirm("是否批量下架商品？", "批量操作", {
           confirmButtonText: "确定",
