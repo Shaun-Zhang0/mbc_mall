@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 20:45:47
+ * @Last Modified time: 2019-03-23 18:28:50
  */
 
 <template>
@@ -259,8 +259,9 @@ export default {
         if (res.data.code == 4000) {
           this.$message({
             type: "warning",
-            message: "该商品不存在 "
+            message: "该商品不存在~"
           });
+          this.$router.push({ path: "/mall/index" })
         } else if (res.data.code == 200) {
           this.product = res.data.data;
           this.productId = res.data.data.id;
