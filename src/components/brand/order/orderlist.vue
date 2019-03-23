@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:39:53 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 14:52:43
+ * @Last Modified time: 2019-03-23 22:20:10
  */
 
 <template>
@@ -93,7 +93,7 @@
       <!-- 分页区 -->
       <el-row style="text-align:center;margin-bottom:20px;">
 
-        <el-pagination @size-change="handleSizeChange" @current-change="handlePageChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="400">
+        <el-pagination @size-change="handleSizeChange" @current-change="handlePageChange" :current-page.sync="pageNum" :page-sizes="[5, 10, 20]" :page-size="100" layout="total, sizes, prev, pager, next" :total="totalNum">
         </el-pagination>
       </el-row>
     </div>
@@ -319,6 +319,7 @@ export default {
       loading: true,
       pageNum: 1,
       pageSize: 5,
+      totalNum: 0,
       dialog_order_details: false, //订单详情对话框
       dialog_send_order: false, //订单发货对话框
       dialog_edit_order: false, //编辑订单对话框
@@ -412,15 +413,21 @@ export default {
   methods: {
     /**订单数据初始化 */
     orderInit() {
-      apiOrderinit({
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-        brandId: 1
-      }).then(res => {
+      apiOrderinit(
+        {
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+          brandId: 1
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         // console.log(res.data.data);
         if (res.data.code == 200) {
           this.loading = false;
           this.order_list = res.data.data;
+          this.totalNum = res.data.data[0].totalSize;
           for (var i in this.order_list) {
             var time = this.order_list[i].createTime;
             var times = new Date(+new Date(time) + 8 * 3600 * 1000)
@@ -593,15 +600,20 @@ export default {
       this.order.startTime = this.order.create_time[0];
       this.order.endTime = this.order.create_time[1];
       //  console.log(this.order);
-      apiSearchOrder({
-        pageNum: 1,
-        pageSize: 5,
-        // productName: this.order.name,
-        // orderNo: this.order.id,
-        OrderStatus: this.order.status,
-        startTime: this.order.startTime,
-        endTime: this.order.endTime
-      }).then(res => {
+      apiSearchOrder(
+        {
+          pageNum: 1,
+          pageSize: 5,
+          // productName: this.order.name,
+          // orderNo: this.order.id,
+          OrderStatus: this.order.status,
+          startTime: this.order.startTime,
+          endTime: this.order.endTime
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         console.log(res.data.data);
         this.pageNum = 1;
 
@@ -618,15 +630,20 @@ export default {
     },
     /**每一页的订单条数 */
     handleSizeChange(size) {
-      apiPageSize({
-        pageNum: this.pageNum,
-        pageSize: size,
-        productName: this.order.name,
-        orderNo: this.order.id,
-        OrderStatus: this.order.status,
-        startTime: this.order.startTime,
-        endTime: this.order.endTime
-      }).then(res => {
+      apiPageSize(
+        {
+          pageNum: this.pageNum,
+          pageSize: size,
+          productName: this.order.name,
+          orderNo: this.order.id,
+          OrderStatus: this.order.status,
+          startTime: this.order.startTime,
+          endTime: this.order.endTime
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         console.log(res.data.data);
         this.pageSize = size;
         this.order_list = res.data.data;
@@ -642,15 +659,20 @@ export default {
     },
     /**订单跳转到第几页的数据 */
     handlePageChange(page) {
-      apiPageNum({
-        pageNum: page,
-        pageSize: this.pageSize,
-        productName: this.order.name,
-        orderNo: this.order.id,
-        OrderStatus: this.order.status,
-        startTime: this.order.startTime,
-        endTime: this.order.endTime
-      }).then(res => {
+      apiPageNum(
+        {
+          pageNum: page,
+          pageSize: this.pageSize,
+          productName: this.order.name,
+          orderNo: this.order.id,
+          OrderStatus: this.order.status,
+          startTime: this.order.startTime,
+          endTime: this.order.endTime
+        },
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      ).then(res => {
         console.log(res.data.data);
         this.pageNum = page;
         this.order_list = res.data.data;
