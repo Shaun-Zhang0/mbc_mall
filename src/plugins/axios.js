@@ -28,39 +28,23 @@ var notInterceptors = [
   "api/product/storeProduct/saveStoreProduct"
 ];
 
-for (let i = 0; i <= 20; i++) {
-  let url = "api/catalog/category/getCategory/" + i;
-  notInterceptors.push(url);
-}
-for (let i = 0; i <= 50; i++) {
-  let url = "api/product/product/findOne/" + i;
-  notInterceptors.push(url);
-}
-
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
 
-    const token = Cookie.getCookie("token");
-    const storeToken = Cookie.getCookie("storeToken");
-    if (token) {
-      // 这里将token设置到headers中
-      config.headers.token = token;
-    }
-    if(storeToken){
-      config.headers.token = storeToken;
-    }
-
-    if (
-      !token &&
-      // config.url != "api/login/adminLogin/login"
-      notInterceptors.indexOf(config.url) == -1
-    ) {
+    if (!Cookie.getCookie("token")) {
+      this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
       Message.error({
-        message: "登录验证已过期，请重新登录"
+        message: "登录凭证已过期，请重新登录~"
       });
-      // router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
     }
+    // if(notInterceptors.indexOf(config.url) == -1){
+    //   this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+    //   Message.error({
+    //     message: "请登录后再进行操作~"
+    //   });
+    // }
+
     return config;
   },
   function(error) {
@@ -77,7 +61,7 @@ axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
-    switch (error.response.status) {
+    switch (error.response) {
       case 401:
         console.log("登录验证已过期，请重新登录");
         this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
@@ -150,10 +134,10 @@ export function get(url) {
  * @param {Object} params [请求时携带的参数]
  *
  */
-export function post(url, params) {
+export function post(url, params, headers) {
   return new Promise((resolve, reject) => {
     axios
-      .post(url, params)
+      .post(url, params, headers)
       .then(res => {
         resolve(res);
       })
