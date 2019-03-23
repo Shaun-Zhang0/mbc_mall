@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 00:03:51
+ * @Last Modified time: 2019-03-23 22:04:09
  */
 
 <template>
@@ -86,13 +86,17 @@ export default {
   },
   mounted() {
     if (this.Cookie.getCookie("token")) {
-      apiSearchInfo({})
+      apiSearchInfo(
+        {},
+        {
+          headers: { token: this.Cookie.getCookie("token") }
+        }
+      )
         .then(res => {
           this.name = res.data.data.name;
           this.Cookie.setCookie("id", res.data.data.brandId);
         })
-        .catch(error => {
-        });
+        .catch(error => {});
     } else {
       console.log("未登录");
     }
@@ -136,8 +140,12 @@ export default {
       })
         .then(() => {
           this.Cookie.delCookie("token");
+          this.Cookie.delCookie("id");
 
-          if (this.Cookie.getCookie("token") == null) {
+          if (
+            this.Cookie.getCookie("token") == null &&
+            this.Cookie.getCookie("id") == null
+          ) {
             this.$message({
               type: "success",
               message: "注销成功!"
