@@ -33,6 +33,7 @@ import search from "./components/mall/index/search.vue"; //导入搜索的组件
 
 /**字符 */
 import fonts from "./assets/fonts/iconfont.css"; //导入字符型图案
+import { nearer } from "q";
 
 Vue.config.productionTip = false;
 
@@ -43,19 +44,22 @@ new Vue({
 }).$mount("#app");
 
 router.beforeEach((to, from, next) => {
- if(to.meta.isLogin){
-   if(Cookie.getCookie("token")){
-     next();
+   if(to.meta.isLogin){
+     if(Cookie.getCookie("brandtoken")){
+       next();
+     }else{
+      next({ path: '/brand/login' })
+      Message.error({
+        message: "请在登录后再进行操作~"
+      });
+
+      // next({
+      //   path:'/brand/login'
+      // })
+     }
    }else{
-    Message.error({
-      message: "请在登录后在进行操作~"
-    });
-    next({
-      path:'/brand/login'
-    })
+     next();
    }
- }else{
-   next();
- }
- 
+
+
 });
