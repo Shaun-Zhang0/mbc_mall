@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-03-22 16:37:56 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 21:40:52
+ * @Last Modified time: 2019-03-24 14:20:08
  */
 <template>
   <div>
@@ -152,7 +152,7 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         this.loading = false;
@@ -194,7 +194,7 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         this.orderlist = res.data.data;
@@ -230,7 +230,7 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         this.loading = false;
@@ -257,7 +257,7 @@ export default {
     },
     /**搜索账单 */
     searchFinance() {
-      if (this.order.create_time.length != 0) {
+      if (this.order.create_time != "") {
         this.order.startTime = this.order.create_time[0];
         this.order.endTime = this.order.create_time[1];
       }
@@ -272,17 +272,19 @@ export default {
           size: 10
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
         if (res.data.data.length == 0) {
           //结果集为空
           this.IsNull = true;
+          this.totalSize = 0;
         } else {
           //结果集不为空
           this.IsNull = false;
           this.orderlist = res.data.data;
+          this.totalSize = res.data.data[0].totalSize;
           for (let i in this.orderlist) {
             let time = this.orderlist[i].createTime;
             let etime = this.orderlist[i].endTime;
