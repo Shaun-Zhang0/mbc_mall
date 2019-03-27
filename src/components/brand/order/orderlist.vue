@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:39:53 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 22:20:10
+ * @Last Modified time: 2019-03-25 22:10:02
  */
 
 <template>
@@ -32,7 +32,7 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="订单状态">
-              <el-select v-model="order.status" placeholder="请选择订单状态">
+              <el-select v-model="order.status" :clearable="true" placeholder="请选择订单状态">
 
                 <el-option label="未发货" value="3"></el-option>
                 <el-option label="已发货" value="4"></el-option>
@@ -70,7 +70,7 @@
 
             <el-table-column label="订单号" prop="orderNo"></el-table-column>
             <el-table-column label="用户账号" prop="buyerNick"></el-table-column>
-            <el-table-column label="销售商名称" prop="order_store"></el-table-column>
+            <el-table-column label="销售商名称" prop="storeName"></el-table-column>
             <el-table-column label="物流号" prop="logistics_num"></el-table-column>
             <el-table-column label="订单状态" prop="orderStatus"></el-table-column>
             <el-table-column label="订单金额(元)" prop="order_price"></el-table-column>
@@ -80,9 +80,12 @@
 
             <el-table-column label="操作" align="center" width="140">
               <template slot-scope="scope">
-                <span class="iconfont icon-fahuo" style="font-size:20px;cursor: pointer " title="订单发货" @click="shipPeration(scope.$index, scope.row)"></span>
+
+                <span v-if="scope.row.orderStatusId == '3'" class="iconfont icon-fahuo" style="font-size:20px;cursor: pointer " title="订单发货" @click="shipPeration(scope.$index, scope.row)"></span>
+                <span v-if="scope.row.orderStatusId != '3'" class="iconfont icon-kongbai" style="font-size:20px;"></span>
+
                 <span class="iconfont icon-xiangqing" style="font-size:20px;cursor: pointer " title="订单详情" @click="show_order(scope.$index, scope.row)"></span>
-                <span class="iconfont icon-iconfontedit" style="font-size:20px;cursor: pointer " title="编辑订单" @click="editOrder(scope.$index, scope.row)"></span>
+                <span class="iconfont icon-iconfontedit" style="font-size:20px;cursor: pointer; " title="编辑订单" @click="editOrder(scope.$index, scope.row)"></span>
                 <span class="iconfont icon-shanchu" style="font-size:20px;cursor: pointer " title="删除订单" @click="del_order(scope.$index, scope.row)"></span>
               </template>
             </el-table-column>
@@ -120,10 +123,11 @@
         <el-form-item label="商品信息：">
           <el-col :span="24">
             <span>{{order_info.product_name}}</span>
+              <span style="color: rgb(165, 165, 165);float: right">x{{order_info.product_num}}</span>
             <!-- <span style="height: 40px;width: 40px;"> <img :src="order_info.product_imgurl" alt="" style="width: 100%;height: 100%"></span> -->
-            <br>
-            <span>{{order_info.product_details}}</span>
-            <span style="color: rgb(165, 165, 165);float: right">x{{order_info.product_num}}</span>
+            <!-- <br>
+            <span>{{order_info.product_details}}</span> -->
+          
             <br>
             <el-col :span="8"> <img style="max-width:100%;max-height:100%;" :src="order_info.product_imgurl" alt=""></el-col>
 
@@ -142,9 +146,9 @@
             <span style="padding-left:20px;color: rgb(165, 165, 165);">x{{order_info.product_num}}</span>
             <span style="color: rgb(165, 165, 165);float: right">商品单价</span>
             <br>
-            <span>+ {{order_info.order_post_fee}}</span>
+            <!-- <span>+ {{order_info.order_post_fee}}</span>
             <span class="amounttips">运费</span>
-            <br>
+            <br> -->
             <span>{{sum_orderpay}}</span>
             <span class="amounttips">实付金额</span>
 
@@ -187,13 +191,21 @@
         <el-form-item label="订单号">
           {{send_order.order_id}}
         </el-form-item>
+        <el-form-item label="物流号">
+          <el-col :span="9">
+            <el-input v-model="send_order.shippingcode" placeholder="请输入物流号" @keydown.enter.native="searchOrder"></el-input>
+          </el-col>
+
+        </el-form-item>
         <el-form-item label="收货地址">
           {{send_order.address}}
         </el-form-item>
         <el-form-item label="快递公司">
           <el-select placeholder="请选择快递公司" v-model="send_order.express">
-            <el-option label="顺丰" value="shunfeng"></el-option>
-            <el-option label="中通" value="zhongtong"></el-option>
+            <el-option label="顺丰" value="顺丰"></el-option>
+            <el-option label="中通" value="中通"></el-option>
+            <el-option label="申通" value="申通"></el-option>
+            <el-option label="圆通" value="圆通"></el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -216,9 +228,9 @@
         <el-form-item label="商品信息：">
           <el-col :span="24">
             <span>{{edit_order.product_name}}</span>
-            <br> {{edit_order.product_details}}
+            <br>
 
-            <el-input-number style="float: right" v-if="edit_order.order_active == 1" v-model="edit_order.product_num" :min="1" :max="10"></el-input-number>
+            <el-input-number :disabled="edit_order.status != '未发货'" style="float: right" v-if="edit_order.order_active == 1" v-model="edit_order.product_num" :min="1" :max="10"></el-input-number>
             <span v-else style="color: rgb(165, 165, 165);float: right">x{{edit_order.product_num}}</span>
             <br>
             <el-col :span="8"> <img style="max-width:100%;max-height:100%;" :src="edit_order.product_imgurl" alt=""></el-col>
@@ -237,9 +249,9 @@
             <span style="padding-left:20px;color: rgb(165, 165, 165);">x{{edit_order.product_num}}</span>
             <span style="color: rgb(165, 165, 165);float: right">商品单价</span>
             <br>
-            <span>+ {{edit_order.order_post_fee}}</span>
+            <!-- <span>+ {{edit_order.order_post_fee}}</span>
             <span style="color: rgb(165, 165, 165);float: right">运费</span>
-            <br>
+            <br> -->
             <span>{{edit_sum_pay}}</span>
             <span style="color: rgb(165, 165, 165);float: right">实付金额</span>
 
@@ -253,31 +265,31 @@
         <el-form-item label="收件人：">
           <el-col :span="6">
 
-            <el-input v-model="edit_order.rece_name"></el-input>
+            <el-input :disabled="edit_order.status != '未发货'" v-model="edit_order.rece_name"></el-input>
 
           </el-col>
         </el-form-item>
         <el-form-item label="联系方式：">
           <el-col :span="8">
 
-            <el-input v-model="edit_order.rece_phone"></el-input>
+            <el-input :disabled="edit_order.status != '未发货'" v-model="edit_order.rece_phone"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="收货地址：">
           <el-col :span="24">
-            <el-input v-model="edit_order.rece_address"></el-input>
+            <el-input :disabled="edit_order.status != '未发货'" v-model="edit_order.rece_address"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="订单备注：">
           <el-col :span="24">
-            <el-input type="textarea" :rows="3" placeholder="请输入内容" v-model="edit_order.order_details" readonly></el-input>
+            <el-input :disabled="edit_order.status != '未发货'" type="textarea" :rows="3" placeholder="请输入内容" v-model="edit_order.order_details" readonly></el-input>
           </el-col>
         </el-form-item>
       </el-form>
 
       <span slot="footer" class="dialog-footer">
 
-        <el-button @click="finishEditOrder" type="primary">修改订单</el-button>
+        <el-button v-if="edit_order.status == '未发货'" @click="finishEditOrder" type="primary">修改订单</el-button>
         <el-button @click="dialog_edit_order = false">关闭</el-button>
 
       </span>
@@ -302,20 +314,23 @@
 </style>
 
 <script>
-import { apiOrderinit } from "./../../../assets/js/axios/api.js";
-import { apiOrderDetails } from "./../../../assets/js/axios/api.js";
 import { formatTime } from "./../../../assets/js/timeFormat.js";
-import { apiSearchOrder } from "./../../../assets/js/axios/api.js";
-import { apiPageNum } from "./../../../assets/js/axios/api.js";
-import { apiPageSize } from "./../../../assets/js/axios/api.js";
-import { apiEditOrder } from "./../../../assets/js/axios/api.js";
+import {
+  apiEditOrder,
+  apiSendProduct,
+  apiPageSize,
+  apiPageNum,
+  apiSearchOrder,
+  apiOrderDetails,
+  apiOrderinit
+} from "./../../../assets/js/axios/api.js";
+
 export default {
   mounted() {
     this.orderInit();
   },
   data() {
     return {
-      // img: require("../../../../public/img/1.jpg"),
       loading: true,
       pageNum: 1,
       pageSize: 5,
@@ -341,12 +356,15 @@ export default {
         product_num: 1, //修改后的商品数量
         order_store: "我的销售商",
         sum_product: null,
-        order_post_fee: 10
+        order_post_fee: 10,
+        shippingcode: "",
+        status: ""
       },
       //发货处理
       send_order: {
         order_id: "",
         address: "",
+        shippingcode: "",
         express: "" //快递公司
       },
       //查询订单信息
@@ -397,17 +415,11 @@ export default {
   computed: {
     //   订单详情中的总金额计算
     sum_orderpay: function() {
-      return (
-        this.order_info.order_post_fee +
-        this.order_info.product_price * this.order_info.product_num
-      );
+      return this.order_info.product_price * this.order_info.product_num;
     },
     // 编辑订单中的总金额计算
     edit_sum_pay: function() {
-      return (
-        this.edit_order.product_num * this.edit_order.product_price +
-        this.edit_order.order_post_fee
-      );
+      return this.edit_order.product_num * this.edit_order.product_price;
     }
   },
   methods: {
@@ -417,24 +429,32 @@ export default {
         {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
-          brandId: 1
+          storeId: -1
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
-        // console.log(res.data.data);
         if (res.data.code == 200) {
-          this.loading = false;
-          this.order_list = res.data.data;
-          this.totalNum = res.data.data[0].totalSize;
-          for (var i in this.order_list) {
-            var time = this.order_list[i].createTime;
-            var times = new Date(+new Date(time) + 8 * 3600 * 1000)
-              .toISOString()
-              .replace(/T/g, " ")
-              .replace(/\.[\d]{3}Z/, "");
-            this.order_list[i].createTime = times;
+          if (res.data.data.length == 0) {
+            this.totalNum = 0;
+            this.loading = false;
+          } else {
+            this.loading = false;
+            this.order_list = res.data.data;
+            console.log(this.order_list);
+            this.totalNum = res.data.data[0].totalSize;
+            for (var i in this.order_list) {
+              var time = this.order_list[i].createTime;
+              var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+                .toISOString()
+                .replace(/T/g, " ")
+                .replace(/\.[\d]{3}Z/, "");
+              this.order_list[i].createTime = times;
+
+              this.order_list[i].order_price =
+                this.order_list[i].num * this.order_list[i].storePrice;
+            }
           }
         }
       });
@@ -537,6 +557,7 @@ export default {
         this.edit_order.rece_phone = res.data.data.receiverPhone;
         this.edit_order.rece_address = res.data.data.receiverAddress;
         this.edit_order.product_imgurl = res.data.data.picPath;
+        this.edit_order.status = res.data.data.orderStatus;
       });
     },
     /**订单编辑提交 */
@@ -582,10 +603,24 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "发货成功！该订单的物流号为：12347975 "
+          console.log();
+          apiSendProduct(
+            {
+              orderNo: this.send_order.order_id,
+              shippingName: this.send_order.express,
+              shippingCode: this.send_order.shippingcode
+            },
+            { headers: { token: this.Cookie.getCookie("brandtoken") } }
+          ).then(res => {
+            // console.log(res.data);
+            this.$options.methods.orderInit.bind(this)();
+            this.$message({
+              type: "success",
+              message:
+                "发货成功！该订单的物流号为： " + this.send_order.shippingcode
+            });
           });
+
           this.dialog_send_order = false;
         })
         .catch(() => {
@@ -604,17 +639,23 @@ export default {
         {
           pageNum: 1,
           pageSize: 5,
-          // productName: this.order.name,
-          // orderNo: this.order.id,
-          OrderStatus: this.order.status,
+          storeId: -1,
+          productName: this.order.name,
+          orderNo: this.order.id,
+          orderStatus: this.order.status,
           startTime: this.order.startTime,
           endTime: this.order.endTime
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
+        if (res.data.data.length == 0) {
+          this.totalNum = 0;
+        } else {
+          this.totalNum = res.data.data[0].totalSize;
+        }
         this.pageNum = 1;
 
         this.order_list = res.data.data;
@@ -634,6 +675,7 @@ export default {
         {
           pageNum: this.pageNum,
           pageSize: size,
+          storeId: -1,
           productName: this.order.name,
           orderNo: this.order.id,
           OrderStatus: this.order.status,
@@ -641,7 +683,7 @@ export default {
           endTime: this.order.endTime
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
@@ -665,12 +707,13 @@ export default {
           pageSize: this.pageSize,
           productName: this.order.name,
           orderNo: this.order.id,
+          storeId: -1,
           OrderStatus: this.order.status,
           startTime: this.order.startTime,
           endTime: this.order.endTime
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
