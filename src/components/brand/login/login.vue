@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:19 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 12:37:08
+ * @Last Modified time: 2019-03-25 22:26:36
  */
 
 <template>
@@ -58,11 +58,11 @@
       </el-form>
     </el-row>
 
-    <el-row class="footer">
+    <!-- <el-row class="footer">
       <el-col :span="3" :offset="9">Copyright：
         <span class="iconfont icon-banquan"></span>猿聚团队</el-col>
       <el-col :span="3">version 0.1.0</el-col>
-    </el-row>
+    </el-row> -->
 
     <el-dialog title="验证" top=35vh :show-close=show_close :close-on-click-modal=false :modal=false :visible.sync="verify_show" width="30%">
       <span>
@@ -184,12 +184,13 @@ export default {
             password: this.login.login_pwd
           }).then(res => {
             if (res.data.msg == "请求成功") {
-              this.Cookie.setCookie("token", res.data.data.token);
+              this.Cookie.setCookie("brandtoken", res.data.data.token);
 
               this.$message({
                 message: "验证成功,登陆中",
                 type: "success"
               });
+              
               setTimeout(() => {
                 this.$router.push({ path: "/brand" }); /**路由跳转到系统首页 */
               }, 1500);
@@ -199,6 +200,11 @@ export default {
                 type: "warning"
               });
               this.$refs.login.resetFields(); //清空表单数据
+            }else if(res.data.code == 403){
+               this.$message({
+                message: "请等待管理员审核后再登陆~",
+                type: "warning"
+              });
             }
           });
 
