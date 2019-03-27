@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 18:28:50
+ * @Last Modified time: 2019-03-26 16:21:38
  */
 
 <template>
@@ -51,7 +51,7 @@
         <el-row class="product_sell">
           <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
           <el-col :md="24" :lg="18">
-            累计售出
+            剩余库存
             <span>{{product.product_sell}}</span>
           </el-col>
         </el-row>
@@ -60,14 +60,12 @@
           <el-row>
             <el-col :xs="0" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
             <el-col :xs="10 " :md="4" :lg="4">选择数量</el-col>
-            <!-- <el-col :xs="10" :md="8" :lg="9" class="stock" :style="{display : stock}">{{buy_color}}剩余库存:
-                            <span>11</span>
-                        </el-col> -->
+
           </el-row>
           <el-row>
             <el-col :xs="8" :sm="10" :md="10" :lg="2" :xl="1">&nbsp;</el-col>
             <el-col class="select_num" :sm="4" :md="4" :lg="20">
-              <el-input-number :title='"最大限购数量为："+product.buy_limit' v-model="select_num" :min="1" :max="product.buy_limit" label="描述文字"></el-input-number>
+              <el-input-number :disabled="product.disabled == '0'" :title='"最大限购数量为："+product.buy_limit' v-model="select_num" :min="1" :max="product.buy_limit" label="描述文字"></el-input-number>
             </el-col>
           </el-row>
         </el-row>
@@ -75,7 +73,7 @@
         <el-row class="confirm">
           <el-col :xs="8" :sm="10" :md="2" :lg="2" :xl="1">&nbsp;</el-col>
           <el-col :md="24" :lg="20">
-            <el-button type="info" class="confirm_button" @click="checkLogin">确认代理</el-button>
+            <el-button :disabled="product.disabled == '0'" type="info" class="confirm_button" @click="checkLogin">确认代理</el-button>
           </el-col>
         </el-row>
 
@@ -239,14 +237,13 @@ export default {
       stock: "none",
       productId: "",
       product: {
-        img_src: require("./../../../../public/img/product3.jpg"),
+        img_src: require("./../../../../public/img/noproduct.png"),
         product_status: 1,
-        name: "IPHONE X 64G 全网通4G智能手机",
-        product_brand: "APPLE/苹果",
-        product_sell: 11,
-        price: 6300,
-        description:
-          "iPhone 上最大的超视网膜显示屏，性能出类拔萃的 A12 仿生，安全性更进一步的面容 ID，以及支持景深控制的突破性双镜头系统。",
+        name: "暂无",
+        product_brand: "暂无",
+        product_sell: "暂无",
+        price: "暂无",
+        description: "暂无",
         buy_limit: 5
       }
     };
@@ -261,11 +258,23 @@ export default {
             type: "warning",
             message: "该商品不存在~"
           });
-          this.$router.push({ path: "/mall/index" })
+          this.$router.push({ path: "/mall/index" });
         } else if (res.data.code == 200) {
           this.product = res.data.data;
           this.productId = res.data.data.id;
           this.product.img_src = res.data.data.picture;
+          this.product.product_brand = res.data.data.brandName;
+          this.product.disabled = res.data.data.productStatus;
+          // if (res.data.data.picture == "") {
+          //   this.product.img_src = require("./../../../../public/img/noproduct.png");
+          // }
+          if (res.data.data.productStatus == 1) {
+            this.product.product_status = "已上架";
+          } else {
+            this.product.product_status = "已下架";
+          }
+          this.product.product_sell = res.data.data.productSku;
+          this.product.buy_limit = res.data.data.limitNum;
         }
       });
     },
@@ -275,7 +284,6 @@ export default {
           type: "warning",
           message: "您还没登录，请登录后在进行操作"
         });
-
       } else {
         this.dialogCheckProduct = true;
       }
@@ -292,13 +300,16 @@ export default {
       this.proxySuccess = false;
     },
     proxyProduct() {
-      // this.dialogCheckProduct = false;
-
       this.proxystatus = true;
-      apiProxyProduct({
-        productId: this.productId,
-        storeStock: this.select_num
-      }).then(res => {
+      apiProxyProduct(
+        {
+          productId: this.productId,
+          storeStock: this.select_num
+        },
+        {
+          headers: { token: this.Cookie.getCookie("storeToken") }
+        }
+      ).then(res => {
         console.log(res.data);
         if (res.data.code == 200) {
           // this.dialogCheckProduct = false;
