@@ -134,7 +134,7 @@ export default {
     checkedFinance: checkedFinance
   },
   mounted() {
-    apiGetfinance(this.Cookie.getCookie("id")).then(res => {
+    apiGetfinance(this.Cookie.getCookie("brandid")).then(res => {
       console.log(res.data.data);
       this.balance = res.data.data.totalmoney;
       this.sellTotal = res.data.data.sellTotal;
