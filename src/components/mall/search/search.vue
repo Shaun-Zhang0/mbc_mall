@@ -1,8 +1,8 @@
 /*
  * @Author: Shaun.Zhang 
  * @Date: 2019-03-20 14:57:48 
- * @Last Modified by:   Shaun.Zhang 
- * @Last Modified time: 2019-03-20 14:57:48 
+ * @Last Modified by: Shaun.Zhang
+ * @Last Modified time: 2019-03-27 13:43:10
  */
 
 <template>
@@ -129,6 +129,13 @@ export default {
   created () {
     console.log(this.$route.query.product_name);  
     this.search_condition = this.$route.query.product_name;
+    // this.axios({
+    //   method:"POST",
+    //   url:"api/product/product/findProductByCondition",
+    //   data:this.search_condition
+    // }).then(res => {
+    //   console.log(res.data);
+    // })
   },
   data() {
     return {
