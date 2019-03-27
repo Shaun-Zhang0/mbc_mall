@@ -2,85 +2,85 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:40:38 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-22 22:58:37
+ * @Last Modified time: 2019-03-25 23:24:53
  */
 
 <template>
-    <div id="container" style="width: 100%;height:100%;">
-        <div class="breadcrumb">
-            <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
-                <el-breadcrumb-item>首页</el-breadcrumb-item>
-                <el-breadcrumb-item>账号管理</el-breadcrumb-item>
-                <el-breadcrumb-item>修改个人信息</el-breadcrumb-item>
-            </el-breadcrumb>
-        </div>
-
-        <div class="border">
-            <el-row class="info_title">用户个人信息</el-row>
-            <el-form v-loading="loading" :rules="rules" ref="form" :model="form" label-width="80px">
-                <el-row>
-                    <el-col :span="6" :offset="5">
-                        <el-form-item label="厂商id">
-                            {{form.id}}
-                        </el-form-item>
-                    </el-col>
-
-                    <el-col :span="6">
-                        <el-form-item label="厂商状态">
-                            <span>{{form.status}}</span>
-                        </el-form-item>
-                    </el-col>
-
-                </el-row>
-                <el-row>
-                    <el-col :span="12" :offset="5">
-                        <el-form-item label="绑定邮箱">
-                            <!-- <el-input class="input-with-select" v-model="form.email" placeholder="请输入绑定邮箱，用于登录的凭证" @keydown.enter.native="submitForm('register')">
-                            </el-input> -->
-                            {{form.email}}
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="12" :offset="5">
-                        <el-form-item label="厂商名称" prop="name">
-                            <el-input v-model="form.name"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row>
-                    <el-col :span="6" :offset="5">
-                        <el-form-item label="法人" prop="legal_person">
-                            <el-input v-model="form.legal_person"></el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col :span="6">
-                        <el-form-item label="联系方式" prop="lperson_phone">
-                            <el-input v-model="form.lperson_phone"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row>
-                    <el-col :span="12" :offset="5">
-                        <el-form-item label="厂商地址" prop="address">
-                            <el-input v-model="form.address"></el-input>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-
-                <el-row style="margin-top: 50px;">
-                    <el-col :span="6" :offset="9">
-                        <el-form-item>
-                            <el-button type="primary" @click="edit('form')">确认修改</el-button>
-                            <el-button>取消</el-button>
-                        </el-form-item>
-                    </el-col>
-                </el-row>
-            </el-form>
-        </div>
+  <div id="container" style="width: 100%;height:100%;">
+    <div class="breadcrumb">
+      <el-breadcrumb separator-class="el-icon-arrow-right" style="line-height:50px;">
+        <el-breadcrumb-item>首页</el-breadcrumb-item>
+        <el-breadcrumb-item>账号管理</el-breadcrumb-item>
+        <el-breadcrumb-item>修改个人信息</el-breadcrumb-item>
+      </el-breadcrumb>
     </div>
+
+    <div class="border">
+      <el-row class="info_title">用户个人信息</el-row>
+      <el-form v-loading="loading" :rules="rules" ref="form" :model="form" label-width="80px">
+        <el-row>
+          <el-col :span="6" :offset="5">
+            <el-form-item label="厂商id">
+              {{form.id}}
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="厂商状态">
+              <span>{{form.status}}</span>
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+        <el-row>
+          <el-col :span="12" :offset="5">
+            <el-form-item label="绑定邮箱">
+              <!-- <el-input class="input-with-select" v-model="form.email" placeholder="请输入绑定邮箱，用于登录的凭证" @keydown.enter.native="submitForm('register')">
+                            </el-input> -->
+              {{form.email}}
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12" :offset="5">
+            <el-form-item label="厂商名称" prop="name">
+              <el-input v-model="form.name"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="6" :offset="5">
+            <el-form-item label="法人" prop="legal_person">
+              <el-input v-model="form.legal_person"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="联系方式" prop="lperson_phone">
+              <el-input v-model="form.lperson_phone"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12" :offset="5">
+            <el-form-item label="厂商地址" prop="address">
+              <el-input v-model="form.address"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row style="margin-top: 50px;">
+          <el-col :span="6" :offset="9">
+            <el-form-item>
+              <!-- <el-button type="primary" @click="edit('form')">确认修改</el-button>
+              <el-button>取消</el-button> -->
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
+  </div>
 </template>
 <style scoped>
 .border {
@@ -101,7 +101,7 @@
 </style>
 <script>
 import { apiSearchInfo } from "./../../../assets/js/axios/api.js";
-import { apibrandInfoUpdata } from "./../../../assets/js/axios/api.js";
+// import { apibrandInfoUpdata } from "./../../../assets/js/axios/api.js";
 export default {
   data() {
     return {
@@ -139,15 +139,22 @@ export default {
     };
   },
   mounted() {
-    this.token = this.Cookie.getCookie("token");
-    console.log(this.token);
-
-    apiSearchInfo({})
+    this.token = this.Cookie.getCookie("brandtoken");
+    apiSearchInfo(
+      {
+        
+      },
+      {
+        headers: { token: this.Cookie.getCookie("brandtoken") }
+      }
+    )
       .then(res => {
+
         if (res.data.code == 200) {
           this.loading = false;
+          console.log(res.data.data);
           this.form.name = res.data.data.name;
-          this.form.id = res.data.data.adminId;
+          this.form.id = res.data.data.brandId;
           this.form.address = res.data.data.address;
           this.form.legal_person = res.data.data.username;
           if (res.data.data.state == 1) {
@@ -159,9 +166,7 @@ export default {
           this.form.lperson_phone = res.data.data.phone;
         }
       })
-      .catch(error => {
-        // console.info(error.request.status);
-      });
+      .catch(error => {});
   },
   methods: {
     edit(formName) {
@@ -173,19 +178,24 @@ export default {
             type: "warning"
           })
             .then(() => {
-                apibrandInfoUpdata({
+              apibrandInfoUpdata(
+                {
                   id: this.form.id,
                   name: this.form.name,
                   phone: this.form.lperson_phone,
                   address: this.form.address
-                }).then(res => {
-                  if (res.data.msg == "success") {
-                    this.$message({
-                      type: "success",
-                      message: "个人信息修改成功!"
-                    });
-                  }
-                });
+                },
+                {
+                  headers: { token: this.Cookie.getCookie("brandtoken") }
+                }
+              ).then(res => {
+                if (res.data.msg == "success") {
+                  this.$message({
+                    type: "success",
+                    message: "个人信息修改成功!"
+                  });
+                }
+              });
             })
             .catch(() => {
               this.$message({
