@@ -7,7 +7,7 @@ import { Message } from "element-ui";
 
 import Cookie from "../assets/js/cookie"; //设置cookie
 
-axios.defaults.baseURL = "http://localhost:9000";
+axios.defaults.baseURL = "http://172.16.103.53:9000";
 
 let config = {
   timeout: 6 * 1000 // Timeout
@@ -21,27 +21,34 @@ axios.create(config);
 var notInterceptors = [
   "api/login/adminLogin/login",
   "api/login/adminLogin/getAdminTo",
-  "api/personal//brand/register",
+  "api/personal/brand/register",
   "api/login/login/brand/email",
   "api/catalog/category/getCategory/",
   "api/product/product/findProductToIndex",
-  "api/product/storeProduct/saveStoreProduct"
+  "api/product/storeProduct/saveStoreProduct",
+  "api/catalog/category/findFirstCategory"
 ];
-
+for (let i = 0; i <= 5000; i++) {
+  let url = "api/catalog/category/getCategory/" + i;
+  notInterceptors.push(url);
+}
+for (let i = 0; i <= 5000; i++) {
+  let url = "api/product/product/findOne/" + i;
+  notInterceptors.push(url);
+}
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
-
-    if (!Cookie.getCookie("token")) {
-      this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
-      Message.error({
-        message: "登录凭证已过期，请重新登录~"
-      });
-    }
-    // if(notInterceptors.indexOf(config.url) == -1){
-    //   this.$router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+    // if (
+    //   !Cookie.getCookie("brandtoken") &&
+    //   notInterceptors.indexOf(config.url) == -1
+    // ) {
+    //   router.push({ path: "/brand/login" }); /**路由跳转到系统首页 */
+    //   const CancelToken = axios.CancelToken;
+    //   const source = CancelToken.source();
+    //   source.cancel();
     //   Message.error({
-    //     message: "请登录后再进行操作~"
+    //     message: "登录凭证已过期，请重新登录~"
     //   });
     // }
 
@@ -134,10 +141,13 @@ export function get(url) {
  * @param {Object} params [请求时携带的参数]
  *
  */
+
 export function post(url, params, headers) {
   return new Promise((resolve, reject) => {
     axios
-      .post(url, params, headers)
+      .post(url, params, headers, {
+        cancelToken: axios.CancelToken.source().token
+      })
       .then(res => {
         resolve(res);
       })
