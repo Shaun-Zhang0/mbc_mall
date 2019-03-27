@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 22:56:11
+ * @Last Modified time: 2019-03-26 18:49:21
  */
 
 <template>
@@ -32,7 +32,7 @@
           <el-col :span="5">
             <el-form-item label="商品状态">
               <el-select v-model="product.status" clearable placeholder="请选择商品状态">
-                <el-option label="正常" value="1"></el-option>
+                <el-option label="上架" value="1"></el-option>
                 <el-option label="下架" value="0"></el-option>
 
               </el-select>
@@ -261,11 +261,14 @@
 
 <script>
 import toTop from "./../../mall/index/to_top";
-import { apiSearchProduct } from "./../../../assets/js/axios/api.js";
-import { apiproductInit } from "./../../../assets/js/axios/api.js";
-import { apiSizeChange } from "./../../../assets/js/axios/api.js";
-import { apiCurrentChange } from "./../../../assets/js/axios/api.js";
-import { apiEditProduct } from "./../../../assets/js/axios/api.js";
+import {
+  apiSearchProduct,
+  apiproductInit,
+  apiSizeChange,
+  apiCurrentChange,
+  apiEditProduct,
+  apiGetCategory
+} from "./../../../assets/js/axios/api.js";
 
 export default {
   components: {
@@ -273,7 +276,7 @@ export default {
   },
   mounted() {
     this.product_init();
-    this.token = this.Cookie.getCookie("token");
+    this.token = this.Cookie.getCookie("brandtoken");
     apiGetCategory().then(res => {
       console.log(res.data.data);
       this.category = res.data.data;
@@ -295,9 +298,7 @@ export default {
       show_imgurl: "",
       file: "", //获得文件的url
       image: "", //展示图片的url
-      category: [
-      
-      ],
+      category: [],
       /**查询商品的信息 */
       product: {
         name: "", //要查询的商品名称
@@ -382,26 +383,31 @@ export default {
       }
       apiproductInit(
         {
-          brandId: this.Cookie.getCookie("id"),
+          id: tempId,
+
           pageNum: this.pageNum,
           productStatus: tempStatus,
           pageSize: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
-        this.productlist = res.data.data;
-        this.totalNum = res.data.data[0].countTotal;
-        this.loading = false;
-        for (var i in this.productlist) {
-          var time = this.productlist[i].createTime;
-          var times = new Date(+new Date(time) + 8 * 3600 * 1000)
-            .toISOString()
-            .replace(/T/g, " ")
-            .replace(/\.[\d]{3}Z/, "");
-          this.productlist[i].createTime = times;
+        if (res.data.data.length == 0) {
+          this.productlist = [];
+        } else {
+          this.productlist = res.data.data;
+          this.totalNum = res.data.data[0].countTotal;
+          this.loading = false;
+          for (var i in this.productlist) {
+            var time = this.productlist[i].createTime;
+            var times = new Date(+new Date(time) + 8 * 3600 * 1000)
+              .toISOString()
+              .replace(/T/g, " ")
+              .replace(/\.[\d]{3}Z/, "");
+            this.productlist[i].createTime = times;
+          }
         }
       });
     },
@@ -559,7 +565,7 @@ export default {
           pageSize: value
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         if (res.data.code == 200) {
@@ -601,7 +607,7 @@ export default {
           pageSize: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         //   console.log(res.data.data);
@@ -648,11 +654,16 @@ export default {
           pageSize: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         //   console.log(res.data.data);
         if (res.data.code == 200) {
+          if (res.data.data.length == 0) {
+            this.totalNum = 0;
+          } else {
+            this.totalNum = res.data.data[0].countTotal;
+          }
           this.productlist = res.data.data;
           this.pageNum = 1;
           for (var i in this.productlist) {
@@ -677,22 +688,27 @@ export default {
       })
         .then(() => {
           this.product_show.sizeArray = this.product_show.size.split("/");
-          apiEditProduct({
-            id: this.product_show.id,
-            productColors: this.product_show.color,
-            productName: this.product_show.name,
-            productSku: this.product_show.quantity,
-            productPrice: this.product_show.price,
-            productRecommendprice: this.product_show.suggested_price,
-            productDefails: this.product_show.details,
-            warehouseId: this.product_show.warehouseid,
-            limitNum: this.product_show.limit_num,
-            scategoryId: this.product_show.cagegoryid,
-            productPicture: this.product_show.img,
-            productQuality: this.product_show.weight,
-            productSizes: this.product_show.sizeArray,
-            productStatus: this.product_show.product_status
-          }).then(res => {
+          apiEditProduct(
+            {
+              id: this.product_show.id,
+              productColors: this.product_show.color,
+              productName: this.product_show.name,
+              productSku: this.product_show.quantity,
+              productPrice: this.product_show.price,
+              productRecommendprice: this.product_show.suggested_price,
+              productDefails: this.product_show.details,
+              warehouseId: this.product_show.warehouseid,
+              limitNum: this.product_show.limit_num,
+              scategoryId: this.product_show.cagegoryid,
+              productPicture: this.product_show.img,
+              productQuality: this.product_show.weight,
+              productSizes: this.product_show.sizeArray,
+              productStatus: this.product_show.product_status
+            },
+            {
+              headers: { token: this.Cookie.getCookie("brandtoken") }
+            }
+          ).then(res => {
             this.$message({
               type: "success",
               message: "商品信息更改成功"
@@ -726,7 +742,7 @@ export default {
           .then(() => {
             this.$axios({
               method: "post",
-              url: "http://localhost:9000/api/product/product/on_sale",
+              url: "api/product/product/on_sale",
               data: this.productIdArray
             }).then(res => {
               if (res.data.msg == "商品状态不正确") {
@@ -777,7 +793,7 @@ export default {
           .then(() => {
             this.$axios({
               method: "post",
-              url: "http://localhost:9000/api/product/product/off_sale",
+              url: "api/product/product/off_sale",
               data: this.productIdArray
             }).then(res => {
               if (res.data.msg == "商品状态不正确") {
