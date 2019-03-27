@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-13 14:57:50 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 14:56:55
+ * @Last Modified time: 2019-03-26 20:26:43
  */
 <template>
     <div>
@@ -193,7 +193,7 @@
                         </el-row>
                         <el-row style="padding-top: 20px; font-size: 14px;">
                             <el-col :xs="6" :sm="4" :md="5" :lg="8">
-                                <span class="header_menu_item header_menu_user">分销商注册</span>
+                                <span class="header_menu_item header_menu_user"  onClick="location.href='http://localhost:7033/salerRegister'">分销商注册</span>
                             </el-col>
                             <el-col :xs="3" :sm="6" :md="5" :lg="4">&nbsp;</el-col>
                             <el-col :xs="6" :sm="4" :md="4" :lg="8">
