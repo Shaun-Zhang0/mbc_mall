@@ -28,8 +28,12 @@ export default new Router({
     /**厂商管理平台 */
     {
       path: "/brand", //管理平台的首页
+      name: "Index",
       component: Index,
-      meta: { keepAlive: true, isLogin: true }
+      meta: {
+        keepAlive: true,
+        isLogin: true //需要登录才能进入
+      }
     },
     {
       path: "/brand/update_info", //更新信息页面
