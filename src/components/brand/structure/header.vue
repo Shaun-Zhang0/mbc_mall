@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:34 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 22:04:09
+ * @Last Modified time: 2019-03-24 14:26:49
  */
 
 <template>
@@ -85,16 +85,16 @@ export default {
     };
   },
   mounted() {
-    if (this.Cookie.getCookie("token")) {
+    if (this.Cookie.getCookie("brandtoken")) {
       apiSearchInfo(
         {},
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       )
         .then(res => {
           this.name = res.data.data.name;
-          this.Cookie.setCookie("id", res.data.data.brandId);
+          this.Cookie.setCookie("brandid", res.data.data.brandId);
         })
         .catch(error => {});
     } else {
@@ -139,12 +139,12 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.Cookie.delCookie("token");
-          this.Cookie.delCookie("id");
+          this.Cookie.delCookie("brandtoken");
+          this.Cookie.delCookie("brandid");
 
           if (
-            this.Cookie.getCookie("token") == null &&
-            this.Cookie.getCookie("id") == null
+            this.Cookie.getCookie("brandtoken") == null &&
+            this.Cookie.getCookie("brandid") == null
           ) {
             this.$message({
               type: "success",
@@ -161,7 +161,6 @@ export default {
             message: "取消注销操作!"
           });
         });
-      // this.Cookie.delCookie('token');
     }
   }
 };
