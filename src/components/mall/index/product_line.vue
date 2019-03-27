@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-28 17:55:13 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 15:35:16
+ * @Last Modified time: 2019-03-27 00:19:33
  */
 
 <template>
@@ -258,11 +258,11 @@ export default {
       this.axios({
         method:"POST",
         url:"api/product/product/findProductToIndex",
-        data:[2,5]
+        data:[25,26]
         
       })
       .then(res => {
-        console.log(res);
+        console.log(res.data);
         this.product_list = res.data.data;
       })
   }
