@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-02-12 17:38:08 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-20 20:56:36
+ * @Last Modified time: 2019-03-25 22:23:10
  */
 
 <template>
@@ -296,6 +296,7 @@ export default {
               message: "注册成功",
               type: "success"
             });
+          
             setTimeout(() => {
               this.$router.push({
                 path: "/brand/login"
@@ -303,15 +304,6 @@ export default {
             }, 2000);
           }
         });
-
-        setTimeout(() => {
-          this.$message({
-            message: "验证成功,正在注册中",
-            type: "success"
-          });
-          this.verify_show = false;
-          this.check_num = 0;
-        }, 1);
         return;
       } else {
         this.verify_status = false;
