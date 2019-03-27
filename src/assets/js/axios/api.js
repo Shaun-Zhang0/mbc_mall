@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang
  * @Date: 2019-03-20 14:52:59
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 22:34:04
+ * @Last Modified time: 2019-03-26 18:40:02
  */
 
 /**
@@ -31,15 +31,15 @@ export const apiSearchInfo = (params, headers) => {
 /**
  * 修改厂商信息api
  */
-export const apibrandInfoUpdata = params => {
-  return post("api/login/login/brand/update", params);
+export const apibrandInfoUpdata = (params, headers) => {
+  return post("api/login/login/brand/update", params, headers);
 };
 
 /**
  * 发布商品信息api
  */
-export const apiReleaseProduct = params => {
-  return post("api/product/product/save", params);
+export const apiReleaseProduct = (params, headers) => {
+  return post("api/product/product/save", params, headers);
 };
 /**
  * 账单管理中的查找订单api
@@ -100,15 +100,15 @@ export const apiCurrentChange = params => {
 /**
  * 编辑商品api
  */
-export const apiEditProduct = params => {
-  return post("api/product/product/update", params);
+export const apiEditProduct = (params, headers) => {
+  return post("api/product/product/update", params, headers);
 };
 
 /**
  * 初始化订单列表api
  */
-export const apiOrderinit = (params,headers) => {
-  return post("api/order/order/findOrderByCondition", params, headers);
+export const apiOrderinit = (params, headers) => {
+  return post("api/order/order/findOrderByConditionBrand", params, headers);
 };
 
 /**
@@ -122,8 +122,8 @@ export const apiOrderDetails = id => {
 /**
  * 搜索订单api
  */
-export const apiSearchOrder = (params,headers) => {
-  return post("api/order/order/findOrderByCondition", params, headers);
+export const apiSearchOrder = (params, headers) => {
+  return post("api/order/order/findOrderByConditionBrand", params, headers);
 };
 /**
  * 订单编辑api
@@ -135,13 +135,13 @@ export const apiEditOrder = params => {
  * 订单页数跳转api
  */
 export const apiPageNum = (params, headers) => {
-  return post("api/order/order/findOrderByCondition", params, headers);
+  return post("api/order/order/findOrderByConditionBrand", params, headers);
 };
 /**
  * 订单条数跳转api
  */
-export const apiPageSize = (params,headers) => {
-  return post("api/order/order/findOrderByCondition", params, headers);
+export const apiPageSize = (params, headers) => {
+  return post("api/order/order/findOrderByConditionBrand", params, headers);
 };
 /**
  * 厂商入驻验证邮箱是否可用api
@@ -179,8 +179,8 @@ export const apiMallLogin = params => {
 /**
  * 进货平台的代理商品api
  */
-export const apiProxyProduct = params => {
-  return post("api/product/storeProduct/saveStoreProduct", params);
+export const apiProxyProduct = (params, headers) => {
+  return post("api/product/storeProduct/saveStoreProduct", params, headers);
 };
 
 /**
@@ -194,5 +194,19 @@ export const apiGetStoreNameapi = (params, headers) => {
  * 获取商品第三级分类列表
  */
 export const apiGetCategory = params => {
-  return get("api/catalog/category/getCategoryByIsParent",params);
-}
+  return get("api/catalog/category/getCategoryByIsParent", params);
+};
+
+/**
+ * 厂商发货api
+ */
+export const apiSendProduct = (params, headers) => {
+  return post("api/order/order/brandCheckOrder", params, headers);
+};
+
+/**
+ * 进货平台的一级菜单显示api
+ */
+export const apiMallGetScategory = params => {
+  return get("api/catalog/category/findFirstCategory");
+};
