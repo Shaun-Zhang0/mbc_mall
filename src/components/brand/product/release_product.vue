@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-01-25 16:41:16 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 22:55:54
+ * @Last Modified time: 2019-03-26 18:40:52
  */
 
 <template>
@@ -49,14 +49,14 @@
                     <el-col :span="6" :offset="5" prop="cagegoryid">
                         <el-form-item label="商品类别" prop="cagegoryid">
                             <el-select v-model="form.cagegoryid" placeholder="请选择商品类别">
-                                <el-option v-for="category in category"  :label="category.categoryName" :value="category.categoryId"></el-option>
+                                <el-option v-for="category in category" :label="category.categoryName" :value="category.categoryId"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="6">
 
                         <el-form-item label="限购数量" prop="limit_num">
-                            <el-input type="number" v-model.number="form.limit_num" autocomplete="off" placeholder="请输入限购数量">
+                            <el-input type="number" v-model="form.limit_num" autocomplete="off" placeholder="请输入限购数量">
                             </el-input>
                         </el-form-item>
                     </el-col>
@@ -187,7 +187,6 @@ export default {
     apiGetCategory().then(res => {
       console.log(res.data.data);
       this.category = res.data.data;
-     
     });
   },
   data() {
@@ -296,7 +295,7 @@ export default {
       reader.readAsDataURL(file);
     },
     release(formName) {
-        console.log(this.form.cagegoryid);
+      console.log(this.form.cagegoryid);
       this.$refs[formName].validate(valid => {
         if (valid) {
           this.$confirm("是否发布新的商品？", "提示", {
@@ -305,20 +304,26 @@ export default {
             type: "warning"
           })
             .then(() => {
-              apiReleaseProduct({
-                productName: this.form.name,
-                productSku: this.form.quantity,
-                productPrice: this.form.price,
-                productRecommendprice: this.form.suggested_price,
-                productDefails: this.form.details,
-                warehouseId: this.form.warehouseid,
-                productColors: this.form.color,
-                scategoryId: this.form.cagegoryid,
-                productWeight: this.form.weight,
-                productSizes: this.form.arraySize,
-                productStatue: this.form.productStatue,
-                productPicture: this.form.imgUrl
-              }).then(res => {
+              apiReleaseProduct(
+                {
+                  productName: this.form.name,
+                  productSku: this.form.quantity,
+                  productPrice: this.form.price,
+                  limitNum: this.form.limit_num,
+                  productRecommendprice: this.form.suggested_price,
+                  productDefails: this.form.details,
+                  warehouseId: this.form.warehouseid,
+                  productColors: this.form.color,
+                  scategoryId: this.form.cagegoryid,
+                  productWeight: this.form.weight,
+                  productSizes: this.form.arraySize,
+                  productStatus: this.form.product_status,
+                  productPicture: this.form.imgUrl
+                },
+                {
+                  headers: { token: this.Cookie.getCookie("brandtoken") }
+                }
+              ).then(res => {
                 this.$message({
                   type: "success",
                   message: "新的商品发布成功!"
