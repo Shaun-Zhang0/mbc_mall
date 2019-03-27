@@ -2,7 +2,7 @@
  * @Author: Shaun.Zhang 
  * @Date: 2019-03-22 16:37:56 
  * @Last Modified by: Shaun.Zhang
- * @Last Modified time: 2019-03-23 21:41:58
+ * @Last Modified time: 2019-03-25 19:33:39
  */
 
 <template>
@@ -153,11 +153,12 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
-        if (res.data.data.length != 0) {
+        if (res.data.data != "") {
+          this.totalSize = res.data.data[0].TotalSize;
           this.loading = false;
           this.IsNull = false;
           this.checkedOrderlist = res.data.data;
@@ -198,7 +199,7 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         this.loading = false;
@@ -238,7 +239,7 @@ export default {
           size: this.pageSize
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
@@ -281,13 +282,14 @@ export default {
           size: 10
         },
         {
-          headers: { token: this.Cookie.getCookie("token") }
+          headers: { token: this.Cookie.getCookie("brandtoken") }
         }
       ).then(res => {
         console.log(res.data.data);
         if (res.data.data.length == 0) {
           //结果集为空
           this.IsNull = true;
+          this.totalNum = 0;
         } else {
           //结果集不为空
           this.IsNull = false;
@@ -311,6 +313,7 @@ export default {
             this.checkedOrderlist[i].endTime = endTimes;
             this.checkedOrderlist[i].createTime = times;
           }
+          this.totalNum = res.data.data[0].totalSize;
         }
       });
     }
